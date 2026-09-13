@@ -1,0 +1,5 @@
+Figure 1. A four-room flat cost 5.43 years of median household income in 2013, 4.04 in 2019, and 5.04 in 2025. Constant-quality price from the hedonic index in 02_hedonic.py, divided by annual median monthly household income from work excluding employer CPF contributions. Sources: HDB resale transactions and SingStat, both via data.gov.sg.
+
+Figure 2. Median household income passed the Enhanced CPF Housing Grant ceiling in 2022. The ceiling has been 9,000 dollars a month since the grant was introduced in September 2019. Income is an upper bound on HDB's assessed basis, which excludes bonuses, so the crossing is 2022 or later.
+
+Figure 3. Grants set the loan in 2019. The loan-to-value cap sets it by 2025. For a buyer at the 20th percentile the loan is the lower of the two lines, and they swap over, which is why a larger grant stopped reducing the monthly repayment.

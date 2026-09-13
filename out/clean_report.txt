@@ -1,0 +1,11 @@
+resale_mar2012_dec2014          52203 rows  2012-03 to 2014-12  from resale_mar2012_dec2014.csv
+resale_jan2015_dec2016          37153 rows  2015-01 to 2016-12  from resale_jan2015_dec2016.csv
+resale_jan2017_onwards         240345 rows  2017-01 to 2026-09  from resale_jan2017_onwards.csv
+remaining_lease check: 277498 rows compared, worst gap 14.92 years, 0.9995 within 1 year
+exact duplicate transactions on the natural key: 675 (kept, genuine repeat sales in a month are possible)
+
+TOTAL            329701 rows  2012-03 to 2026-09
+4 ROOM           137484 rows  41.7% of all transactions
+complete years 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025
+
+REGISTRATION DATE, NOT TRANSACTION DATE. The month column is when the resale was registered with HDB, which follows the agreed price by a variable lag of roughly one to two months. No claim in this analysis is made at month level. All figures are annual, and the lag applies equally at both ends of the window.

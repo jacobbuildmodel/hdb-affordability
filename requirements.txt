@@ -1,0 +1,5 @@
+# Pinned to the versions this analysis was run on.
+# Python 3.11.15
+pandas==3.0.2
+numpy==2.4.4
+statsmodels==0.15.0

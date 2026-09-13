@@ -1,0 +1,146 @@
+RETRIEVED.txt
+Files supplied by Jacob Ong and staged 12 September 2026. data.gov.sg,
+singstat.gov.sg and hdb.gov.sg are 403 at CONNECT from this sandbox, so every
+file here was downloaded on his machine and uploaded to the session.
+
+DOWNLOAD DATE: 12 September 2026, all files, supplied by Jacob Ong.
+
+DATASET VINTAGES, as displayed on each data.gov.sg page on the download date:
+
+  d_8b84c4ee58e3cfc0ece0d773c8ca6abc  resale 2017 onwards     updated 11 Sep 2026
+  d_2d5ff9ea31397b66239f245f57751537  resale Mar2012-Dec2014  updated 28 Aug 2024
+  d_ea9ed51da2787afaf8e51f827c304208  resale Jan2015-Dec2016  NOT RECORDED
+  d_14f63e595975691e7c24a27ae4c07c79  HDB Resale Price Index  updated 28 Aug 2024
+  d_ff1988785f3e36cfc4757cf604ae0acd  income excl employer CPF updated 27 May 2026
+  d_dff6b97b7c233917ac8294bd04051486  income incl employer CPF updated 26 May 2026
+  d_ab4f7ecfc45e0a0eafe4ae4397e77059  resident vs employed    updated 28 Oct 2024
+
+  hdb_ehg_page.pdf            saved 12 Sep 2026, page last updated 20 August 2026 footer
+  hdb_interest_rate_page.pdf  saved 12 Sep 2026, page last updated 15 July 2026 footer
+
+TWO VINTAGE ANOMALIES, recorded rather than resolved:
+
+  1. The Resale Price Index page reports a last-updated date of 28 August 2024, but
+     the file contains observations through 2026-Q2. A 2024 vintage cannot contain
+     2026 data, so either the displayed date refers to the dataset metadata rather
+     than the data, or the date was misread. The RPI is used for context only and
+     no published figure depends on it, but this needs settling before the article
+     quotes any RPI number.
+  2. income_resident_vs_employed.csv stops at 2023, which IS consistent with its
+     28 October 2024 vintage even though the filename says 2000-2025. Not an error.
+
+PROVENANCE CHAIN: CLOSED for the main transaction file. On 12 September 2026 Jacob
+ran certutil on the download machine and returned
+
+  a9e696ef2d4d10e9765eada65fbd50b2
+
+for ResaleflatpricesbasedonregistrationdatefromJan2017onwards.csv, which matches the
+hash computed here byte for byte. The 23.8 MB file therefore arrived from
+data.gov.sg unaltered, and the hashes below are source-side verified for that file.
+
+The smaller files were not separately hashed on the download machine. They are far
+below any size at which transfer corruption is plausible, they parse without a
+single assertion failure in 01_clean.py, and the resale file that WAS verified is
+the one every headline number depends on.
+
+The 2017-onwards file arrived uncompressed at 23,770,853 bytes. The upload limit
+was not hit, so no gzip or four-room reduction was needed and the full file is
+in use. Two copies were uploaded under different names and are byte-identical
+(md5 a9e696ef2d4d10e9765eada65fbd50b2); one is kept.
+
+
+SECOND DELIVERY, 12 September 2026, same day. Closes the EHG band blocker and the
+LTV and CPF rate gaps.
+
+  ehg_amount_families.pdf              HDB, EHG amount for first-timer households,
+                                       the 16-band table, current regime
+  hdb_20240819_annexA_ehg_structure.pdf  HDB Annex A, 19 August 2024. Prints the
+                                       pre-change and post-change EHG tables SIDE BY
+                                       SIDE, which is what makes the 2019-2024 regime
+                                       sourceable at all
+  hdb3_ehg_page_expanded.pdf           EHG page with the accordions expanded
+  hdb4.pdf, hdb5.pdf                   further HDB pages from the same session
+  cpf1.pdf                             CPF interest rates page, Q3 2026
+  cpf2.pdf                             CPF interest rates, 1 Jan to 31 Mar 2016
+  cpf3_q3_2026.pdf                     CPF announcement, 1 Jul to 30 Sep 2026
+  mom_wage_practices_2025.pdf          MOM Report on Wage Practices 2025
+
+CPF2 and CPF3 are ten years apart and both state the Ordinary Account at the 2.5
+per cent floor and the HDB concessionary rate at 2.6 per cent, with the computed
+rate far below the floor (0.21 per cent in 2016, 0.32 per cent in 2026). That is
+what turns T2 from PARTIAL to PASS.
+
+CORRECTIONS from Jacob, 12 September 2026:
+  d_ea9ed51da2787afaf8e51f827c304208  resale Jan2015-Dec2016  updated 28 Aug 2024
+  d_14f63e595975691e7c24a27ae4c07c79  HDB Resale Price Index  updated 24 JULY 2026,
+    not 28 Aug 2024. The earlier anomaly is resolved: a July 2026 vintage is
+    consistent with data through 2026-Q2.
+  d_8b84c4ee58e3cfc0ece0d773c8ca6abc  resale 2017 onwards     updated 28 Aug 2026,
+    not 11 Sep. Corrected.
+
+
+THIRD DELIVERY, 12 September 2026. The pre-2019 grant hunt, part-successful.
+
+  hdb_mnd_shg_flyer_2011.pdf          HDB, MND and MICA flyer, Helping Low-Income
+                                      Families Own Their Homes, circa 2011. PRIMARY.
+                                      Settles two things: the AHG applied to resale
+                                      ("regardless whether the flat is bought from the
+                                      HDB or the open market") and maxed at 40,000;
+                                      and the SHG never applied to resale at all
+                                      ("can only be used to purchase 2-room and 3-room
+                                      standard flats in non-mature estates from HDB").
+                                      It does NOT give the AHG income ceiling.
+  hdb_20230214_further_support...pdf  HDB and MND joint release, 14 February 2023.
+                                      PRIMARY. Confirms the CPF Housing Grant rising
+                                      from 50,000 to 80,000 for 2- to 4-room resale,
+                                      the EHG maximum at 80,000 before August 2024,
+                                      the PHG at 30,000, and the first-timer family
+                                      total going from 160,000 to 190,000.
+
+NOT OBTAINED, and the hunt is now closed: the Additional CPF Housing Grant income
+ceiling. Three routes were tried and all failed. The Wayback Machine has no snapshot
+of HDB's AHG page. HDB's press release archive does not reach back to September 2019.
+The 2011 flyer's table stops at 2,250 dollars a month because that was the SHG
+ceiling, not the AHG's. A party website gives 5,000 but a party website is not a
+source for a number on this site.
+
+CONSEQUENCE, stated in the article rather than worked around: the grant-adjusted
+measures run from 2019 to 2025 while the conventional measure runs from 2013 to
+2025. No AHG amount is modelled for any year.
+
+file                                      bytes  md5
+cpf1.pdf                                            1658933  6298f0425f810df4b2f6f752aa3c091a
+cpf2.pdf                                            1526127  acc7c74bfd4128ad9d595263d23ab9ab
+cpf3_q3_2026.pdf                                     672976  8d989867a4656b38278e3d39a9c88ed2
+ehg_amount_families.pdf                              202665  888e68cc609906959aa5ac1062d260c1
+hdb3_ehg_page_expanded.pdf                          1768034  afc3a8efa6e266d1ac3896d0548411d8
+hdb4.pdf                                            1643841  78ed7353e6168ce143519f0216d55aa4
+hdb5.pdf                                            1477345  ae68bafce516e73081c7d19c474b4491
+hdb_20230214_further_support_first_timers.pdf       1481723  518e98e653b41624d4e20aa8ac412bab
+hdb_20240819_annexA_ehg_structure.pdf                122594  54fd827bc3071d6f221c9d3ac1f94cd5
+hdb_ehg_page.pdf                                    1418440  4b7a4e77f1fc52bd5834b7358088f6d9
+hdb_interest_rate_page.pdf                           334313  b7f9508687d92831f9b75db7fb227547
+hdb_mnd_shg_flyer_2011.pdf                           160677  8f22b4e48dfcc02cbf1e6039bf7f9605
+income_percentiles_excl_cpf.csv                        1428  2b4372b98ac6d863edaecea70d79161f
+income_percentiles_incl_cpf.csv                        1437  139b3dbcbc1774d39b0250eaf045683e
+income_resident_vs_employed.csv                         743  594515b84d762cfc5148b4e0eae8f026
+mom_wage_practices_2025.pdf                          783470  005ca80a9822e9d40feea8ac158704ed
+resale_jan2015_dec2016.csv                          3070924  7b41c07e962ac3e781c15309c9941cfe
+resale_jan2017_onwards.csv                         23770853  a9e696ef2d4d10e9765eada65fbd50b2
+resale_mar2012_dec2014.csv                          4160771  8aa48307d40c1a6d56b1eeaba28576f7
+rpi_quarterly.csv                                      1955  fcbe7380983f4f7765c81b0fe8dbdacb
+Source dataset IDs, from DATA_REQUEST.md:
+  resale_jan2017_onwards.csv        d_8b84c4ee58e3cfc0ece0d773c8ca6abc
+  resale_jan2015_dec2016.csv        d_ea9ed51da2787afaf8e51f827c304208
+  resale_mar2012_dec2014.csv        d_2d5ff9ea31397b66239f245f57751537
+  rpi_quarterly.csv                 d_14f63e595975691e7c24a27ae4c07c79
+  income_percentiles_excl_cpf.csv   d_ff1988785f3e36cfc4757cf604ae0acd
+  income_percentiles_incl_cpf.csv   d_dff6b97b7c233917ac8294bd04051486
+  income_resident_vs_employed.csv   d_ab4f7ecfc45e0a0eafe4ae4397e77059
+  hdb_ehg_page.pdf                  hdb.gov.sg EHG for families, last updated 20 August 2026
+  hdb_interest_rate_page.pdf        hdb.gov.sg Interest Rate for HDB Housing Loan, last updated 15 July 2026
+
+NOT SUPPLIED, and named precisely because it is now the only thing blocking the
+lead measure: the EHG amount-by-income-band table. hdb_ehg_page.pdf links to it as
+"average monthly household income and corresponding EHG amount (PDF, 198KB)". The
+accordion on the page did not print, so the bands are still NOT-OBTAINED.

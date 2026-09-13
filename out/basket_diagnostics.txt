@@ -1,0 +1,44 @@
+Fixed-basket Laspeyres index, 4 ROOM flats, 2013 to 2025
+base year 2013 = 100, weights are 2013 transaction shares held fixed
+
+cells defined            town x floor-area band x lease band
+cells in total           298
+cells present in every year with at least 5 sales  75
+share of 2013 transactions covered by those cells     58.2%
+
+year        index  raw_index
+2013       100.00     100.00
+2014        93.41      92.98
+2015        89.47      88.35
+2016        88.93      88.82
+2017        87.48      89.47
+2018        85.31      87.72
+2019        84.92      87.72
+2020        87.16      92.11
+2021        97.73     103.07
+2022       109.11     112.94
+2023       116.91     120.61
+2024       126.52     129.39
+2025       137.86     138.16
+
+2013 to 2025, fixed basket   +37.9%
+2013 to 2025, hedonic        +40.4%
+
+T6, the two methods differ by 2.5 percentage points
+T6 INCONCLUSIVE, between 2 and 5 points. Both are published and the text says the correction is doing contested work.
+
+year by year:
+year      hedonic     basket      gap
+2013       100.00     100.00    -0.00
+2014        93.86      93.41     0.45
+2015        90.40      89.47     0.93
+2016        90.46      88.93     1.53
+2017        89.55      87.48     2.07
+2018        88.41      85.31     3.10
+2019        88.66      84.92     3.74
+2020        91.33      87.16     4.18
+2021       101.35      97.73     3.62
+2022       113.12     109.11     4.01
+2023       121.74     116.91     4.83
+2024       131.34     126.52     4.82
+2025       140.39     137.86     2.53

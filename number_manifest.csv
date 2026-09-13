@@ -1,0 +1,56 @@
+number_id,value,appears_as,section,script,output_file,column,status,notes
+N01,40.4,constant-quality four-room price rise 2013 to 2025 per cent,Everyone knows prices went up,02_hedonic.py,out/index_hedonic.csv,index,COMPUTED,hedonic year dummies
+N02,121765,four-room transactions in the hedonic,Everyone knows prices went up,02_hedonic.py,out/hedonic_diagnostics.txt,observations,COMPUTED,
+N03,37.9,fixed-basket price rise 2013 to 2025 per cent,Everyone knows prices went up,03_basket.py,out/index_basket.csv,index,COMPUTED,Laspeyres on 2013 weights
+N04,38.2,raw median price rise 2013 to 2025 per cent,Everyone knows prices went up,02_hedonic.py,out/index_hedonic.csv,raw_index,COMPUTED,uncorrected
+N05,2.5,spread between the three price measures in points,Everyone knows prices went up,06_tests.py,RESULTS.md,,COMPUTED,T6 gap
+N06,40,prices rose by around 40 per cent,Everyone knows prices went up,02_hedonic.py,out/index_hedonic.csv,index,ROUNDED,rounding of N01
+N07,51.3,median household income rise 2013 to 2025 per cent,Incomes went up faster,06_tests.py,RESULTS.md,,COMPUTED,SingStat excl employer CPF
+N08,51,incomes rose 51 per cent,What to take from this,06_tests.py,RESULTS.md,,ROUNDED,rounding of N07
+N09,5.43,years of income to buy in 2013,Incomes went up faster,05_affordability.py,out/affordability.csv,price_to_income_years,COMPUTED,p50 buyer
+N10,5.04,years of income to buy in 2025,Incomes went up faster,05_affordability.py,out/affordability.csv,price_to_income_years,COMPUTED,p50 buyer
+N11,4.04,years of income to buy in 2019 the low point,Incomes went up faster,05_affordability.py,out/affordability.csv,price_to_income_years,COMPUTED,p50 buyer
+N12,0.76,rise in years of income measured from 2017,Incomes went up faster,06_tests.py,RESULTS.md,,COMPUTED,T1 on the 2017 base
+N13,0.39,fall in years of income measured from 2013,Incomes went up faster,06_tests.py,RESULTS.md,,COMPUTED,T1 on the 2013 base
+N14,0.1,HDB rate peg above the CPF Ordinary Account rate in points,The grant went up,none,raw/hdb_interest_rate_page.pdf,,PRIMARY,HDB own page
+N15,2.5,CPF Ordinary Account floor rate per cent,The grant went up,none,raw/cpf3_q3_2026.pdf,,PRIMARY,also raw/cpf2.pdf for 2016
+N16,2.6,HDB concessionary loan rate per cent,The grant went up,none,raw/hdb_interest_rate_page.pdf,,PRIMARY,unchanged 2016 and 2026
+N17,105000,total grant for the 20th percentile buyer in 2019,The grant went up,04_grants.py,out/grants_by_buyer.csv,total_grant,COMPUTED,
+N18,145000,total grant for the 20th percentile buyer in 2025,The grant went up,04_grants.py,out/grants_by_buyer.csv,total_grant,COMPUTED,
+N19,235857,rise in the constant-quality price 2019 to 2025 in dollars,The grant went up,06_tests.py,RESULTS.md,,COMPUTED,T3 denominator
+N20,17,grant rise as a per cent of the price rise,The grant went up,06_tests.py,RESULTS.md,,COMPUTED,T3 result
+N21,37.8,mortgage servicing ratio for the 20th percentile in 2019,The grant went up,05_affordability.py,out/affordability.csv,msr_pct,COMPUTED,
+N22,47.1,mortgage servicing ratio for the 20th percentile in 2025,The grant went up,05_affordability.py,out/affordability.csv,msr_pct,COMPUTED,
+N23,1.8,rise in the median buyer's mortgage servicing ratio in points,The grant went up,05_affordability.py,out/affordability.csv,msr_pct,COMPUTED,
+N24,0.6,rise in the 80th percentile's ratio in points,The grant went up,05_affordability.py,out/affordability.csv,msr_pct,COMPUTED,
+N25,8.8,how much larger the 20th percentile change was in points,The grant went up,06_tests.py,RESULTS.md,,COMPUTED,T4a result
+N26,20,twentieth percentile buyer,The grant went up,none,THESIS.md,,PRE-REGISTERED,subgroup
+N27,80,eightieth percentile buyer,The grant went up,none,THESIS.md,,PRE-REGISTERED,subgroup
+N28,90,loan-to-value cap before December 2021 per cent,The grant went up,none,ltv_schedule.csv,value,PRIMARY,MOF 15 Dec 2021
+N29,85,loan-to-value cap from December 2021 per cent,The grant went up,none,ltv_schedule.csv,value,PRIMARY,MOF 15 Dec 2021
+N30,80,loan-to-value cap from September 2022 per cent,The grant went up,none,ltv_schedule.csv,value,PRIMARY,MAS 30 Sep 2022
+N31,75,loan-to-value cap from August 2024 per cent,The grant went up,none,ltv_schedule.csv,value,NEEDS-PRIMARY,secondary only
+N32,9000,Enhanced CPF Housing Grant income ceiling in dollars,The middle aged out,none,grant_schedule.csv,amount,PRIMARY,HDB EHG page
+N33,80000,maximum Enhanced CPF Housing Grant before August 2024,The middle aged out,none,ehg_bands.csv,ehg_amount,PRIMARY,HDB Annex A Current column
+N34,120000,maximum Enhanced CPF Housing Grant from August 2024,The middle aged out,none,ehg_bands.csv,ehg_amount,PRIMARY,HDB Annex A Revised column
+N35,12000,purchase and grant income ceiling before September 2019,The middle aged out,none,grant_schedule.csv,amount,NEEDS-PRIMARY,
+N36,14000,purchase and grant income ceiling 2019 to August 2026,The middle aged out,none,grant_schedule.csv,amount,PRIMARY,MOF Budget 2023 Annex E-1
+N37,16000,purchase and grant income ceiling from August 2026,The middle aged out,none,grant_schedule.csv,amount,NEEDS-PRIMARY,after the window
+N38,10000,median household's EHG in 2019 in dollars,The middle aged out,04_grants.py,out/grants_by_buyer.csv,ehg,COMPUTED,
+N39,60000,median household's total grant in 2019 in dollars,The middle aged out,04_grants.py,out/grants_by_buyer.csv,total_grant,COMPUTED,
+N40,80000,median household's total grant from 2023 in dollars,The middle aged out,04_grants.py,out/grants_by_buyer.csv,total_grant,COMPUTED,
+N41,30000,rise in the CPF Housing Grant at Budget 2023 in dollars,The middle aged out,none,grant_schedule.csv,amount,PRIMARY,50000 to 80000
+N42,40000,maximum Additional CPF Housing Grant in dollars,What this does not explain,none,grant_schedule.csv,amount,PRIMARY,HDB MND MICA flyer
+N43,2013,window start year,throughout,none,THESIS.md,,PRE-REGISTERED,
+N44,2025,window end year the last complete year,throughout,none,THESIS.md,,PRE-REGISTERED,
+N45,2017,the near-trough alternative base,throughout,none,THESIS.md,,PRE-REGISTERED,
+N46,2019,the year the ratio bottomed and the EHG began,throughout,05_affordability.py,out/affordability.csv,price_to_income_years,COMPUTED,
+N47,2022,year median income crossed the EHG ceiling,The middle aged out,06_tests.py,RESULTS.md,,COMPUTED,upper bound 2022.1
+N48,2012,first month of consistent registration-date data,What this does not explain,01_clean.py,out/clean_report.txt,,COMPUTED,March 2012
+N49,2011,year of the HDB MND MICA flyer,What this does not explain,none,raw/hdb_mnd_shg_flyer_2011.pdf,,PRIMARY,
+N50,2016,CPF announcement year used as the early rate check,The grant went up,none,raw/cpf2.pdf,,PRIMARY,
+N51,2020,year cited for buyers who started looking,intro,none,none,,CONTEXT,no figure attached
+N52,2021,year of the December loan-to-value change,The grant went up,none,ltv_schedule.csv,in_force_from,PRIMARY,
+N53,2023,year the median household's EHG reached zero,The middle aged out,04_grants.py,out/grants_by_buyer.csv,ehg,COMPUTED,
+N54,2024,year of the August loan-to-value and EHG changes,The grant went up,none,ltv_schedule.csv,in_force_from,NEEDS-PRIMARY,
+N55,2026,current year and the CPF announcement used as the late rate check,The grant went up,none,raw/cpf3_q3_2026.pdf,,PRIMARY,

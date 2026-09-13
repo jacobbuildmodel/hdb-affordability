@@ -1,0 +1,40 @@
+Hedonic constant-quality index, 4 ROOM flats, 2013 to 2025
+base year 2013 = 100
+lease specification     piecewise-linear spline, knots 60/75/90
+
+observations            121765
+R-squared               0.8810
+adjusted R-squared      0.8809
+residual sd (log)       0.0933
+covariance              HC1 heteroskedasticity-robust
+towns                   26
+flat models kept        11
+flat models dropped     1 models, 12 rows, fewer than 30 obs each
+
+non-year coefficients, for inspection:
+  floor_area_sqm               0.005061  (se 0.001716)
+  I(floor_area_sqm ** 2)      -0.000003  (se 0.000009)
+  storey_mid                   0.006926  (se 0.000052)
+  lease_years                  0.025651  (se 0.000314)
+  lease_k60                   -0.021729  (se 0.000340)
+  lease_k75                    0.004950  (se 0.000154)
+  lease_k90                    0.002138  (se 0.000311)
+
+year        index     ci_low    ci_high  raw_index raw_median        n
+2013       100.00     100.00     100.00     100.00     456000     6163
+2014        93.75      93.46      94.03      92.98     424000     6331
+2015        90.14      89.86      90.41      88.35     402888     7139
+2016        90.13      89.85      90.40      88.82     405000     8048
+2017        89.18      88.91      89.46      89.47     408000     8604
+2018        88.01      87.73      88.29      87.72     400000     8768
+2019        88.25      87.96      88.53      87.72     400000     9228
+2020        90.85      90.57      91.13      92.11     420000     9646
+2021       100.93     100.64     101.22     103.07     470000    12344
+2022       112.71     112.40     113.03     112.94     515000    11307
+2023       121.42     121.08     121.76     120.61     550000    11357
+2024       131.15     130.78     131.53     129.39     590000    11988
+2025       140.57     140.17     140.97     138.16     630000    10842
+
+2013 to 2025, constant quality  +40.6%
+2013 to 2025, raw median        +38.2%
+composition correction is worth 2.4 percentage points

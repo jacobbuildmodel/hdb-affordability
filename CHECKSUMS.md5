@@ -1,0 +1,68 @@
+# MD5 checksums. Regenerate with: python 08_manifest.py
+# Two sections. A changed INPUT means the source data or a script
+# moved. A changed OUTPUT with unchanged INPUTS means the pipeline
+# is not deterministic and something is wrong.
+
+# ---- INPUTS ----
+96a2cc2b283308419bfeb14cd9b656e6  raw/RETRIEVED.txt
+6298f0425f810df4b2f6f752aa3c091a  raw/cpf1.pdf
+acc7c74bfd4128ad9d595263d23ab9ab  raw/cpf2.pdf
+8d989867a4656b38278e3d39a9c88ed2  raw/cpf3_q3_2026.pdf
+888e68cc609906959aa5ac1062d260c1  raw/ehg_amount_families.pdf
+afc3a8efa6e266d1ac3896d0548411d8  raw/hdb3_ehg_page_expanded.pdf
+78ed7353e6168ce143519f0216d55aa4  raw/hdb4.pdf
+ae68bafce516e73081c7d19c474b4491  raw/hdb5.pdf
+518e98e653b41624d4e20aa8ac412bab  raw/hdb_20230214_further_support_first_timers.pdf
+54fd827bc3071d6f221c9d3ac1f94cd5  raw/hdb_20240819_annexA_ehg_structure.pdf
+4b7a4e77f1fc52bd5834b7358088f6d9  raw/hdb_ehg_page.pdf
+b7f9508687d92831f9b75db7fb227547  raw/hdb_interest_rate_page.pdf
+8f22b4e48dfcc02cbf1e6039bf7f9605  raw/hdb_mnd_shg_flyer_2011.pdf
+2b4372b98ac6d863edaecea70d79161f  raw/income_percentiles_excl_cpf.csv
+139b3dbcbc1774d39b0250eaf045683e  raw/income_percentiles_incl_cpf.csv
+594515b84d762cfc5148b4e0eae8f026  raw/income_resident_vs_employed.csv
+005ca80a9822e9d40feea8ac158704ed  raw/mom_wage_practices_2025.pdf
+7b41c07e962ac3e781c15309c9941cfe  raw/resale_jan2015_dec2016.csv
+a9e696ef2d4d10e9765eada65fbd50b2  raw/resale_jan2017_onwards.csv
+8aa48307d40c1a6d56b1eeaba28576f7  raw/resale_mar2012_dec2014.csv
+fcbe7380983f4f7765c81b0fe8dbdacb  raw/rpi_quarterly.csv
+ee2cd51aa80aaa4d1ec0588869183132  00_validate_schedule.py
+1255453baab2d16763b262c3d21c29c0  01_clean.py
+0bc96056ea2668058407177fc9f24087  02_hedonic.py
+5e4ad3ebf2c2340dfbbcf28da2400e9f  03_basket.py
+6473e5bc478aefc75c25281dab9ef89d  04_grants.py
+c3c8416682303108906f50f02a7c2212  05_affordability.py
+5b295744817d5460cd86b32a434c5d57  06_tests.py
+f83ce965e1cf304aaaae0b7c45529517  07_figures.py
+1c8e4e601329b130d3dd0e2d0517532d  08_manifest.py
+fbfc4fd8f232e797ba3865b4e202abec  grant_schedule.csv
+efa0fafd29d1f5832c9ad8d43ba58479  ehg_bands.csv
+daaaab8c36f7f315f926e8b1504b7513  ltv_schedule.csv
+15d60ff907feeabeff3684524d373df8  number_manifest.csv
+65916433ad3f776c007a472472fea10d  THESIS.md
+283cb90a333aeb96fd5e6e60bee7f580  THESIS_ADDENDUM.md
+ecffb717bcfcf4befa55d0f9a46a5cf7  README.md
+23e4358db4c873639c0c5dbdf7e5f727  SOURCES.md
+b130c316853bec365bb519965c6f888d  HANDOVER.md
+968af4447ab61a37be2b8253f2efb6c3  RESULTS.md
+b6775a4e4707172a58026581fdc6972c  DATA_REQUEST.md
+2dceb8ee43748b89698fb5018993a064  requirements.txt
+0fd905e3d76e0f6b6cfed3cbf3f4ccd2  run_all.sh
+d3d04ac1b5897688b0d97abfd135aefa  .gitattributes
+e21e103847ee0f5f39f255cd043c70eb  LICENSE
+2ad724e905d7b07d9f0d5334b4c51afe  2026-09-12.md
+
+# ---- OUTPUTS ----
+0ca50c0ff9935322959d2be8d2a08adc  out/affordability.csv
+096e6d9656e70f8eb9a3cf32db59f72a  out/basket_diagnostics.txt
+83feddcef3c4b7bfbc02aa4c8e73c687  out/clean_report.txt
+1950d38706595f84f23fb4f5afd3886a  out/figure_captions.txt
+081810a15483f999cc625cf74b577731  out/grants_by_buyer.csv
+27905a16a8c4e295451f31886343093f  out/hedonic_diagnostics.txt
+c44fa51b7cd57bbc8984672011f6dcd1  out/hedonic_diagnostics_spline.txt
+bda383a1b9776cbbab637fca5024a398  out/index_basket.csv
+c8d927992174488a10f9b0f1dc4c7e67  out/index_hedonic.csv
+df03344f3ec52682fd7da58d2b7ca3d1  out/index_hedonic_spline.csv
+925a6b41af86c93a506557ca3569e60c  out/resale_clean.csv
+0a81278668e71335fb67fb4ff9e15c6e  figs/fig1_price_to_income.svg
+e73dd419ed0fb96c0c461f329ff3f901  figs/fig2_ehg_crossing.svg
+94210e2175b84d59b014b5bddbea6e4b  figs/fig3_binding_constraint.svg

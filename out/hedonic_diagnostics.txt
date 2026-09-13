@@ -1,0 +1,38 @@
+Hedonic constant-quality index, 4 ROOM flats, 2013 to 2025
+base year 2013 = 100
+lease specification     quadratic (pre-registered)
+
+observations            121765
+R-squared               0.8758
+adjusted R-squared      0.8757
+residual sd (log)       0.0953
+covariance              HC1 heteroskedasticity-robust
+towns                   26
+flat models kept        11
+flat models dropped     1 models, 12 rows, fewer than 30 obs each
+
+non-year coefficients, for inspection:
+  floor_area_sqm               0.004646  (se 0.001624)
+  I(floor_area_sqm ** 2)       0.000001  (se 0.000008)
+  storey_mid                   0.006953  (se 0.000053)
+  lease_years                  0.005987  (se 0.000459)
+  I(lease_years ** 2)          0.000014  (se 0.000003)
+
+year        index     ci_low    ci_high  raw_index raw_median        n
+2013       100.00     100.00     100.00     100.00     456000     6163
+2014        93.86      93.57      94.15      92.98     424000     6331
+2015        90.40      90.12      90.69      88.35     402888     7139
+2016        90.46      90.18      90.74      88.82     405000     8048
+2017        89.55      89.27      89.83      89.47     408000     8604
+2018        88.41      88.12      88.69      87.72     400000     8768
+2019        88.66      88.38      88.95      87.72     400000     9228
+2020        91.33      91.05      91.62      92.11     420000     9646
+2021       101.35     101.05     101.64     103.07     470000    12344
+2022       113.12     112.80     113.45     112.94     515000    11307
+2023       121.74     121.40     122.09     120.61     550000    11357
+2024       131.34     130.96     131.72     129.39     590000    11988
+2025       140.39     139.97     140.80     138.16     630000    10842
+
+2013 to 2025, constant quality  +40.4%
+2013 to 2025, raw median        +38.2%
+composition correction is worth 2.2 percentage points
