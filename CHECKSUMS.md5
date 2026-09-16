@@ -31,7 +31,7 @@ ee2cd51aa80aaa4d1ec0588869183132  00_validate_schedule.py
 5e4ad3ebf2c2340dfbbcf28da2400e9f  03_basket.py
 6473e5bc478aefc75c25281dab9ef89d  04_grants.py
 c3c8416682303108906f50f02a7c2212  05_affordability.py
-5b295744817d5460cd86b32a434c5d57  06_tests.py
+8046d6e528bbc3b3fa21fa5bbcda4b2a  06_tests.py
 f83ce965e1cf304aaaae0b7c45529517  07_figures.py
 1c8e4e601329b130d3dd0e2d0517532d  08_manifest.py
 fbfc4fd8f232e797ba3865b4e202abec  grant_schedule.csv
@@ -43,7 +43,7 @@ daaaab8c36f7f315f926e8b1504b7513  ltv_schedule.csv
 ecffb717bcfcf4befa55d0f9a46a5cf7  README.md
 23e4358db4c873639c0c5dbdf7e5f727  SOURCES.md
 b130c316853bec365bb519965c6f888d  HANDOVER.md
-968af4447ab61a37be2b8253f2efb6c3  RESULTS.md
+a15ce70358bd9aff06b1e0125af67014  RESULTS.md
 b6775a4e4707172a58026581fdc6972c  DATA_REQUEST.md
 2dceb8ee43748b89698fb5018993a064  requirements.txt
 0fd905e3d76e0f6b6cfed3cbf3f4ccd2  run_all.sh
