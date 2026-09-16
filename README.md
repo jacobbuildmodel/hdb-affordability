@@ -43,6 +43,14 @@ source-data change can be told apart from a pipeline change.
 intentional change to code or data: run `python3 08_manifest.py` with no flag,
 review the diff, then commit it alongside the change.
 
+**Regenerate it as the last edit before committing, not earlier.** Every file in
+the INPUTS section, this README included, is hashed. Regenerating the checksums and
+then editing any of those files again leaves the committed hash describing a file
+that no longer exists, and `run_all.sh` exits 1 on the next clean run. Prove the
+result by running `run_all.sh` from a fresh clone of the pushed branch, not from
+the working copy the checksums were generated in: a working copy can pass while the
+pushed commit fails.
+
 **Revision note, 17 September 2026.** `run_all.sh` previously ran `08_manifest.py`
 with no flag (which rewrites `CHECKSUMS.md5`) immediately before `--check`, so the
 check compared the file against itself and could not fail. It now only ever runs
@@ -55,6 +63,14 @@ figure was unchanged. Fixed by rounding to 10 significant digits, well past
 anything the pipeline ever displays. `CHECKSUMS.md5` was regenerated once against
 the fixed output; a deliberately corrupted output file was confirmed to make
 `08_manifest.py --check` exit non-zero before the fix was accepted.
+
+**Revision note, 17 September 2026 (second).** `CHECKSUMS.md5` was regenerated
+before the revision note above was written, so the committed hash for this README
+described the pre-note file and `run_all.sh` exited 1 with `MISMATCH README.md` on
+a clean rebuild. Regenerated in the correct order and verified from a fresh clone.
+Separately, `run_all.sh` was committed without its executable bit, so the `./run_all.sh`
+invocation documented here failed with "Permission denied" on a fresh clone; the
+mode is now `100755`. Neither fault changed a single reported figure.
 
 `08_manifest.py` also audits the article: every number in the prose must appear in
 `number_manifest.csv` against the script that produced it. It currently reports
