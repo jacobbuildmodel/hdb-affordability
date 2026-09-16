@@ -3,8 +3,10 @@
 | Item | State | Blocker | Next action by |
 |---|---|---|---|
 | Rate-series question | answered: no public mortgage rate series | F3 column headings unchecked | Jacob |
-| Design | break-even spread, accepted 16 Sep; A/B/E rules accepted, C proposed (drop R1) | review points A to G (MSG 001), replied MSG 002 | claude-2a |
-| THESIS.md | not written | F3 headings first | Jacob |
+| Design | break-even spread; A/B/E accepted; C ruled -- R1 dropped (DECISIONS.md 17 Sep) | none | -- |
+| THESIS.md | DRAFT written, financing/THESIS.md, NOT SEALED | F3 headings, switching-cost figure, indistinguishable-band width | Jacob, then claude-2a |
 | Data F1-F8 | not downloaded | THESIS not sealed; F3 headings first | Jacob |
-| RESULTS.md T2 fix | done on financing-wip, pushed | none; 06_tests.py, RESULTS.md, CHECKSUMS.md5 regenerated, run_all.sh verified from clean | claude-2a to confirm |
+| RESULTS.md T2 fix | done on financing-wip, pushed, G ACCEPTED (MSG 003) | none | -- |
+| run_all.sh / CHECKSUMS.md5 defect | fixed: --check no longer self-regenerates; float_format pins hedonic CSVs to 10 sig figs | none; corrupted-output test confirmed exit 1, then clean pass after fix | claude-2a to confirm |
+| TODO_JACOB.md item 4 | closed 17 Sep, citing the T2 revision | none | -- |
 | Article | provisional date 2026-09-26 | charts and numbers first, blocked on F1 | hdb |
