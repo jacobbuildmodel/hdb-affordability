@@ -1,4 +1,7 @@
 # MD5 checksums. Regenerate with: python 08_manifest.py
+# This file is never written by run_all.sh (it only runs --check).
+# Regenerating it is a manual step after an intentional change to
+# code or data; see README.md.
 # Two sections. A changed INPUT means the source data or a script
 # moved. A changed OUTPUT with unchanged INPUTS means the pipeline
 # is not deterministic and something is wrong.
@@ -27,13 +30,13 @@ a9e696ef2d4d10e9765eada65fbd50b2  raw/resale_jan2017_onwards.csv
 fcbe7380983f4f7765c81b0fe8dbdacb  raw/rpi_quarterly.csv
 ee2cd51aa80aaa4d1ec0588869183132  00_validate_schedule.py
 1255453baab2d16763b262c3d21c29c0  01_clean.py
-0bc96056ea2668058407177fc9f24087  02_hedonic.py
+fa95d611f53ae43b09e7ee8daea8712c  02_hedonic.py
 5e4ad3ebf2c2340dfbbcf28da2400e9f  03_basket.py
 6473e5bc478aefc75c25281dab9ef89d  04_grants.py
 c3c8416682303108906f50f02a7c2212  05_affordability.py
 8046d6e528bbc3b3fa21fa5bbcda4b2a  06_tests.py
 f83ce965e1cf304aaaae0b7c45529517  07_figures.py
-1c8e4e601329b130d3dd0e2d0517532d  08_manifest.py
+5f39a96e1c2360df0f62f55a3cd33f50  08_manifest.py
 fbfc4fd8f232e797ba3865b4e202abec  grant_schedule.csv
 efa0fafd29d1f5832c9ad8d43ba58479  ehg_bands.csv
 daaaab8c36f7f315f926e8b1504b7513  ltv_schedule.csv
@@ -46,7 +49,7 @@ b130c316853bec365bb519965c6f888d  HANDOVER.md
 a15ce70358bd9aff06b1e0125af67014  RESULTS.md
 b6775a4e4707172a58026581fdc6972c  DATA_REQUEST.md
 2dceb8ee43748b89698fb5018993a064  requirements.txt
-0fd905e3d76e0f6b6cfed3cbf3f4ccd2  run_all.sh
+879b09bbe389fcc2f4b238990cf802ca  run_all.sh
 d3d04ac1b5897688b0d97abfd135aefa  .gitattributes
 e21e103847ee0f5f39f255cd043c70eb  LICENSE
 2ad724e905d7b07d9f0d5334b4c51afe  2026-09-12.md
@@ -60,8 +63,8 @@ e21e103847ee0f5f39f255cd043c70eb  LICENSE
 27905a16a8c4e295451f31886343093f  out/hedonic_diagnostics.txt
 c44fa51b7cd57bbc8984672011f6dcd1  out/hedonic_diagnostics_spline.txt
 bda383a1b9776cbbab637fca5024a398  out/index_basket.csv
-c8d927992174488a10f9b0f1dc4c7e67  out/index_hedonic.csv
-df03344f3ec52682fd7da58d2b7ca3d1  out/index_hedonic_spline.csv
+19c50808197366d0f6cafebf22caca36  out/index_hedonic.csv
+cb9a5f2efe63524fd9b4fbf9ee353718  out/index_hedonic_spline.csv
 925a6b41af86c93a506557ca3569e60c  out/resale_clean.csv
 0a81278668e71335fb67fb4ff9e15c6e  figs/fig1_price_to_income.svg
 e73dd419ed0fb96c0c461f329ff3f901  figs/fig2_ehg_crossing.svg

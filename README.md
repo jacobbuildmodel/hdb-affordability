@@ -39,6 +39,23 @@ which is
 quietly. `CHECKSUMS.md5` is in two labelled sections, INPUTS and OUTPUTS, so a
 source-data change can be told apart from a pipeline change.
 
+`--check` never writes `CHECKSUMS.md5`. Regenerating it is a manual step, after an
+intentional change to code or data: run `python3 08_manifest.py` with no flag,
+review the diff, then commit it alongside the change.
+
+**Revision note, 17 September 2026.** `run_all.sh` previously ran `08_manifest.py`
+with no flag (which rewrites `CHECKSUMS.md5`) immediately before `--check`, so the
+check compared the file against itself and could not fail. It now only ever runs
+`--check`. Separately, `02_hedonic.py` writes `out/index_hedonic.csv` and
+`out/index_hedonic_spline.csv` with `float_format="%.10g"`: the OLS solve agrees
+with itself to about 12-13 significant digits across machines, not to the last bit,
+so unformatted floats made those two files, and only those two, come back
+byte-different on a rebuild on different hardware even though every reported
+figure was unchanged. Fixed by rounding to 10 significant digits, well past
+anything the pipeline ever displays. `CHECKSUMS.md5` was regenerated once against
+the fixed output; a deliberately corrupted output file was confirmed to make
+`08_manifest.py --check` exit non-zero before the fix was accepted.
+
 `08_manifest.py` also audits the article: every number in the prose must appear in
 `number_manifest.csv` against the script that produced it. It currently reports
 "every prose figure is in the manifest".
