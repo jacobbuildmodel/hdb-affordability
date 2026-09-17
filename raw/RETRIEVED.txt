@@ -144,3 +144,116 @@ NOT SUPPLIED, and named precisely because it is now the only thing blocking the
 lead measure: the EHG amount-by-income-band table. hdb_ehg_page.pdf links to it as
 "average monthly household income and corresponding EHG amount (PDF, 198KB)". The
 accordion on the page did not print, so the bands are still NOT-OBTAINED.
+
+
+FOURTH DELIVERY, 17 September 2026. The financing piece: F1, F3, F5, F6, F8.
+Supplied by Jacob Ong and uploaded to the financing-wip branch through github.com.
+DOWNLOAD DATE: 17 September 2026 for every file in this block. Renamed on arrival
+to ASCII names without spaces; the original download filenames are recorded below
+because two of them were actively misleading.
+
+  f1_sora_sgs_monthly.csv                 21,327 bytes
+                                          md5 3815799c6a2671fcce4c9b196134e7b9
+      F1. SORA and SGS yields, monthly. Publisher: Monetary Authority of Singapore
+      via data.gov.sg, dataset d_5fe5a4bb4a1ecc4d8a56a095832e2b24.
+      https://data.gov.sg/datasets/d_5fe5a4bb4a1ecc4d8a56a095832e2b24/view
+      Uploaded as "CurrentBanksInterestRatesEndOfPeriodMonthly.csv", which is
+      MISLEADING: the name says banks' interest rates but the file is the
+      benchmark series. Identified from its DataSeries labels, which are
+      Government Securities bond yields at 2, 5, 10, 15 and 20 years, 1-year
+      Treasury bill yields, Singapore Overnight Rate Average, and Compounded SORA
+      3 Month. Wide format, one column per month, 2026Jul back to 1988Jan.
+      VALUES NOT READ. Only the column headings and the DataSeries labels were
+      opened, to confirm identity for this record. THESIS.md is not sealed and F1
+      values stay unopened until the checker confirms the seal.
+
+  f3_mas_msb_iii3_monthly.csv             29,399 bytes
+                                          md5 4875312eea850c03a53708be0261a6b2
+      F3. MAS Monthly Statistical Bulletin, Table III.3, Interest Rates of Banks
+      and Finance Companies, monthly. Publisher: Monetary Authority of Singapore.
+      https://www.mas.gov.sg/-/media/mas-media-library/statistics/monthly-statistical-bulletin/msb-historical/interest-rates-of-banks-and-finance-companies---monthly.csv
+      Uploaded as "Interest Rates of Banks and Finance Companies - Monthly.csv".
+      THE FILE THAT COULD HAVE OVERTURNED THE DESIGN, AND DID NOT. Twelve data
+      columns; header row is line 5; year in column 1, month in column 2. There
+      is NO banks' housing loan rate. The only housing loan rate published is
+      "Finance Companies Housing Loans For 15 Years", column 8. Full heading list
+      is quoted in financing/THESIS.md section 2.
+      Coverage of column 8, established by dates only: populated 1983-01 to
+      2022-06 with no internal gaps; 150 of the 192 months of the 2010-2025 study
+      window; the file runs to 2023-04 but the final 10 months are empty, so the
+      series stops rather than the file ending.
+
+  f5_mas_fsr_2025.pdf                  1,231,484 bytes
+                                          md5 9bd285ad68a294bd7d050b5be329c384
+      F5. MAS Financial Stability Review 2025, 73 pages. Publisher: Monetary
+      Authority of Singapore.
+      https://www.mas.gov.sg/-/media/mas-media-library/publications/financial-stability-review/2025/financial-stability-review-2025.pdf
+      Uploaded as "Financial Stability Review 2025.pdf". Read on 17 September 2026
+      for any statement of mortgage margins or average housing loan rates, per the
+      checker's instruction. It publishes movements but never a level and never a
+      spread; see financing/THESIS.md section 6 for the quotations and pages.
+
+  f6_mas_mortgage_pricing_2021.pdf       315,080 bytes
+                                          md5 fe6b3f7c3d465b2b62eef1a247603f48
+      F6. MAS Information Paper on Residential Mortgage Pricing and Disclosure
+      Practices, November 2021, 14 pages. Publisher: Monetary Authority of
+      Singapore.
+      https://www.mas.gov.sg/-/media/MAS/News-and-Publications/Monographs-and-Information-Papers/INFORMATION-PAPER-ON-RESIDENTIAL-MORTGAGE-PRICING-AND-DISCLOSURE-PRACTICES.pdf
+      Uploaded in full capitals as "INFORMATION PAPER ON RESIDENTIAL MORTGAGE
+      PRICING AND DISCLOSURE PRACTICES.pdf". This is the document that establishes
+      why no mortgage rate series exists: it describes a mortgage rate as a
+      reference rate plus a spread set by each institution, and publishes no level
+      or range for that spread.
+
+  f8_cpf_rates_q1_2025.pdf               859,493 bytes
+                                          md5 f77691c48c0774cb432700d1bf75e5f5
+      F8. CPF Board interest rate announcement, 1 January to 31 March 2025, 4
+      pages. Publisher: Central Provident Fund Board.
+      https://www.cpf.gov.sg/member/infohub/news/news-releases
+      Uploaded as "cpff3.pdf". Identity confirmed by rendering page 2, which
+      states the Ordinary Account "will remain unchanged at the floor rate of 2.5%
+      per annum from 1 January to 31 March 2025" and the HDB concessionary rate
+      "unchanged at 2.6% per annum" for the same quarter. This closes the late end
+      of the CPF anchor set, between the end of F2's coverage and the Q3 2026
+      announcement already held.
+
+  cpf_faq_interest_rates_page.pdf        405,144 bytes
+                                          md5 8254d9cce956b51a14e923ea8abc4d08
+      NOT AN F-NUMBER. Uploaded as "cpff1.pdf", offered as F2, and it is not F2.
+      Two pages of the CPF FAQ page on interest rates: page 1 is the current rate
+      table (Ordinary Account 2.5%, Special/MediSave/Retirement 4%), page 2 is
+      prose ending in links to "CPF interest rates" and "historical CPF interest
+      rates (PDF, 0.17MB)".
+      KEPT, NOT REMOVED, and the checker's instruction to remove it is recorded as
+      declined pending a ruling. The instruction (MSG 011) grouped it with
+      cpff2.pdf as a duplicate of cpf1.pdf. That is true of cpff2.pdf and false of
+      this file: its two embedded images match neither of cpf1.pdf's fifteen. It
+      is kept for one concrete reason beyond not deleting things on a false
+      premise -- its page 2 carries the official link and file size for the
+      historical rates PDF that F2 is, which is the provenance trail for a file
+      still wanted.
+
+REMOVED IN THIS DELIVERY:
+
+  cpff2.pdf                            1,659,289 bytes
+                                          md5 948d4e733409e9a3044a6264b0ba9b10
+      Removed 17 September 2026 as a confirmed duplicate of cpf1.pdf. Not a byte
+      duplicate: the two files differ by 356 bytes of PDF wrapper. Confirmed
+      content-identical by extracting every embedded image from both and comparing
+      md5s -- all 15 images match, in order. Recoverable from git history at
+      commit d5d8cdc if the ruling changes.
+
+F2 IS MISSING AND IS THE ONE THING BLOCKING THE SEAL:
+
+  F2. CPF interest rate history, 1955 to 2024.
+  https://www.cpf.gov.sg/content/dam/web/member/faq/documents/InterestRate.pdf
+      Not in this delivery. The two files offered as F2 were CPF current-rate
+      pages, handled above. A direct fetch from this environment was refused by
+      the network policy: 403 at CONNECT to www.cpf.gov.sg, logged by the agent
+      proxy at 2026-09-17T12:20:54Z. cpf.gov.sg joins data.gov.sg, singstat.gov.sg
+      and hdb.gov.sg on the list of hosts this sandbox cannot reach, recorded at
+      the top of this file. It must come from Jacob.
+      Without it the HDB leg rests on four dated anchor points -- Q1 2016, Q1 2025,
+      Q3 2026 and the peg formula -- rather than on a continuous series. Four is
+      better than the two relied on before this delivery. It is still not a series,
+      and in this piece the flat 2.6 per cent is the comparator itself.
