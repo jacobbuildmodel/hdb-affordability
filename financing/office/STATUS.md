@@ -1,8 +1,8 @@
 # STATUS -- hdb-financing
 
-Updated 17 September 2026, MSG 012 (researcher `hdb` to checker `claude-e4`).
+Updated 17 September 2026, MSG 014 (researcher `hdb` to checker `claude-e4`).
 
-**THESIS.md is proposed for sealing. One blocker remains: F2.**
+**THESIS.md is PROPOSED FOR SEAL. No blockers remain.**
 
 | Item | State | Blocker | Next action by |
 |---|---|---|---|
@@ -10,12 +10,12 @@ Updated 17 September 2026, MSG 012 (researcher `hdb` to checker `claude-e4`).
 | F3 side comparison S1 | added: finance-company 15-yr rate vs HDB 2.6%, labelled non-headline non-proxy, coverage 2010-01 to 2022-06 | none | claude-e4 |
 | F4 | no longer needed; F3 closed the question it existed for | none | -- |
 | Design | break-even spread; A/B/E accepted; C ruled -- R1 dropped (DECISIONS.md 17 Sep) | none | -- |
-| THESIS.md | revised against MSG 011; PROPOSED FOR SEAL, still NOT SEALED | F2 missing | claude-e4 to rule on the seal |
+| THESIS.md | revised against MSG 013; PROPOSED FOR SEAL, still NOT SEALED | none | claude-e4 to confirm the seal |
 | MSG 005 items 1-11 | ACCEPTED at cb7c941 (MSG 007 item 1) | none | -- |
 | Fix PR against main | VERIFIED by claude-e4 (MSG 009 item 1); open and unmerged | none | Jacob to merge PR #1 |
 | T1 magnitude claim (MSG 007 item 3) | added: realised spread exceeds 1.0 point for every 2010-2015 start, flagged as the headline claim | none | -- |
 | 1.0 threshold basis | SETTLED. F5 and F6 read 17 Sep; neither publishes a spread or a rate level; 1.0 kept, labelled a judgement threshold, quotes and pages recorded in section 6 | none | -- |
-| README second revision note (MSG 009 item 5) | DEFERRED deliberately, not forgotten: rewording it now would diverge financing-wip from the in-flight PR #1 and conflict on merge | PR #1 unmerged | hdb, once PR #1 merges |
+| README second revision note | PR #1 merged (main a7bed51); reword PR opened against main | none | Jacob to merge |
 | T2a/T2b labelling (MSG 007 item 3) | done: both labelled "expected from public rate history; low information" | none | -- |
 | T3 monotonic clause (MSG 007 item 3) | deleted; holds by construction. Removal recorded in the file with the reason | none | -- |
 | Public-knowledge sentence (MSG 007 item 4) | done, section 6: predictions test magnitude and mechanics, not direction | none | -- |
@@ -30,8 +30,11 @@ Updated 17 September 2026, MSG 012 (researcher `hdb` to checker `claude-e4`).
 | Switching-cost grid | CONFIRMED by Jacob 17 Sep at S$0 / 3,000 / 6,000; PENDING-JACOB removed | none | -- |
 | OFFICE.md (item 10) | updated: checker claude-e4, browser researcher session, PR merge route, raw/ uploads via github.com, PowerShell retired | none | -- |
 | Data F1, F3, F5, F6, F8 | IN raw/, renamed, recorded in RETRIEVED.txt FOURTH DELIVERY with bytes and MD5 | none | -- |
-| F2 (CPF rate history) | MISSING. Not in the delivery; direct fetch refused, 403 at CONNECT to cpf.gov.sg | blocks the seal | Jacob |
-| raw/ tidy | done in one commit: 5 renames, cpff2.pdf removed as a proven duplicate, cpff1.pdf KEPT and renamed | ruling wanted on keeping cpff1 | claude-e4 |
+| F2 (CPF rate history) | IN raw/, VERIFIED: OA 2.50% in all 59 quarters 2010-Q1 to Jul-Sep 2024, and in all 109 quarters 1999-2026. HDB leg is a verified constant | none | -- |
+| SIBOR bias on T1b | added: pass is weak evidence, fail is strong evidence, for 2010-2015 starts; section 7 item 6 tied to 1b; sentence goes next to the headline number | none | claude-e4 |
+| F1 date coverage | recorded from checker's check: compounded 3M SORA 2005-10 to 2026-07, whole window covered. No values opened | none | -- |
+| F7 SIBOR history | OPTIONAL. Would turn the bias direction into a measured size | none | -- |
+| raw/ tidy | done; cpff1 keep RULED CORRECT by claude-e4, recorded in DECISIONS.md | none | -- |
 | F1 values | UNOPENED by design; only column headings and series labels read, to identify the file | seal | claude-e4 confirms seal first |
 | RESULTS.md T2 fix | done on financing-wip, pushed, G ACCEPTED (MSG 003) | none | -- |
 | Determinism fix (float_format) | independently reverified on Linux: all 14 outputs byte-identical on a clean rebuild | none | -- |
@@ -40,12 +43,11 @@ Updated 17 September 2026, MSG 012 (researcher `hdb` to checker `claude-e4`).
 
 ## What is waiting on whom
 
-- **Jacob:** F2, the CPF interest rate history, which this environment cannot
-  fetch. Also merge PR #1, still open and verified.
-- **claude-e4:** rule on the seal; rule on whether cpf_faq_interest_rates_page.pdf
-  stays or goes.
-- **hdb:** nothing until the seal is ruled on. F1 values stay unopened. Owed once
-  PR #1 merges: the README revision-note reword.
+- **Jacob:** merge the README reword PR against main. Nothing else.
+- **claude-e4:** confirm the seal.
+- **hdb:** nothing until the seal is confirmed. F1 values stay unopened. On
+  confirmation, and only then: Chart 1, Chart 2 and the three headline numbers,
+  before any prose.
 
 ## Sealing checklist
 
@@ -54,15 +56,18 @@ Updated 17 September 2026, MSG 012 (researcher `hdb` to checker `claude-e4`).
 2. ~~The 1.0 threshold settled against F5/F6, or labelled a judgement call.~~
    DONE. Neither publishes a spread or a level; labelled a judgement threshold.
 3. ~~The switching-cost grid confirmed by Jacob.~~ DONE, S$0 / 3,000 / 6,000.
-4. **F2 in hand. NOT DONE, and it is the only remaining blocker.** F8 is in and
-   closes the late end, but the HDB leg still rests on four dated anchors rather
-   than a continuous series, and in this piece the flat 2.6 per cent is the
-   comparator itself.
+4. ~~F2 in hand.~~ DONE and verified row by row: OA 2.50% in all 59 quarters of
+   the window and all 109 in the document. The HDB leg is a constant, read from
+   the series rather than inferred from anchors.
 
-## Known risk, deliberately not investigated before sealing
+**All four are closed. THESIS.md is proposed for seal.**
 
-The start date of compounded 3-month SORA inside F1, and whether the pre-2020
-window is official or back-calculated. Checking it needs F1 values, which stay
-shut until the seal is confirmed. If the compounded series begins around 2020,
-every 2010-2019 cohort depends on the F7 SIBOR substitution, which is unsourced.
-This is the first thing examined after the seal.
+## What the seal does not make safe
+
+The benchmark substitution. Pre-2020 mortgages were priced off SIBOR, which ran
+above SORA, so a break-even spread measured over SORA overstates the
+SIBOR-equivalent margin for 2010-2015 starts and biases prediction 1b toward
+passing. This is now written into 1b and tied to section 7 item 6, and the
+sentence travels with the headline number into the article: for those cohorts a
+pass is weak evidence and a fail is strong evidence. F7 would measure the size of
+it; it is optional and not sourced.

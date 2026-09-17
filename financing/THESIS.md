@@ -100,25 +100,40 @@ So:
   series. This is a survivable outcome, not a design failure, but it must be found
   before sealing rather than after publishing.
 
-**F2 IS STILL NOT IN `raw/`, AND THIS IS THE ONE THING BLOCKING THE SEAL.** The
-17 September upload did not contain it: the two files offered as F2
-(`cpff1.pdf`, `cpff2.pdf`) were CPF current-rate pages, not the history. One was
-byte-for-byte redundant and was removed; the other is kept as
-`raw/cpf_faq_interest_rates_page.pdf` because its second page carries the official
-link to "historical CPF interest rates (PDF, 0.17MB)", which is the provenance
-trail for the file still wanted. An attempt to fetch F2 directly from
-`cpf.gov.sg` was refused by this environment's network policy (403 at CONNECT),
-so it must come from Jacob.
+**F2 IS IN `raw/`, AND THE HDB LEG IS NOW A VERIFIED CONSTANT RATHER THAN AN
+INFERENCE FROM ANCHORS.** `raw/f2_cpf_interest_rate_history.pdf`, the CPF Board's
+own "CPF Interest Rates" history, 8 pages, 175,994 bytes. Every quarterly row was
+read from the document:
 
-What `raw/` now holds for the HDB leg is **four dated anchor points**, not a
-series: Q1 2016 (`cpf2.pdf`), Q1 2025 (`f8_cpf_rates_q1_2025.pdf`, which states
-the OA at the 2.5 per cent floor and the concessionary rate "unchanged at 2.6%
-per annum from 1 January to 31 March 2025"), Q3 2026 (`cpf3_q3_2026.pdf`), and
-the peg formula (`hdb_interest_rate_page.pdf`). Four anchors are better than the
-two this file previously relied on, and F8 usefully closes the late end. They are
-still anchors. The argument in this section -- that anchors do not exclude
-movement between them, and that here the constant *is* the comparator -- applies
-to four exactly as it applied to two.
+- The Ordinary Account rate is **2.50 per cent in all 59 quarters from Jan-Mar
+  2010 to Jul-Sep 2024** inclusive, with **no missing quarter** in that range.
+- Widening to the whole document, the OA rate is 2.50 per cent in **all 109
+  quarters it publishes, Jul-Sep 1999 to Jul-Sep 2026**. The file contains no
+  other Ordinary Account value.
+- Through the peg, the HDB concessionary rate is therefore 2.6 per cent
+  continuously across the entire study window and beyond both ends of it.
+
+This is what section 2 previously could not assert. The argument that two, or
+four, dated anchors do not exclude movement between them was correct and is now
+moot: the series itself has been read and it does not move. The HDB leg is a
+constant, and sections 3 and 6 stand as written rather than being recomputed
+against a series.
+
+Corroboration, recorded because it is cheap and it caught a real error earlier:
+`raw/cpf_faq_interest_rates_page.pdf` page 2 advertises the historical rates
+document as "PDF, 0.17MB", and the file received is 175,994 bytes. The two files
+first offered as F2 were CPF current-rate pages, not the history; one was a
+confirmed duplicate and was removed, the other is kept as the provenance trail
+for this download.
+
+**F1's coverage, recorded from dates only, no values opened.** Checked by the
+checker and recorded here: in `raw/f1_sora_sgs_monthly.csv`, compounded 3-month
+SORA runs **2005-10 to 2026-07** and SORA itself **2005-07 to 2026-07**. The
+benchmark therefore covers every start year in the 2010-2025 window with no gap
+at either end, and no cohort depends on a benchmark that does not exist. What the
+dates cannot settle is the *substitution* problem, which is a question about what
+mortgages were actually priced off before 2020 rather than about coverage: see
+section 7 item 6 and prediction 1b.
 
 ## 3. Design: solve for the break-even spread
 
@@ -303,6 +318,27 @@ indistinguishable band (section 3) alongside each cohort's figure.
   and is labelled, here and in the article, **a judgement threshold, not derived
   from a source**. It is not presented as calibrated, and the article does not
   imply that it was. F1 remains unopened until this file is sealed.
+- **THE BENCHMARK SUBSTITUTION BIASES PREDICTION 1b TOWARD PASSING, AND THIS
+  SENTENCE GOES NEXT TO THE HEADLINE NUMBER IN THE ARTICLE.** Before 2020
+  Singapore mortgages were priced off SIBOR, not SORA, and SIBOR ran above SORA.
+  A break-even spread measured over SORA therefore **overstates** the
+  SIBOR-equivalent margin for those start years: the bank borrower is being
+  charged against a lower benchmark than the one they actually faced, which makes
+  the break-even margin look wider than the margin a bank would have needed.
+  Since prediction 1b claims the realised spread *exceeds* 1.0 point for every
+  2010-2015 start, the substitution pushes in the direction of the claim being
+  true. So:
+
+  > **For 2010-2015 starts a pass is weak evidence and a fail is strong evidence,
+  > because the benchmark substitution favours a pass.**
+
+  That sentence is carried in the article next to the headline number, not
+  relegated to a methods note. A fail for those cohorts survives the bias and is
+  worth more than a pass; a pass has to be read with the bias stated. The size of
+  the substitution is quantified where it can be, under section 7 item 6, which
+  exists to serve this bullet. F7, an official SIBOR history, stays **optional**:
+  if it is sourced the bias can be measured rather than only signed, and if it is
+  not, the direction above is still known and still stated.
 - **Fail 1:** either prediction is contradicted.
   - **Fail 1a:** the ordering does not hold, or reverses. The article reports that
     the cheap-decade advantage did not survive into realised cost, and says which
@@ -457,9 +493,16 @@ same year, not an estimate of it.
 5. Switching cost in R3: the S$0 / S$3,000 / S$6,000 grid (section 5, confirmed
    by Jacob), reported at all three points as part of T3.
 6. Benchmark: SORA throughout, against SIBOR before 2020 if an official history
-   can be sourced (F7, PENDING; if not sourced, the pre-2020 numbers carry a
+   can be sourced (F7, optional; if not sourced, the pre-2020 numbers carry a
    stated health warning that they are quoted over the wrong benchmark, in a
    known direction, per PRE_THESIS_BRIEFING.md section 4.3).
+   **This item exists to serve prediction 1b and is tied to it explicitly.**
+   SIBOR ran above SORA before 2020, so a break-even spread measured over SORA
+   overstates the SIBOR-equivalent margin for the 2010-2015 starts, which biases
+   1b toward passing. Sourcing F7 turns that known direction into a measured
+   size; failing to source it leaves the direction stated and the pass weakened.
+   Either way the sentence in 1b -- a pass is weak evidence, a fail is strong
+   evidence -- is what the article carries next to the headline number.
 7. Rate path for the projection only. The realised headline (section 3) contains
    no forward path. The full-tenure projection is published under three: the
    forward path implied by the SGS curve (base), the last observed rate held flat,
@@ -553,25 +596,30 @@ financing-cost comparison.
 
 ## 13. Open items, one list
 
-**Blocking the seal, one item only:**
-
-- **F2, the CPF interest rate history.** Not in `raw/`; not fetchable from this
-  environment (403 at CONNECT to `cpf.gov.sg`); must come from Jacob. Until it
-  arrives the HDB leg rests on four dated anchors rather than a continuous series
-  (section 2).
+**Blocking the seal: nothing.** Every item that did is closed.
 
 **Open but not blocking:**
 
-- `PENDING` (sourcing): F7, an official SIBOR history for the pre-2020 cohorts
-  (section 7 item 6). If it is never sourced, the pre-2020 numbers carry the
-  stated health warning and the piece still runs.
-- The start date of compounded 3-month SORA inside F1, and whether the early
-  window is official or back-calculated. Deliberately not checked: it needs F1
-  values, which stay unopened until this file is sealed. It is the first thing
-  examined afterwards, and it is a real risk to the 2010-2019 cohorts.
+- F7, an official SIBOR history for the pre-2020 cohorts (section 7 item 6).
+  **Optional.** Sourcing it would turn the known *direction* of the benchmark
+  substitution into a measured *size*. Without it the direction is still stated,
+  and prediction 1b is still read under it: for 2010-2015 starts a pass is weak
+  evidence and a fail is strong evidence.
+- Whether compounded 3-month SORA before 2020 is officially published or
+  back-calculated by MAS. Its date coverage is settled (section 2, 2005-10
+  onward, the whole window), so this is no longer a coverage risk. It is a
+  provenance question, reported when the series is first used, per the briefing.
 
 **Closed since the previous draft:**
 
+- **F2 read, and the HDB leg is a verified constant.** The Ordinary Account rate
+  is 2.50 per cent in all 59 quarters of the study window, and in all 109
+  quarters the document publishes, 1999 to 2026 (section 2). This was the last
+  blocker.
+- F1 date coverage confirmed: compounded 3-month SORA from 2005-10, covering
+  every cohort (section 2). No values opened.
+- Prediction 1b now carries the benchmark-substitution bias explicitly, and
+  section 7 item 6 is tied to it (section 6).
 - F3 read. No banks' housing loan rate; the design stands; every `(F3?)` marker
   removed (section 2). F4 no longer needed.
 - The 1.0 threshold. F5 and F6 read; neither publishes a spread or a rate level;
