@@ -1,0 +1,4 @@
+id,value,meaning,generated_by
+H1,2.05,"percentage points: the realised break-even spread for a 2010 start, the widest of any cohort",22_compute.py -> out/t1_breakeven.csv
+H2,-1.05,"percentage points: the realised break-even spread for a 2024 start. It is NEGATIVE, meaning the HDB loan beat the benchmark itself before any bank margin",22_compute.py -> out/t1_breakeven.csv
+H3,31 of 66,"switch-to-bank cases in 2021 that ended worse than staying on the HDB loan, across every applicable start year and grid spread",22_compute.py -> out/t4_switch.csv

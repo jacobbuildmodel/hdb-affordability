@@ -1,0 +1,20 @@
+number_id,value,meaning,script,output_file
+H1,2.05,"percentage points: the realised break-even spread for a 2010 start, the widest of any coho",22_compute.py,financing/out/t1_breakeven.csv
+H2,-1.05,"percentage points: the realised break-even spread for a 2024 start. It is NEGATIVE, meanin",22_compute.py,financing/out/t1_breakeven.csv
+H3,31 of 66,"switch-to-bank cases in 2021 that ended worse than staying on the HDB loan, across every a",22_compute.py,financing/out/t1_breakeven.csv
+be_2010,2.0461,"realised break-even spread, 2010 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2011,1.8921,"realised break-even spread, 2011 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2012,1.9401,"realised break-even spread, 2012 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2013,1.8982,"realised break-even spread, 2013 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2014,1.6406,"realised break-even spread, 2014 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2015,1.6927,"realised break-even spread, 2015 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2016,1.6347,"realised break-even spread, 2016 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2017,1.2421,"realised break-even spread, 2017 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2018,1.3266,"realised break-even spread, 2018 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2019,1.3244,"realised break-even spread, 2019 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2020,0.5647,"realised break-even spread, 2020 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2021,0.9245,"realised break-even spread, 2021 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2022,1.5229,"realised break-even spread, 2022 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2023,-0.2375,"realised break-even spread, 2023 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2024,-1.0548,"realised break-even spread, 2024 start, R2",22_compute.py,financing/out/t1_breakeven.csv
+be_2025,-0.2993,"realised break-even spread, 2025 start, R2",22_compute.py,financing/out/t1_breakeven.csv

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 400" width="100%" role="img" aria-label="Realised break-even spread by loan start year, 2010 to 2025" class="viz" preserveAspectRatio="xMidYMid meet">
+<title>Break-even spread by start year</title>
+<desc>The break-even spread falls from about 2 points for 2010 starts to below zero for 2023 to 2025 starts.</desc>
+
+<style>
+  .viz { --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e;
+         --grid:#e4e3df; --series-1:#2a78d6; --series-2:#eb6834; }
+  @media (prefers-color-scheme: dark) {
+    .viz { --surface-1:#1a1a19; --text-primary:#ffffff; --text-secondary:#c3c2b7;
+           --grid:#383835; --series-1:#3987e5; --series-2:#d95926; }
+  }
+  :root[data-theme="dark"] .viz { --surface-1:#1a1a19; --text-primary:#ffffff;
+           --text-secondary:#c3c2b7; --grid:#383835; --series-1:#3987e5;
+           --series-2:#d95926; }
+  :root[data-theme="light"] .viz { --surface-1:#fcfcfb; --text-primary:#0b0b0b;
+           --text-secondary:#52514e; --grid:#e4e3df; --series-1:#2a78d6;
+           --series-2:#eb6834; }
+  .viz text { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI,
+              Roboto, Helvetica, Arial, sans-serif; }
+  .ax   { font-size: 12px; fill: var(--text-secondary, #52514e); }
+  .lbl  { font-size: 13px; font-weight: 600; }
+  .note { font-size: 11px; fill: var(--text-secondary, #52514e); }
+</style>
+
+<rect x="0" y="0" width="720" height="400" fill="var(--surface-1, #fcfcfb)"/>
+<line x1="62.0" y1="313.0" x2="568.0" y2="313.0" stroke="var(--grid, #e4e3df)" stroke-width="1"/>
+<text class="ax" x="54.0" y="317.0" text-anchor="end">-1</text>
+<line x1="62.0" y1="230.9" x2="568.0" y2="230.9" stroke="var(--grid, #e4e3df)" stroke-width="1"/>
+<text class="ax" x="54.0" y="234.9" text-anchor="end">0</text>
+<line x1="62.0" y1="148.9" x2="568.0" y2="148.9" stroke="var(--grid, #e4e3df)" stroke-width="1"/>
+<text class="ax" x="54.0" y="152.9" text-anchor="end">+1</text>
+<line x1="62.0" y1="66.8" x2="568.0" y2="66.8" stroke="var(--grid, #e4e3df)" stroke-width="1"/>
+<text class="ax" x="54.0" y="70.8" text-anchor="end">+2</text>
+<text class="ax" x="95.7" y="374.0" text-anchor="middle">2011</text>
+<text class="ax" x="196.9" y="374.0" text-anchor="middle">2014</text>
+<text class="ax" x="298.1" y="374.0" text-anchor="middle">2017</text>
+<text class="ax" x="399.3" y="374.0" text-anchor="middle">2020</text>
+<text class="ax" x="500.5" y="374.0" text-anchor="middle">2023</text>
+<text class="ax" x="568.0" y="374.0" text-anchor="middle">2025</text>
+<path d="M 62.0 55.6 L 95.7 57.9 L 129.5 59.5 L 163.2 69.9 L 196.9 72.0 L 230.7 74.3 L 264.4 89.0 L 298.1 94.4 L 331.9 95.5 L 365.6 110.2 L 399.3 130.7 L 433.1 110.6 L 466.8 72.8 L 500.5 223.2 L 534.3 214.1 L 568.0 152.8 L 568.0 255.5 L 534.3 317.5 L 500.5 250.4 L 466.8 106.0 L 433.1 155.1 L 399.3 184.6 L 365.6 122.3 L 331.9 122.1 L 298.1 129.0 L 264.4 96.8 L 230.7 92.0 L 196.9 96.3 L 163.2 75.2 L 129.5 71.7 L 95.7 75.7 L 62.0 63.0 Z" fill="var(--series-1, #2a78d6)" fill-opacity="0.16" stroke="none"/>
+<line x1="62.0" y1="230.9" x2="568.0" y2="230.9" stroke="var(--text-primary, #0b0b0b)" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text class="note" x="66.0" y="224.9">0 = the HDB loan matched the benchmark itself, before any bank margin</text>
+<rect x="62.0" y="34.0" width="320.5" height="320.0" fill="var(--text-secondary, #52514e)" fill-opacity="0.06"/>
+<text class="note" x="68.0" y="346.0">2010-2019 starts: priced off SIBOR, quoted here over SORA</text>
+<path d="M 62.0 63.0 L 95.7 75.7 L 129.5 71.7 L 163.2 75.2 L 196.9 96.3 L 230.7 92.0 L 264.4 96.8 L 298.1 129.0 L 331.9 122.1 L 365.6 122.3 L 399.3 184.6 L 433.1 155.1 L 466.8 106.0 L 500.5 250.4 L 534.3 317.5 L 568.0 255.5" fill="none" stroke="var(--series-1, #2a78d6)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="568.0" cy="255.5" r="4" fill="var(--series-1, #2a78d6)" stroke="var(--surface-1, #fcfcfb)" stroke-width="2"/><text class="lbl" x="578.0" y="259.5" fill="var(--series-1, #2a78d6)">-0.30</text><text class="note" x="578.0" y="273.5">2025 start</text>
+<rect x="70.0" y="38.0" width="10" height="10" rx="2" fill="var(--series-1, #2a78d6)" fill-opacity="1.00"/>
+<text class="ax" x="86.0" y="46.0">Realised break-even spread, R2 (points over SORA)</text>
+<rect x="70.0" y="56.0" width="10" height="10" rx="2" fill="var(--series-1, #2a78d6)" fill-opacity="0.16"/>
+<text class="ax" x="86.0" y="64.0">Band: up to R3, refinancing at zero switching cost</text>
+<text class="note" x="62.0" y="392.0">Realised, loan start to 2026-07. S$400,000 over 25 years. Not a projection.</text>
+</svg>

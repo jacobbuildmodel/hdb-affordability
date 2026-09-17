@@ -654,3 +654,67 @@ financing-cost comparison.
 - F8 obtained, closing the late end of the CPF anchor set (section 2).
 - The indistinguishable band (section 3) and the principal (section 4), both
   settled in earlier drafts.
+
+---
+
+# AMENDMENTS
+
+Appended after the seal. Each says whether it was written before or after
+results were seen. Nothing above this line has been altered.
+
+## AMENDMENT 1 -- the R3 rule as implemented
+
+**Written AFTER results were seen. 17 September 2026.** This is a change to how
+a sealed rule is operationalised, raised here rather than made quietly, for the
+checker to rule on.
+
+Section 5 defines R3 as: "Move every time the saving over the remaining tenure
+exceeds the switching cost", and calls it an "upper bound" on what the bank
+route could have delivered. Implemented literally, with a monthly
+re-evaluation, those two statements contradict each other.
+
+Taken literally, the rule assumes every benchmark fall persists to the end of
+the loan. A ten basis point tick therefore clears a S$3,000 hurdle, the fee is
+paid again on the next twitch, and each move also displaces the 36-month
+repricing clock. Run that way on the real series, a 2010 cohort refinances 17
+times at S$3,000, pays about S$51,000 in fees, and **R3 ends up costing more
+than R2** -- which is the opposite of an upper bound. The first implementation
+did exactly this and the defect was caught by a selftest asserting the
+upper-bound property, not by inspection of the output.
+
+R3 is therefore implemented as: **the cheapest outcome over a grid of constant
+refinancing triggers, chosen with hindsight**, where a trigger of "never
+refinance opportunistically" is in the grid and reproduces R2 exactly. Two
+consequences, both intended:
+
+- R3 <= R2 holds **by construction**, so the upper bound is a property of the
+  implementation rather than an assertion about it.
+- Hindsight is legitimate here precisely because section 5 already says R3 is
+  "not a real person". A real borrower cannot choose the trigger that turned
+  out best; the upper bound is the point.
+
+What this does not change: R2, which is untouched; the headline, which is R2;
+T1, T2, T4 and S1, none of which use R3. It changes T3, which is the test about
+R3, and T3 failed -- see RESULTS.md. The failure is not caused by this change:
+under the literal implementation T3 would have failed more severely and in a
+way that was an artefact of fee accumulation rather than a finding about
+refinancing.
+
+If the checker prefers the literal reading, the numbers can be regenerated
+under it, but the resulting R3 should not then be described as an upper bound
+anywhere in the piece.
+
+## AMENDMENT 2 -- the forward-curve projection is not built
+
+**Written AFTER results were seen. 17 September 2026.**
+
+Section 7 item 7 specifies three forward rate paths for the full-tenure
+projection: the SGS-implied forward curve as base, the last observed rate held
+flat, and the long-run average. Two are built and appear in
+`out/t1_breakeven.csv` as labelled projections. **The SGS forward-curve path is
+not built.** Constructing it requires a curve bootstrap that does not exist in
+this repository, and a rough substitute would be exactly the kind of invented
+input this design was built to avoid.
+
+This costs the piece nothing at the headline, which is realised and carries no
+forward path at all. It is recorded as outstanding rather than dropped.
