@@ -367,3 +367,67 @@ BLOCKER: F2 still missing, and it is the only thing I think should stop the seal
 10. NOT DONE, UNCHANGED: THESIS.md is not sealed and I have not sealed it. No rate
    numbers computed, no financing/ scripts written. The README reword still waits
    on PR #1 merging, which has not happened.
+
+---
+
+MSG 014 | from hdb | 2026-09-17
+PIECE: hdb-financing
+NEED: confirm the seal
+FILES: financing/THESIS.md md5 7eaf10ff2ea96d4fd73503d849699411
+FILES: financing/office/STATUS.md md5 ad3729636044b1ce644dc00e0789c014
+FILES: financing/office/DECISIONS.md md5 2ee0635e7b728604247429eab7670f41
+FILES: raw/f2_cpf_interest_rate_history.pdf md5 8657b0352aea8be07977de84e7e8ebca
+FILES: raw/RETRIEVED.txt md5 f6daa109402066ccc70c42645f61cd2f
+FILES: CHECKSUMS.md5 md5 1f3da976f466c0005d2ca1b87bcc19ca
+BLOCKER: none
+---
+**PROPOSED FOR SEAL.**
+
+1. F2 VERIFIED, AND IT IS CONSTANT. Every quarterly row parsed. The Ordinary
+   Account rate is 2.50% in all 59 quarters from Jan-Mar 2010 to Jul-Sep 2024,
+   with no quarter missing. Widening past what you asked: it is 2.50% in all 109
+   quarters the document publishes, Jul-Sep 1999 to Jul-Sep 2026, and the file
+   contains no other OA value anywhere. Boundary rows quoted in RETRIEVED.txt:
+   Jan-Mar 2010 2.50% (page 4), Jul-Sep 2024 2.50% (page 1), Jul-Sep 1999 2.50%
+   (page 7), Jul-Sep 2026 2.50% (page 1). Nothing to stop on.
+2. I ALMOST SENT YOU A FALSE STOP, AND THE METHOD NOTE IS IN RETRIEVED.txt SO IT
+   IS NOT REPEATED. Reading this PDF in text order does not work: on pages 2 and
+   4 the quarter labels are emitted after their value rows and out of sequence.
+   My first parse silently mismatched 44 of 109 rows and flagged Jan-Mar 2010 as
+   a deviation. It was not one. Re-read by geometry, anchoring each label's
+   y-centre and taking the first percentage to its right within 8 points: all 109
+   rows resolve, none unparsed. One row, Oct-Dec 2016, sits 0.84 points below its
+   label and needs that tolerance; a tighter band drops it and it also reads
+   2.50%. I am telling you this because "the extraction failed" and "the rate
+   moved" look identical from the outside, and only one of them should stop a
+   seal.
+3. SIZE CORROBORATES SOURCE. cpf_faq_interest_rates_page.pdf page 2 advertises
+   the history as "PDF, 0.17MB"; the file received is 175,994 bytes. The file you
+   ruled I should keep is what confirmed the file I was waiting for.
+4. T1b CARRIES THE BIAS, in your words, as a block quote so it cannot be trimmed
+   in editing: for 2010-2015 starts a pass is weak evidence and a fail is strong
+   evidence, because the benchmark substitution favours a pass. The mechanism is
+   spelled out above it (SIBOR ran above SORA, so a spread measured over SORA
+   overstates the SIBOR-equivalent margin, which pushes toward 1b being true).
+   Section 7 item 6 now says it exists to serve 1b and repeats the tie. Marked to
+   travel with the headline number into the article, not into a methods note.
+   F7 kept optional, and what sourcing it would buy is stated: the direction is
+   known either way, the size is not.
+5. SORA COVERAGE RECORDED, no values, your dates: compounded 3M SORA 2005-10 to
+   2026-07, SORA 2005-07 to 2026-07, whole window covered, no cohort without a
+   benchmark. Section 13 no longer lists coverage as a risk; what remains there
+   is the provenance question of whether the pre-2020 compounded series is
+   published or back-calculated, to be reported when the series is first used.
+6. DECISIONS.md now carries five entries from today, including the F5 SORA
+   exposure you accepted, written so a later reader sees what was seen and why it
+   did not matter rather than finding a gap.
+7. README REWORD PR IS OPEN against main, off a7bed51, README.md only. Details in
+   the PR body; it is a wording fix and nothing else.
+8. SEALING CHECKLIST IS EMPTY. F3 closed, threshold settled, grid confirmed, F2
+   verified. STATUS.md keeps a short section on what the seal does NOT make safe,
+   which is the substitution bias in 4, so that nobody reads a seal as a warrant
+   for the 2010-2015 numbers.
+9. NOT DONE, AND NOT STARTING: THESIS.md is not sealed and I have not sealed it.
+   No rate numbers computed, no charts, no financing/ scripts, F1 values
+   unopened. On your confirmation, Chart 1, Chart 2 and the three headline
+   numbers first, before any prose.

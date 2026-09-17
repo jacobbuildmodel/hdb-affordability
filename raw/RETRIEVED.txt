@@ -257,3 +257,43 @@ F2 IS MISSING AND IS THE ONE THING BLOCKING THE SEAL:
       Q3 2026 and the peg formula -- rather than on a continuous series. Four is
       better than the two relied on before this delivery. It is still not a series,
       and in this piece the flat 2.6 per cent is the comparator itself.
+
+
+FIFTH DELIVERY, 17 September 2026. F2, the file the fourth delivery was missing.
+Supplied by Jacob Ong, uploaded to financing-wip through github.com.
+
+  f2_cpf_interest_rate_history.pdf       175,994 bytes
+                                          md5 8657b0352aea8be07977de84e7e8ebca
+      F2. "CPF Interest Rates", the CPF Board's own quarterly history, 8 pages.
+      Publisher: Central Provident Fund Board.
+      https://www.cpf.gov.sg/content/dam/web/member/faq/documents/InterestRate.pdf
+      Uploaded as "Historical CPF Interest Rates.pdf".
+      Size corroborates the source: cpf_faq_interest_rates_page.pdf page 2
+      advertises this document as "PDF, 0.17MB" and the file received is 175,994
+      bytes.
+
+      VERIFIED ON ARRIVAL, the check the checker asked for before sealing:
+      every quarterly row in the document was parsed and the Ordinary Account
+      column read.
+        - OA is 2.50% in ALL 59 quarters from Jan-Mar 2010 to Jul-Sep 2024
+          inclusive, with no quarter missing from that range.
+        - Widening to the whole document, OA is 2.50% in ALL 109 quarters it
+          publishes, Jul-Sep 1999 to Jul-Sep 2026. The file contains no other
+          Ordinary Account value anywhere.
+        - Through the 0.1-point peg, the HDB concessionary rate is therefore
+          2.6% continuously across the whole study window and past both ends of
+          it.
+      Boundary rows, quoted: Jan-Mar 2010 OA 2.50% (page 4); Jul-Sep 2024 OA
+      2.50% (page 1); earliest in file Jul-Sep 1999 OA 2.50% (page 7); latest
+      Jul-Sep 2026 OA 2.50% (page 1).
+
+      METHOD NOTE, recorded because the first attempt produced a false alarm.
+      Reading this document in text order does not work. On pages 2 and 4 the
+      quarter labels are emitted AFTER their value rows and out of sequence, so
+      a naive "label, then the next percentage" parse silently mismatched 44 of
+      109 rows and reported Jan-Mar 2010 as a deviation. It was not one. The
+      rows were re-read by geometry instead, anchoring on each label's y-centre
+      and taking the first percentage to its right within an 8-point band, which
+      resolves all 109 rows with none left unparsed. One row (Oct-Dec 2016) sits
+      0.84 points below its label and needs that tolerance; a tighter band drops
+      it and it too reads 2.50%.

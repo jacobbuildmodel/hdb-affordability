@@ -7,13 +7,14 @@
 # is not deterministic and something is wrong.
 
 # ---- INPUTS ----
-b19c2dc98dae2d89397e0d85ee9cddde  raw/RETRIEVED.txt
+f6daa109402066ccc70c42645f61cd2f  raw/RETRIEVED.txt
 6298f0425f810df4b2f6f752aa3c091a  raw/cpf1.pdf
 acc7c74bfd4128ad9d595263d23ab9ab  raw/cpf2.pdf
 8d989867a4656b38278e3d39a9c88ed2  raw/cpf3_q3_2026.pdf
 8254d9cce956b51a14e923ea8abc4d08  raw/cpf_faq_interest_rates_page.pdf
 888e68cc609906959aa5ac1062d260c1  raw/ehg_amount_families.pdf
 3815799c6a2671fcce4c9b196134e7b9  raw/f1_sora_sgs_monthly.csv
+8657b0352aea8be07977de84e7e8ebca  raw/f2_cpf_interest_rate_history.pdf
 4875312eea850c03a53708be0261a6b2  raw/f3_mas_msb_iii3_monthly.csv
 9bd285ad68a294bd7d050b5be329c384  raw/f5_mas_fsr_2025.pdf
 fe6b3f7c3d465b2b62eef1a247603f48  raw/f6_mas_mortgage_pricing_2021.pdf
