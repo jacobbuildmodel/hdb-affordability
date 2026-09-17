@@ -241,11 +241,33 @@ indistinguishable band (section 3) alongside each cohort's figure.
   break-even spread **exceeds 1.0 percentage point for every start year from 2010
   to 2015, without exception.** Not on average, not for most: for every one of the
   six. This is the claim the piece stands on, and it is the one that can fail
-  while the direction still holds. It is a real risk and is meant to be: 1.0 point
-  is inside the range of margins Singapore banks plausibly charged, so if the
-  realised figures land below it, the honest reading is that the HDB borrower's
-  loss over the cheap decade was smaller than the framing implies, and the piece
-  says so.
+  while the direction still holds. If the realised figures land below it, the
+  honest reading is that the HDB borrower's loss over the cheap decade was
+  smaller than the framing implies, and the piece says so.
+- **The 1.0 threshold is, as things stand, a judgement threshold, not derived
+  from a source.** An earlier draft of this file justified it by saying that 1.0
+  point sat inside the range of margins Singapore banks plausibly charged. That
+  sentence has been removed. No document in `raw/` supports it, and asserting
+  that a threshold is demanding without being able to show it is the same species
+  of unsourced claim this repository exists to keep out -- more dangerous here
+  than elsewhere, because it would have made the headline claim look tested when
+  it was assumed. The threshold is settled before sealing, by this procedure,
+  fixed now:
+  1. When **F5** (MAS Financial Stability Review 2025) and **F6** (MAS Information
+     Paper on Residential Mortgage Pricing and Disclosure Practices) land in
+     `raw/`, both are read for any statement of mortgage margins, spreads over a
+     benchmark, or average housing loan rates. Reading these two before sealing is
+     allowed: they are documents about pricing practice, not the rate data the
+     seal exists to keep out of the design. **F1 is not opened until this file is
+     sealed.**
+  2. If either yields a usable range, the threshold is proposed against that range
+     and the quotation and page number are recorded in this section and sent to
+     the checker. The threshold may move as a result, including against the
+     framing's interest; that is the point of looking.
+  3. If neither yields one, the label in this bullet is the final wording: 1.0 is
+     kept, and the article states plainly that it is a judgement call with no
+     source behind it, rather than implying it was calibrated.
+  This is resolved before the file is sealed, not after publication.
 - **Fail 1:** either prediction is contradicted.
   - **Fail 1a:** the ordering does not hold, or reverses. The article reports that
     the cheap-decade advantage did not survive into realised cost, and says which
@@ -456,8 +478,15 @@ proposed S$0 / S$3,000 / S$6,000 (section 5).
 `PENDING` (sourcing): F7, an official SIBOR history for the pre-2020 cohorts
 (section 7 item 6).
 
+`PENDING` (sourcing, must close before sealing): the basis for the 1.0 point
+threshold in prediction 1b, against F5 and F6 (section 6). Labelled in section 6
+as a judgement threshold until then. This is the only open item that blocks
+sealing on something other than F3.
+
 Closed since the previous draft: the indistinguishable-band width is now defined
-in section 3 and is no longer open; the principal is stated in section 4.
+in section 3 and is no longer open; the principal is stated in section 4; the
+unsourced justification for the 1.0 threshold is removed and replaced with a
+fixed procedure for settling it.
 
 Required data, promoted since the previous draft: **F2 and F8 are now essential**,
 not supporting (section 2).
