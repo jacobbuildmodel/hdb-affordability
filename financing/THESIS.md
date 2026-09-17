@@ -214,21 +214,48 @@ All four tests run on the realised basis defined in section 3. Where a full-tenu
 figure is also produced, it is labelled a projection and is never what a
 prediction is scored against.
 
+**The rate history is public knowledge, and the predictions are built around
+that.** Anyone can look up that compounded SORA ran far below 2.6 per cent until
+2022 and above it afterwards. The *direction* of most of what follows is
+therefore already known, and predicting it correctly demonstrates nothing about
+this design. These predictions are written to test **magnitudes and mechanics**
+-- how large the realised gap was, which cohorts it actually reached, where the
+crossovers fell, and whether the T4 asymmetry bit -- and they are scored on
+those. Where a prediction is little more than a restatement of the public rate
+path, it is labelled below as low information and carries no evidential weight.
+
 **T1. Realised break-even spread by cohort, base case R2.**
 Compute the constant margin over compounded 3-month SORA that would have made a
 bank borrower's cumulative nominal interest from loan start to the last data month
 equal to the HDB borrower's, for every start year 2010-2025. Report the
 indistinguishable band (section 3) alongside each cohort's figure.
-- **Prediction 1:** the realised break-even spread is **higher for 2010-2015
-  starts than for 2020-2023 starts**, and the ordering across those two groups is
-  strict: the minimum over 2010-2015 exceeds the maximum over 2020-2023. Reasoning
-  stated in advance: the early cohorts banked roughly a decade of sub-2.6 per cent
-  benchmark before the 2022 rise, so a bank could have charged a wide margin and
-  still tied; the later cohorts met the rise almost immediately.
-- **Fail 1:** the ordering does not hold, or reverses. The article reports that
-  the cheap-decade advantage did not survive into realised cost, and says which
-  cohorts broke the ordering and by how much. This is a publishable result, not a
-  reporting fallback.
+- **Prediction 1a, ordering. Low information, see the note above.** The realised
+  break-even spread is **higher for 2010-2015 starts than for 2020-2023 starts**,
+  and the ordering across those two groups is strict: the minimum over 2010-2015
+  exceeds the maximum over 2020-2023. Reasoning stated in advance: the early
+  cohorts banked roughly a decade of sub-2.6 per cent benchmark before the 2022
+  rise, so a bank could have charged a wide margin and still tied; the later
+  cohorts met the rise almost immediately. This follows from the public rate
+  path and is stated only so it can be contradicted.
+- **Prediction 1b, magnitude. THIS IS THE HEADLINE CLAIM.** The realised
+  break-even spread **exceeds 1.0 percentage point for every start year from 2010
+  to 2015, without exception.** Not on average, not for most: for every one of the
+  six. This is the claim the piece stands on, and it is the one that can fail
+  while the direction still holds. It is a real risk and is meant to be: 1.0 point
+  is inside the range of margins Singapore banks plausibly charged, so if the
+  realised figures land below it, the honest reading is that the HDB borrower's
+  loss over the cheap decade was smaller than the framing implies, and the piece
+  says so.
+- **Fail 1:** either prediction is contradicted.
+  - **Fail 1a:** the ordering does not hold, or reverses. The article reports that
+    the cheap-decade advantage did not survive into realised cost, and says which
+    cohorts broke the ordering and by how much.
+  - **Fail 1b:** one or more 2010-2015 starts come in at or below 1.0 point. The
+    article reports the actual figures and states plainly that the headline claim
+    failed, naming the cohorts and the shortfall. It does not retreat to the
+    surviving ordering claim as though that were the finding, and it does not
+    relabel the threshold after seeing the data.
+  Both are publishable results, not reporting fallbacks.
 - **Unreliable, separately from pass or fail:** a cohort whose solve does not
   converge is reported as "not computable" with the reason. Non-convergence is the
   **only** unreliability condition. There is no plausibility filter on the value:
@@ -255,6 +282,11 @@ borrower takes the lead. A spread is required to define a crossover at all: the
 previous draft asked for a crossover without one, which is not a computable
 quantity. Reported as a **side-note table or heatmap (start year x spread), not a
 third headline**; section 9's cap of three headline items is unchanged.
+- **Predictions 2a and 2b are expected from public rate history; low
+  information.** Both follow from the shape of the SORA path rather than from
+  anything this design contributes, and they are stated so the table can
+  contradict them, not as the piece's evidence. A reader should weigh T1b and T4
+  instead.
 - **Prediction 2a:** for start years 2010-2015, at every grid spread at or below
   0.75 points, **no crossover occurs before 2022**; every such crossover falls in
   2022 or later.
@@ -273,11 +305,17 @@ Run R3 at each of S$0 / S$3,000 / S$6,000 (section 5) and compare with R2.
 - **Prediction 3:** the R3 minus R2 gap in realised break-even spread is
   **largest for 2010-2015 starts and below 0.2 points for 2022-2025 starts**,
   because the later cohorts have had too few repricing dates for a refinancing
-  rule to act on. Further: the gap **narrows monotonically as the switching cost
-  rises** from S$0 to S$6,000, for every cohort.
-- **Fail 3:** the gap does not shrink with cohort recency, or does not narrow
-  monotonically with switching cost. Reported as a finding about when refinancing
-  mattered, with the offending cohorts named.
+  rule to act on.
+- **Fail 3:** the gap does not shrink with cohort recency. Reported as a finding
+  about when refinancing mattered, with the offending cohorts named.
+- A previous draft also predicted that the gap narrows monotonically as the
+  switching cost rises from S$0 to S$6,000. That clause is **removed**: it holds
+  by construction of the R3 rule, which only moves when the saving exceeds the
+  cost, so raising the cost can only remove moves and never add them. A
+  prediction that cannot fail is not a test, and stating it would have padded the
+  count of surviving predictions with one that was never at risk. The
+  switching-cost grid is still run and still reported; it is a sensitivity, not a
+  prediction.
 - **Reporting rule, unchanged:** if R2 and R3 agree within 0.1 points for nearly
   all cohorts at every point on the cost grid, R3 moves to a footnote and the
   headline runs on R2 alone. This is a presentation decision and is independent of
