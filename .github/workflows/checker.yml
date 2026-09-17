@@ -1,0 +1,43 @@
+# Checker: verifies the researcher's work. Wakes when a comment containing
+# "@checker" is posted. It can comment but cannot push (contents: read).
+name: checker
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: office-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: contains(github.event.comment.body, '@checker')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt pdfplumber
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          trigger_phrase: "@checker"
+          allowed_bots: "claude[bot]"
+          track_progress: true
+          prompt: |
+            You are the CHECKER. Read office/CHECKER.md and follow it exactly.
+            The request you must act on is the comment that mentioned you,
+            in issue/PR #${{ github.event.issue.number }}.
+          claude_args: |
+            --max-turns 80
+            --allowedTools "Bash,Read,Glob,Grep"
