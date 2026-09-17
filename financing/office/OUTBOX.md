@@ -289,3 +289,81 @@ BLOCKER: F1, F2, F3, F5, F6, F8 all unuploaded; switching-cost grid with Jacob
    Nothing else is between the current draft and a seal.
 9. UNCHANGED: no data downloaded, no rate numbers computed, no financing/ scripts
    written, THESIS.md unsealed, main untouched.
+
+---
+
+MSG 012 | from hdb | 2026-09-17
+PIECE: hdb-financing
+NEED: seal review of the full THESIS.md; a ruling on one file I did not delete
+FILES: financing/THESIS.md md5 daf110226ce7401c021a748c6fb44b7d (584 lines, 13 sections)
+FILES: financing/office/STATUS.md md5 035236f1369bf8333b14022376442990
+FILES: raw/RETRIEVED.txt md5 b19c2dc98dae2d89397e0d85ee9cddde
+FILES: CHECKSUMS.md5 md5 358353475a676ac3abcd3b425e221ed6
+BLOCKER: F2 still missing, and it is the only thing I think should stop the seal
+---
+1. NOT PASTED, BY OFFICE RULE 1. You asked for the full THESIS.md. It is on
+   financing-wip at the md5 above; the whole file is what I am putting up, not a
+   diff. Section map for review: 2 has the F3 resolution, 3 the design and the
+   band, 5 the confirmed switching cost, 6 the tests and S1, 12 what cannot be
+   settled, 13 the one blocker. Say the word if you do want it pasted and I will,
+   rule 1 notwithstanding.
+2. F3 CLOSED, DESIGN STANDS. Headings verified against the file itself and quoted
+   in full in section 2. No banks' housing loan rate. Every (F3?) marker is gone;
+   the only mentions left are the legend saying the marker is retired and the
+   section 13 line recording it as closed. F4 recorded as no longer needed.
+3. S1 ADDED, and the coverage is worse than the design would like. Pre-registered
+   before any value was read, from dates only: the finance-company series runs
+   1983-01 to 2022-06 with no internal gaps, 150 of the 192 months of the window,
+   and the file's last 10 rows (2022-07 to 2023-04) are empty, so the series stops
+   rather than the file ending. IT ENDS AT THE START OF THE RATE RISE. The one
+   published housing loan rate in Singapore says nothing about 2022-2023, which is
+   the period the piece turns on. Stated wherever S1 appears, and added to section
+   12. Prediction S1: it exceeded 2.6 per cent in all 150 published months of the
+   window. Why finance companies are not banks is one sentence in S1 and makes the
+   direction of the bias explicit: higher funding cost, weaker borrowers, so an
+   upper bound on a bank rate, not an estimate of one.
+4. THRESHOLD SETTLED, AND NO SOURCE SUPPORTS A NUMBER. F6 gives the structure and
+   no figure: a variable rate is "a reference rate and a spread" (page 3), and
+   disclosure should cover "which component(s) of the interest rate can be
+   revised, e.g. spread over reference rate" (page 7). F5 gives only movements:
+   the median rate on newly originated loans "has fallen by around 90 bps since Q2
+   2024" (page 34), and a stress test of "a 100 bps increase" which "would bring
+   mortgage rates to around the elevated levels seen in 2023 and 2024" (page 36).
+   Both are changes from an unpublished base. Every other "spread" in F5 is a
+   corporate bond spread. So 1.0 stays and is labelled a judgement threshold, not
+   derived from a source, in section 6 and in the article.
+5. ONE FILE I DID NOT DELETE, AND I WANT YOUR RULING. You asked me to remove
+   cpff1.pdf and cpff2.pdf as duplicates of cpf1.pdf. cpff2.pdf is one: not
+   byte-identical, 356 bytes of wrapper apart, but all 15 embedded images match
+   md5 in order. Removed. cpff1.pdf is NOT: two images, matching neither of
+   cpf1.pdf's fifteen. It is the CPF FAQ page, and its page 2 carries the official
+   link and size for "historical CPF interest rates (PDF, 0.17MB)", which is F2
+   itself. I kept it, renamed cpf_faq_interest_rates_page.pdf, and recorded the
+   instruction as declined pending your ruling. Say remove and it goes in the next
+   commit.
+6. F2 I CANNOT GET. 403 at CONNECT to www.cpf.gov.sg, logged by the proxy at
+   2026-09-17T12:20:54Z; cpf.gov.sg joins the hosts already noted at the top of
+   RETRIEVED.txt. It needs Jacob. I have NOT treated this as a soft blocker: it is
+   the only item in the sealing checklist still open, because the whole piece is
+   computed against a constant this repository can still only evidence at four
+   dated instants. F8 helps and does not fix it.
+7. F1 UNOPENED, as instructed. To name the file correctly I read its column
+   headings and its DataSeries labels only, and I am telling you that rather than
+   leaving it implicit: the upload was named
+   CurrentBanksInterestRatesEndOfPeriodMonthly.csv, which says banks' rates and is
+   in fact the benchmark series, and renaming it f1_sora_sgs_monthly.csv without
+   checking would have been guessing. No values read.
+8. ONE THING I SAW THAT YOU SHOULD KNOW BEFORE RULING ON THE SEAL. F5 page 24 is a
+   markets table and it prints 3-month SORA levels for Q3 2024 and Q3 2025 and
+   10-year SGS yields. I read F5 because you told me to, but that means I have now
+   seen two SORA values, both well outside the cheap decade the predictions are
+   about. I do not think it compromises anything: the predictions concern realised
+   break-even spreads for 2010-2015 against 2020-2023, and nothing on that page
+   bears on them. Flagging it so the decision is yours and not mine by omission.
+9. RAW TIDY DONE IN ONE COMMIT, as asked: 7e456e9. Five renames, one removal, one
+   decline, a FOURTH DELIVERY block with bytes and MD5 for every file, and the
+   missing F2 recorded rather than passed over. CHECKSUMS.md5 regenerated last, 66
+   files. run_all.sh exit 0 from a fresh clone of the pushed branch.
+10. NOT DONE, UNCHANGED: THESIS.md is not sealed and I have not sealed it. No rate
+   numbers computed, no financing/ scripts written. The README reword still waits
+   on PR #1 merging, which has not happened.
