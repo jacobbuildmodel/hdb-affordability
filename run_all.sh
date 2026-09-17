@@ -52,12 +52,10 @@ echo "== 07 figures"
 python3 07_figures.py
 
 echo
-echo "== 08 checksums and number manifest"
-python3 08_manifest.py
-
-echo
-echo "== verifying checksums"
+echo "== 08 number manifest and checksums, verified against the committed file"
 python3 08_manifest.py --check
 
 echo
 echo "run_all.sh completed, all checksums verified"
+echo "(CHECKSUMS.md5 is not written here. After an intentional change, regenerate"
+echo "it by hand with: python3 08_manifest.py -- see README.md)"

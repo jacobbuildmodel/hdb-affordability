@@ -149,9 +149,15 @@ def main():
     idx["n"] = df.groupby("year").size().reindex(idx["year"]).values
     idx["base_year"] = args.base
 
+    # float_format pins output to 10 significant digits so the file is
+    # byte-identical across machines. The OLS solve (LAPACK/BLAS) agrees with
+    # itself to about 12-13 significant digits across platforms, not to the
+    # last bit; unformatted floats therefore differ past that point even on
+    # identical inputs and code, which is noise, not a pipeline bug. 10 sig
+    # figs is far past the precision anything downstream reports (at most 6).
     stem = "index_hedonic_spline" if args.lease_spline else "index_hedonic"
     idx.to_csv(os.path.join(OUT, stem + ".csv"), index=False,
-               lineterminator="\n")
+               lineterminator="\n", float_format="%.10g")
 
     lines = []
     lines.append("Hedonic constant-quality index, %s flats, %d to %d"

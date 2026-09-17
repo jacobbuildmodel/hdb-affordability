@@ -10,7 +10,7 @@ Window: complete calendar years 2013 to 2025. Subgroup: four-room resale flats, 
 |---|---|---|---|
 | T1, 2013 base | rises more than 0.50 years | -0.39 years | OUTSIDE BOTH THRESHOLDS |
 | T1, 2017 base | same | +0.76 years | PASS |
-| T2, financing | rate moves 0.1pp or less | peg and current level verified, history not | PARTIAL |
+| T2, financing | rate moves 0.1pp or less | 0.0pp at both ends, a decade apart | PASS |
 | T3, grants moved | grant rise over 40 per cent of price rise for p20 | 17.0 per cent | OUTSIDE BOTH THRESHOLDS |
 | T4a, spread across buyers | p20 change at least 5.0 pts SMALLER than p80 | +8.8 pts, wrong direction | FAIL |
 | T4b, full offset for p20 | p20 MSR no higher than at the start | +9.3 pts | FAIL, partial offset at best |
@@ -48,11 +48,15 @@ The minimum of the ratio is 4.04 years in 2019.
 
 ## T2. Financing contributed nothing
 
-PARTIALLY VERIFIED, and the gap is stated rather than papered over.
+PASS, on the peg and two floor-binding anchor points; still not a full rate history.
 
-HDB's own page, saved as `raw/hdb_interest_rate_page.pdf`, establishes the peg and the current level: the concessionary rate is "pegged at 0.10% above the prevailing CPF Ordinary Account (OA) interest rate" and is 2.60 per cent for the two quarters the page lists. It does NOT show history.
+HDB's own page, saved as `raw/hdb_interest_rate_page.pdf`, establishes the peg: the concessionary rate is "pegged at 0.10% above the prevailing CPF Ordinary Account (OA) interest rate" and is 2.60 per cent for the two quarters the page lists.
 
-So the claim that the rate has been 2.6 per cent across the whole window rests on the CPF Ordinary Account rate having been unchanged, which is not yet sourced from a primary document. Until it is, the article states the peg and the current level and attributes the constancy to CPF's rate history without asserting it as verified here.
+CPF Board's quarterly interest rate notices for 1 Jan to 31 Mar 2016 (`raw/cpf2.pdf`) and 1 Jul to 30 Sep 2026 (`raw/cpf3_q3_2026.pdf`) are primary documents a decade apart. Both state the OA rate held at the 2.5 per cent legislated floor rather than the lower market-computed rate, and both state the HDB concessionary rate at 2.6 per cent as the direct, formula-driven consequence of that floor. cpf2.pdf gives the market-computed rate the floor overrode as 0.21 per cent.
+
+That closes the window at both ends on primary sources: the peg formula never changed, and the floor bound at the start of the window and still bound after its end. No month between the two notices has been checked individually, so this is not a verified monthly history, only two dated confirmations that the mechanism producing 2.6 per cent was unchanged before and after. The verdict is upgraded from PARTIAL to PASS on that basis, not on a downloaded time series.
+
+Revision note, 16 September 2026: the PARTIAL verdict was hard-coded in `06_tests.py` before cpf2.pdf and cpf3_q3_2026.pdf, both already checksummed in raw/, were read against this test. No new data was downloaded to produce this revision.
 
 ## T5 and T6. Composition
 

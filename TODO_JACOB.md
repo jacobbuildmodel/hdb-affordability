@@ -83,7 +83,13 @@ two rows in `ltv_schedule.csv` and one in `grant_schedule.csv`.
 
 ---
 
-## 4. CPF Ordinary Account rate history
+## 4. CPF Ordinary Account rate history -- CLOSED, 17 September 2026
+
+`cpf2.pdf` (Q1 2016) and `cpf3_q3_2026.pdf` (Q3 2026), both already supplied and in
+`raw/`, are the two anchor points asked for below. `06_tests.py` was revised on 16
+September 2026 to cite them; T2 is now PASS. Nothing further needed here.
+
+Left below for the record.
 
 This is what turns test T2 from PARTIAL to PASS. HDB's own page proves the rate is
 pegged at 0.1 points above the OA rate and is 2.60 per cent now. It does not show
