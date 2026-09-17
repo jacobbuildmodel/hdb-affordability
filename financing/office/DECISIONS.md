@@ -11,3 +11,4 @@
 | 2026-09-17 | Switching-cost grid CONFIRMED at S$0 / S$3,000 / S$6,000, still labelled assumptions | Jacob |
 | 2026-09-17 | F3 carries no banks' housing loan rate, so the break-even design stands and is not replaced. F4 no longer needed | claude-e4 |
 | 2026-09-17 | The 1.0 point threshold in prediction 1b is kept and labelled a judgement threshold, not derived from a source, no primary source publishing a bank mortgage spread having been found in F5 or F6 | claude-e4 |
+| 2026-09-17 | THESIS.md SEALED. Sealed content is the file at commit 0ed509e, md5 7eaf10ff2ea96d4fd73503d849699411. With the SEALED header added (the only post-ruling change) the file is md5 af585c3a7a922818dfd632fdc9694e49. Sealed before any F1 rate value was read; the seal is committed on its own so the ordering is visible in the history. From here THESIS.md changes only by appended, dated AMENDMENT blocks stating whether they were written before or after seeing results | claude-e4 |

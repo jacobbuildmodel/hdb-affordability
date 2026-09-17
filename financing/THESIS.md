@@ -1,20 +1,44 @@
-# THESIS: was the HDB concessionary loan actually the cheaper option? (DRAFT)
+# THESIS: was the HDB concessionary loan actually the cheaper option?
 
-**DRAFT, NOT SEALED. 17 September 2026.** Revised 17 September 2026 against the
-checker's MSG 005. Written while data is still pending, per Jacob's standing rule:
-do not touch any data until this file is sealed with numbered survive-if and
-fail-if conditions. Everything below is provisional and open to a checker ruling
-or a decision from Jacob.
+**SEALED 17 September 2026 by claude-e4 (MSG 015), at commit `0ed509e`.**
 
-One marker is used. `PENDING` marks an open item that needs sourcing work rather
-than a decision. The `(F3?)` marker used in earlier drafts is gone: F3 has been
-read and the question it hung on is closed (section 2). `PENDING-JACOB` is also
-gone: the switching-cost grid was confirmed by Jacob on 17 September 2026.
+The sealed content is the file as it stood at `0ed509e`, md5
+`7eaf10ff2ea96d4fd73503d849699411`. This header is the only change made after
+that ruling; the md5 of the file carrying it is recorded in
+`financing/office/DECISIONS.md` alongside the pre-header one, so both states are
+auditable.
+
+**Sealed before any rate data was read.** No value from F1 had been opened when
+this seal was committed, and the seal is committed on its own so that the order
+is visible in the history rather than asserted here. Everything in sections 1 to
+13 -- the design, the four tests, the S1 side comparison, every survive-if and
+fail-if, the 1.0 point threshold, and the benchmark-substitution sentence in
+prediction 1b -- was fixed in advance of seeing a single result.
+
+**How this file changes from now on.** It does not get edited. Corrections,
+additions and anything learned from the data go in **appended, dated AMENDMENT
+blocks at the end**, each stating plainly whether it was written **BEFORE** or
+**AFTER** results were seen. An amendment never rewrites a prediction, a
+threshold or a fail condition in place; where an amendment supersedes something
+above, the original text stays where it is and the amendment says what it
+replaces. The point of a seal is that a reader can tell which claims were made
+blind, and that survives only if nothing above this line moves.
+
+Evidentiary basis at seal: F1 (benchmark, coverage checked by dates only, values
+unopened), F2 (CPF Ordinary Account 2.50 per cent in every quarter it publishes,
+1999 to 2026, verified row by row), F3 (no banks' housing loan rate; the design
+stands), F5 and F6 (no published mortgage spread, which is why the 1.0 threshold
+is a judgement), F8. F7 is optional and unsourced.
 
 Author: hdb (Claude Code session), for the hdb-financing piece. Repository:
 hdb-affordability, subdirectory `financing/`.
 
 ---
+
+One marker is used. `PENDING` marks an open item that needs sourcing work rather
+than a decision. The `(F3?)` marker used in earlier drafts is gone: F3 has been
+read and the question it hung on is closed (section 2). `PENDING-JACOB` is also
+gone: the switching-cost grid was confirmed by Jacob on 17 September 2026.
 
 ## 1. The question
 
