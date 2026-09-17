@@ -12,10 +12,18 @@ Two jobs, both mechanical.
      reader can tell a source-data change apart from a pipeline change.
 
 Reads:  number_manifest.csv, 2026-09-12.md, raw/*, out/*, figs/*, and the scripts
-Writes: CHECKSUMS.md5
+Writes: CHECKSUMS.md5, but only when run without --check
 
-Usage:  python 08_manifest.py
-        python 08_manifest.py --check     verify against the existing CHECKSUMS.md5
+Usage:  python 08_manifest.py             regenerate CHECKSUMS.md5 (manual step,
+                                           after an intentional change; see README)
+        python 08_manifest.py --check     verify against the committed CHECKSUMS.md5
+                                           and never write it. This is what
+                                           run_all.sh calls.
+
+Revision note, 17 September 2026: run_all.sh used to call this script once with no
+flags (which rewrites CHECKSUMS.md5) and then again with --check, so the check was
+always against a file this same run had just produced, and could not fail. --check
+now never writes and is checked against whatever CHECKSUMS.md5 was already on disk.
 """
 
 import argparse
@@ -109,11 +117,20 @@ def audit_numbers():
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true")
+    ap.add_argument("--check", action="store_true",
+                    help="verify against the committed CHECKSUMS.md5; never writes it")
     args = ap.parse_args()
 
     dest = os.path.join(HERE, "CHECKSUMS.md5")
     sections = [("INPUTS", collect("INPUTS")), ("OUTPUTS", collect("OUTPUTS"))]
+
+    problems = audit_numbers()
+    if problems:
+        print("NUMBER AUDIT, %d item(s) to look at:" % len(problems))
+        for p in problems:
+            print("  " + p)
+    else:
+        print("number audit: every prose figure is in the manifest")
 
     if args.check:
         if not os.path.exists(dest):
@@ -130,13 +147,16 @@ def main():
         bad = [n for n in want if have.get(n) != want[n]]
         for n in bad:
             print("MISMATCH  %s" % n, file=sys.stderr)
-        if bad:
+        if bad or problems:
             sys.exit(1)
         print("all %d checksums match" % len(want))
         return
 
     with open(dest, "w", newline="\n") as fh:
         fh.write("# MD5 checksums. Regenerate with: python 08_manifest.py\n")
+        fh.write("# This file is never written by run_all.sh (it only runs --check).\n")
+        fh.write("# Regenerating it is a manual step after an intentional change to\n")
+        fh.write("# code or data; see README.md.\n")
         fh.write("# Two sections. A changed INPUT means the source data or a script\n")
         fh.write("# moved. A changed OUTPUT with unchanged INPUTS means the pipeline\n")
         fh.write("# is not deterministic and something is wrong.\n")
@@ -148,15 +168,6 @@ def main():
     n = sum(len(e) for _, e in sections)
     print("CHECKSUMS.md5 written, %d files (%d inputs, %d outputs)"
           % (n, len(sections[0][1]), len(sections[1][1])))
-
-    problems = audit_numbers()
-    if problems:
-        print("")
-        print("NUMBER AUDIT, %d item(s) to look at:" % len(problems))
-        for p in problems:
-            print("  " + p)
-    else:
-        print("number audit: every prose figure is in the manifest")
 
 
 if __name__ == "__main__":
