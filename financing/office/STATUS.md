@@ -1,14 +1,18 @@
 # STATUS -- hdb-financing
 
-Updated 17 September 2026, MSG 006 (researcher `hdb` to checker `claude-e4`).
+Updated 17 September 2026, MSG 008 (researcher `hdb` to checker `claude-e4`).
 
 | Item | State | Blocker | Next action by |
 |---|---|---|---|
 | Rate-series question | answered: no public mortgage rate series | F3 column headings unchecked | Jacob |
 | Design | break-even spread; A/B/E accepted; C ruled -- R1 dropped (DECISIONS.md 17 Sep) | none | -- |
-| THESIS.md | DRAFT revised against MSG 005 points 2-9, financing/THESIS.md, NOT SEALED | F3 headings; switching-cost grid awaiting Jacob | claude-e4 to review, Jacob for the grid |
-| MSG 005 item 1, CHECKSUMS mismatch | FIXED and proved from a fresh clone of the pushed branch | none | claude-e4 to confirm |
-| run_all.sh executable bit | FIXED, mode now 100755; was 100644 so documented `./run_all.sh` failed on a fresh clone | none | claude-e4 to confirm |
+| THESIS.md | DRAFT revised against MSG 005 points 2-9 and MSG 007 points 3-4, NOT SEALED | F3 headings; switching-cost grid awaiting Jacob | claude-e4 to review, Jacob for the grid |
+| MSG 005 items 1-11 | ACCEPTED at cb7c941 (MSG 007 item 1) | none | -- |
+| Fix PR against main | OPEN, PR #1, branch `fix-t2-checksums`, root-level only, proved from a fresh clone | none | claude-e4 to verify, then Jacob merges |
+| T1 magnitude claim (MSG 007 item 3) | added: realised spread exceeds 1.0 point for every 2010-2015 start, flagged as the headline claim | none | claude-e4 |
+| T2a/T2b labelling (MSG 007 item 3) | done: both labelled "expected from public rate history; low information" | none | -- |
+| T3 monotonic clause (MSG 007 item 3) | deleted; holds by construction. Removal recorded in the file with the reason | none | -- |
+| Public-knowledge sentence (MSG 007 item 4) | done, section 6: predictions test magnitude and mechanics, not direction | none | -- |
 | Headline definition (item 2) | done: realised break-even spread is the definition, full tenure is a labelled projection | none | -- |
 | Directional predictions (item 3) | done: T1-T4 each carry a falsifiable prediction | none | claude-e4 to review the predictions themselves |
 | Plausibility filter (item 4) | done: 0-5 filter removed, negative spreads valid, non-convergence is the only unreliability | none | -- |
@@ -30,7 +34,9 @@ Updated 17 September 2026, MSG 006 (researcher `hdb` to checker `claude-e4`).
 - **Jacob:** F3 column headings (the one thing that could replace the design); F2
   and F8, now essential rather than supporting; confirm or replace the
   switching-cost grid.
-- **claude-e4:** review the revised THESIS.md, in particular whether the four
-  directional predictions are the right ones to be held to.
+- **claude-e4:** verify PR #1 against main so Jacob can merge it; and confirm the
+  tightened predictions, in particular whether 1.0 point is the right threshold
+  for the T1b headline claim. It is the one number in the file chosen by judgement
+  rather than derived, and it is now what the piece stands on.
 - **hdb:** nothing until one of the above lands. No data downloaded, no rate
   numbers computed, THESIS.md still unsealed.
