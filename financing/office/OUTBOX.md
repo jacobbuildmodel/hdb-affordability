@@ -431,3 +431,87 @@ BLOCKER: none
    No rate numbers computed, no charts, no financing/ scripts, F1 values
    unopened. On your confirmation, Chart 1, Chart 2 and the three headline
    numbers first, before any prose.
+
+---
+
+MSG 016 | from hdb | 2026-09-17
+PIECE: hdb-financing
+NEED: rule on AMENDMENT 1 (R3 implementation); review three failed predictions
+FILES: financing/RESULTS.md md5 e8cda12782c9f7f9542f5d903081fe8a
+FILES: financing/THESIS.md md5 0c1eae0d8a883192e2580b72a5ff7922
+FILES: financing/CHECKSUMS.md5 md5 a5718d97a56db982cbdb26bee964b020
+FILES: CHECKSUMS.md5 md5 d9f9edf4be9d1a05a3c497e4b6c154a3
+BLOCKER: none
+---
+**THREE PREDICTIONS FAILED. Those first.**
+
+1. T2b FAILED. Predicted: for 2020-2023 starts, a crossover within 3 years at
+   every grid spread. Actual: 15 of 24 cells fail, and 10 of those never cross
+   at all. The 2022 cohort has not crossed at ANY spread. Reason, visible in
+   Chart 1: the 2022-2023 spike did not last. Compounded 3M SORA peaked near
+   3.8 per cent and is back to 1.14 per cent by 2026-07, so bank borrowers who
+   started into the rise went back under water on the HDB comparison before the
+   cumulative position could flip.
+2. T3 FAILED, and in the opposite direction to the prediction. Predicted: the
+   R3-minus-R2 gap largest for 2010-2015 and below 0.2 points for 2022-2025.
+   Actual: largest gap for 2010-2015 is 0.296; for 2022-2025 it is 1.260. My
+   stated reasoning -- later cohorts have too few repricing dates -- was simply
+   wrong. What matters is how far the benchmark FELL after you started, not how
+   many reset dates you had. A 2024 starter began at a high SORA and watched it
+   halve, so opportunistic refinancing was worth far more to them than to
+   anyone in the cheap decade.
+3. T4a FAILED. Predicted: switching to a bank in 2021 was worse than staying,
+   for every applicable start year and spread. Actual: 31 of 66 worse, so 35
+   were better. The asymmetry is real but it did not bite uniformly, for the
+   same reason as T2b: rates came back down. T4b passed, 12 of 12.
+
+PASSED: T1a, T1b, T2a, T4b, S1. Five of eight.
+
+4. T1b PASSED AND THAT IS WEAK EVIDENCE, which is the whole point of having
+   fixed the sentence before seeing it. Every 2010-2015 start exceeds 1.0
+   point, range 1.641 to 2.046. The sealed sentence is quoted verbatim at the
+   top of RESULTS.md, not summarised: a pass is weak evidence, a fail would
+   have been strong, because the SORA-for-SIBOR substitution favours a pass. I
+   have not let the pass be reported as a clean win anywhere.
+   T1a also passed but narrowly: min over 2010-2015 is 1.641 against a max over
+   2020-2023 of 1.523. A hair's width, not a comfortable margin.
+5. AMENDMENT 1, AND I NEED YOU TO RULE ON IT. Implementing R3 literally as
+   sealed -- "move every time the saving over the remaining tenure exceeds the
+   switching cost", re-evaluated monthly -- assumes every rate fall persists to
+   the end of the loan. A 10bp tick clears a S$3,000 hurdle, the fee is paid
+   again on the next twitch, and switching displaces the repricing clock. On
+   the real series a 2010 cohort refinanced 17 times, paid ~S$51,000 in fees,
+   and R3 cost MORE than R2. That contradicts section 5's own description of R3
+   as an upper bound. I have implemented R3 as the cheapest outcome over a grid
+   of refinancing triggers chosen with hindsight, with "never refinance
+   opportunistically" in the grid so R3 <= R2 holds by construction. Hindsight
+   is defensible only because section 5 already says R3 is "not a real person".
+   R2 is untouched, and R2 is the headline. If you prefer the literal reading I
+   will regenerate, but then R3 must not be called an upper bound anywhere.
+6. THE DEFECT WAS CAUGHT BY A TEST, NOT BY MY READING OF THE OUTPUT. 21_model.py
+   asserts R3 <= R2 on the real series at every switching cost. The first
+   implementation failed it. I had already looked at the T3 table and not
+   noticed that every gap at S$3,000 and S$6,000 was negative. Flagging that
+   because it is the kind of thing that ships.
+7. AMENDMENT 2: the SGS forward-curve projection is NOT built. Section 7 item 7
+   names three paths; two are built and labelled in t1_breakeven.csv. The
+   forward curve needs a bootstrap this repository does not have, and a rough
+   substitute would be the invented input this design exists to avoid. Costs
+   the headline nothing, since the headline is realised. Recorded, not dropped.
+8. CHARTS. Both built, and I looked at them rather than assuming. Rendered in
+   Chromium at 390px in light and dark. Two defects found and fixed: Chart 1
+   printed "2026" twice at the right edge (it satisfied both the every-third-year
+   rule and the final-label rule), and Chart 2's legend showed two identical
+   swatches for what are a line and a shaded band. Chart 2 carries the labelled
+   zero line and the pre-2020 SIBOR shading.
+9. THREE HEADLINE NUMBERS, each with its script, in out/headline_numbers.csv:
+   H1 2.05 points, the 2010 start, widest of any cohort. H2 -1.05 points, the
+   2024 start, negative and meaning the HDB loan beat the benchmark itself
+   before any bank margin. H3 31 of 66, the 2021 switch cases that ended worse.
+   One finding, 43 characters: "The cheap decade was worth about two points."
+   Three side-note candidates are in RESULTS.md.
+10. PLUMBING. financing/ scripts 20-25, own CHECKSUMS.md5 (25 files) and number
+   manifest (19 numbers), both with the same --check-never-writes rule, wired
+   into run_all.sh as six new steps. Full clean rebuild from a fresh clone of
+   the pushed branch: exit 0, root 67 checksums and financing 25 both verified.
+11. NO PROSE WRITTEN, as instructed, and none will be until you say so.

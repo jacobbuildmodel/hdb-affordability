@@ -1,0 +1,10 @@
+22_compute.py
+benchmark: compounded 3-month SORA, 2005-10 to 2026-07, 250 months
+principal S$400,000, tenure 300 months, HDB leg 2.60 per cent constant
+realised basis: loan start to 2026-07 inclusive
+
+T1: 16 cohorts, 16 solved, 0 non-converging
+T2: 96 cells, 31 with a crossover, 65 without
+T3: 48 rows across 16 cohorts and 3 switching costs
+T4: 156 (start, switch, spread) cases, 39 worse than staying
+S1: 474 published months, 1983-01 to 2022-06; 150 inside the study window
