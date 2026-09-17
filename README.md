@@ -64,18 +64,23 @@ anything the pipeline ever displays. `CHECKSUMS.md5` was regenerated once agains
 the fixed output; a deliberately corrupted output file was confirmed to make
 `08_manifest.py --check` exit non-zero before the fix was accepted.
 
-**Revision note, 17 September 2026 (second).** Two faults found while preparing
-the changes above, both on a working branch and neither ever present on `main`.
-Recorded here because the first one is the ordering rule earning its keep.
+**Revision note, 17 September 2026 (second).** Two faults, with different
+histories. They are distinguished here because one of them was this
+repository's and the other never was.
 
-The first: `CHECKSUMS.md5` was regenerated and *then* this README was edited
-again, so the committed hash described a file that no longer existed and a clean
-rebuild of that branch exited 1 with `MISMATCH README.md`. That is exactly the
-hazard the ordering rule above exists to prevent, and it was caught by rebuilding
-from a fresh clone rather than from the working copy the checksums were generated
-in. The second: `run_all.sh` was committed without its executable bit, so the
+The first was **never present on `main`**. While the changes above were being
+prepared on a working branch, `CHECKSUMS.md5` was regenerated and *then* this
+README was edited again, so on that branch the committed hash described a file
+that no longer existed and a clean rebuild exited 1 with `MISMATCH README.md`.
+That is exactly the hazard the ordering rule above exists to prevent, and it was
+caught by rebuilding from a fresh clone rather than from the working copy that
+generated the checksums.
+
+The second **was present on `main`**, from the initial commit until it was fixed:
+`run_all.sh` was committed with mode `100644` rather than `100755`, so the
 `./run_all.sh` invocation documented here failed with "Permission denied" on a
-fresh clone; the mode is now `100755`.
+fresh clone of this repository. Anyone who ran the pipeline before that fix had
+to work around the documented entry point. The mode is now `100755`.
 
 Neither fault changed a single reported figure.
 
