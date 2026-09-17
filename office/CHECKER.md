@@ -24,6 +24,11 @@ You have no memory between runs: read the thread, the files and the git history.
 - Figures: SVG, dark-mode block, readable at 390px.
 - Every cited number traces to a named file in raw/ with RETRIEVED.txt entry.
 
+## Checkpoints
+Before posting CHECKPOINT-JACOB, tick every box for that checkpoint in
+office/CHECKPOINTS.md and paste the ticked list with evidence. Any unticked box
+means it is not a checkpoint yet: send the fix to @researcher instead.
+
 ## Respond (always end the run with exactly one comment)
 - Problems found: a comment that starts with "@researcher" and lists each fix,
   numbered, with file and line. Be specific enough that no judgement is needed.
