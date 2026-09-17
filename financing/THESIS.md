@@ -6,14 +6,10 @@ do not touch any data until this file is sealed with numbered survive-if and
 fail-if conditions. Everything below is provisional and open to a checker ruling
 or a decision from Jacob.
 
-Three markers are used and they mean different things:
-
-- `(F3?)` -- the content depends on MAS Table III.3, still unread. If F3 carries a
-  banks' housing loan rate, the design is replaced, not patched.
-- `PENDING` -- an open item that needs sourcing work, not a decision.
-- `PENDING-JACOB` -- an open item that needs a decision from Jacob and nothing
-  else. A proposed value is given so that the pipeline can be built against it;
-  the value is labelled an assumption until Jacob confirms it.
+One marker is used. `PENDING` marks an open item that needs sourcing work rather
+than a decision. The `(F3?)` marker used in earlier drafts is gone: F3 has been
+read and the question it hung on is closed (section 2). `PENDING-JACOB` is also
+gone: the switching-cost grid was confirmed by Jacob on 17 September 2026.
 
 Author: hdb (Claude Code session), for the hdb-financing piece. Repository:
 hdb-affordability, subdirectory `financing/`.
@@ -51,17 +47,26 @@ Mortgage Pricing and Disclosure Practices (November 2021, `raw/` pending as F6)
 states plainly that mortgage pricing reflects each bank's own cost of funds and
 competitive position, and that MAS does not intervene in it.
 
-Two things are still unresolved and could change this design:
+**F3 has been read, and it confirms the paragraph above rather than overturning
+it.** MAS Monthly Statistical Bulletin, Table III.3, "Interest Rates of Banks and
+Finance Companies", monthly, is in `raw/f3_mas_msb_iii3_monthly.csv`. Its columns
+are, in full:
 
-- **F3 (?).** MAS Monthly Statistical Bulletin, Table III.3, "Interest Rates of
-  Banks and Finance Companies," monthly historical CSV, is unread (403 to the
-  sandbox that first looked). If it contains a banks' housing loan rate for
-  2010-2025, the comparison in section 1 becomes a direct one and this design is
-  replaced, not patched. Every downstream section that assumes F3 does not
-  contain a housing loan rate is marked `(F3?)`.
-- **F4 (?).** MAS "Data on Housing and Bridging Loans" is unread for the same
-  reason. Probably volumes rather than rates; one look settles it, marked `(F3?)`
-  alongside F3 since both close the same question.
+> End of Period | Prime Lending Rate | Banks Fixed Deposits 3 Months | Banks Fixed
+> Deposits 6 Months | Banks Fixed Deposits 12 Months | Banks Savings Deposits |
+> Finance Companies Loans - Hire Purchase of New Vehicles For 3 Years | Finance
+> Companies Housing Loans For 15 Years | Finance Companies Fixed Deposits 3 Months
+> | Finance Companies Fixed Deposits 6 Months | Finance Companies Fixed Deposits
+> 12 Months | Finance Companies Savings Deposits
+
+There is **no banks' housing loan rate**. The one housing loan rate published
+anywhere in this table belongs to *finance companies*, not banks, and it is used
+in this piece only as a labelled side comparison (section 6, S1), never as a proxy
+for what a bank charged. The break-even design therefore stands as written, and
+this file is sealed on that basis rather than replaced.
+
+F4 (MAS "Data on Housing and Bridging Loans") is **no longer needed**: it was
+wanted only as a second chance at the same question F3 has now closed.
 
 **The HDB side is NOT settled without new data. F2 is required for this piece.**
 The concessionary rate is 2.6 per cent, pegged 0.1 points above the CPF Ordinary
@@ -94,6 +99,26 @@ So:
   series rather than a constant and sections 3 and 6 are recomputed against that
   series. This is a survivable outcome, not a design failure, but it must be found
   before sealing rather than after publishing.
+
+**F2 IS STILL NOT IN `raw/`, AND THIS IS THE ONE THING BLOCKING THE SEAL.** The
+17 September upload did not contain it: the two files offered as F2
+(`cpff1.pdf`, `cpff2.pdf`) were CPF current-rate pages, not the history. One was
+byte-for-byte redundant and was removed; the other is kept as
+`raw/cpf_faq_interest_rates_page.pdf` because its second page carries the official
+link to "historical CPF interest rates (PDF, 0.17MB)", which is the provenance
+trail for the file still wanted. An attempt to fetch F2 directly from
+`cpf.gov.sg` was refused by this environment's network policy (403 at CONNECT),
+so it must come from Jacob.
+
+What `raw/` now holds for the HDB leg is **four dated anchor points**, not a
+series: Q1 2016 (`cpf2.pdf`), Q1 2025 (`f8_cpf_rates_q1_2025.pdf`, which states
+the OA at the 2.5 per cent floor and the concessionary rate "unchanged at 2.6%
+per annum from 1 January to 31 March 2025"), Q3 2026 (`cpf3_q3_2026.pdf`), and
+the peg formula (`hdb_interest_rate_page.pdf`). Four anchors are better than the
+two this file previously relied on, and F8 usefully closes the late end. They are
+still anchors. The argument in this section -- that anchors do not exclude
+movement between them, and that here the constant *is* the comparator -- applies
+to four exactly as it applied to two.
 
 ## 3. Design: solve for the break-even spread
 
@@ -141,8 +166,8 @@ later to produce a particular verdict shape.
 
 ## 4. Cohorts, terms, and what is held constant
 
-- **Cohorts.** Every loan start year 2010 to 2025. `(F3?)` if F3 turns up a bank
-  rate history with a different usable start date, the cohort range is revisited.
+- **Cohorts.** Every loan start year 2010 to 2025. Fixed: F3 has been read and
+  carries no bank rate history that could have moved this range.
 - **Tenure.** 25 years, base case. 30 years, sensitivity (section 7.3). Matches
   the published piece's choice of a fixed tenure so a change in maximum tenure
   cannot masquerade as a change in the financing answer.
@@ -185,16 +210,17 @@ design exists to avoid inventing. Recorded as a checker ruling, DECISIONS.md,
   explicitly as an upper bound on what the bank route could have delivered, never
   as a description of a typical borrower.
 
-**Switching cost. PENDING-JACOB, not F3-dependent.** Proposed: a grid of
+**Switching cost. CONFIRMED by Jacob, 17 September 2026.** The grid is
 **S$0 / S$3,000 / S$6,000**, covering legal and valuation fees net of any subsidy,
 plus clawback of subsidies inside a lock-in period. S$0 is the frictionless bound
 and is not a claim that switching is free; it isolates how much of the R3 result
-is the refinancing rule and how much is the cost of acting on it. Every figure
-using these numbers is labelled an assumption, with the grid stated next to it,
-until Jacob confirms or replaces it. T3 (section 6) reports the answer at all
-three points rather than at one, so the grid is the sensitivity and no separate
-half-and-double run is needed. If the three points give the same verdict, that is
-a stated finding and the exactness of the figure stops mattering.
+is the refinancing rule and how much is the cost of acting on it. The three
+figures remain labelled as assumptions wherever they appear -- confirmed by Jacob
+is not the same as sourced from a schedule of fees -- but they are no longer an
+open decision. T3 (section 6) reports the answer at all three points rather than
+at one, so the grid is the sensitivity and no separate half-and-double run is
+needed. If the three points give the same verdict, that is a stated finding and
+the exactness of the figure stops mattering.
 
 **The asymmetry that is the whole of T4.** An HDB borrower may refinance to a
 bank loan but cannot switch back to an HDB loan afterwards. Modelled, not just
@@ -253,21 +279,30 @@ indistinguishable band (section 3) alongside each cohort's figure.
   than elsewhere, because it would have made the headline claim look tested when
   it was assumed. The threshold is settled before sealing, by this procedure,
   fixed now:
-  1. When **F5** (MAS Financial Stability Review 2025) and **F6** (MAS Information
-     Paper on Residential Mortgage Pricing and Disclosure Practices) land in
-     `raw/`, both are read for any statement of mortgage margins, spreads over a
-     benchmark, or average housing loan rates. Reading these two before sealing is
-     allowed: they are documents about pricing practice, not the rate data the
-     seal exists to keep out of the design. **F1 is not opened until this file is
-     sealed.**
-  2. If either yields a usable range, the threshold is proposed against that range
-     and the quotation and page number are recorded in this section and sent to
-     the checker. The threshold may move as a result, including against the
-     framing's interest; that is the point of looking.
-  3. If neither yields one, the label in this bullet is the final wording: 1.0 is
-     kept, and the article states plainly that it is a judgement call with no
-     source behind it, rather than implying it was calibrated.
-  This is resolved before the file is sealed, not after publication.
+  **This has now been done, and the answer is that no source supports a number.**
+  F5 and F6 were both read on 17 September 2026, before sealing, for any statement
+  of mortgage margins, spreads over a benchmark, or average housing loan rates:
+  - **F6** describes the structure and confirms section 2, but gives no figure. It
+     states that a variable rate mortgage's "interest rate comprises two
+     components, a reference rate and a spread", with the reference rate pegged
+     either to a public indicator or to "an administered rate which is determined
+     by each FI" (page 3), and that MAS expects disclosure of "which component(s)
+     of the interest rate can be revised, e.g. spread over reference rate" (page
+     7). Nowhere does it publish, or cite, a level or a range for that spread.
+  - **F5** gives movements, never a level and never a spread. The only mortgage
+     rate figures in the document are that "the median mortgage rate for newly
+     originated loans has fallen by around 90 bps since Q2 2024" (page 34) and
+     that a stress test applies "a 100 bps increase in mortgage rates", an
+     increase which "would bring mortgage rates to around the elevated levels seen
+     in 2023 and 2024" (page 36). Both are changes measured from an unpublished
+     base. Every other use of "spread" in F5 refers to corporate bond and credit
+     spreads, not mortgage spreads.
+  **Conclusion, final:** no primary source available to this piece publishes a
+  bank mortgage spread over a benchmark, which is the same finding as section 2
+  arrived at from the other direction. The 1.0 point threshold is therefore kept
+  and is labelled, here and in the article, **a judgement threshold, not derived
+  from a source**. It is not presented as calibrated, and the article does not
+  imply that it was. F1 remains unopened until this file is sealed.
 - **Fail 1:** either prediction is contradicted.
   - **Fail 1a:** the ordering does not hold, or reverses. The article reports that
     the cheap-decade advantage did not survive into realised cost, and says which
@@ -372,6 +407,46 @@ the counterfactual of staying on the HDB loan throughout.
   the design exposes rather than a cost shown to have landed on anyone, and the
   article says so plainly.
 
+**S1. Side comparison: the only published housing loan rate. NOT A HEADLINE, NOT A
+PROXY FOR BANKS.**
+F3 publishes one housing loan rate for Singapore over this window: "Finance
+Companies Housing Loans For 15 Years" (MAS Monthly Statistical Bulletin, Table
+III.3, column 8). It is set against the HDB 2.6 per cent as a labelled side
+comparison. It is **not** a bank rate, it is **not** used as a stand-in for one,
+and no break-even spread, crossover or T4 result is computed from it. It exists
+because it would be strange to hold the one published housing loan rate in `raw/`
+and not show it, and because its level bounds the discussion from one side.
+
+*Why finance companies are not banks, in one sentence.* Finance companies are
+smaller deposit-taking institutions licensed under the Finance Companies Act,
+funded largely by fixed deposits rather than by cheap current and savings
+balances, and restricted in business lines banks are free to enter, so they fund
+themselves at a higher cost and lend to borrowers banks have often declined --
+which makes their housing loan rate an **upper bound** on what a bank charged the
+same year, not an estimate of it.
+
+*Coverage, established from the file by dates only, before any value was read:*
+- The column is populated monthly from **1983-01 to 2022-06**, with **no internal
+  gaps**.
+- Within the 2010-2025 study window it covers **150 of 192 months**, 2010-01 to
+  2022-06.
+- The file itself runs to 2023-04, but the last **10 months (2022-07 to 2023-04)
+  are empty**: the series stops rather than the file ending.
+- **The series therefore ends at the start of the rate rise.** It says nothing
+  about 2022-2023, which is the period the whole piece turns on. This is the
+  single most important limitation of S1 and is stated wherever S1 appears.
+
+- **Prediction S1:** the finance-company 15-year housing loan rate **exceeded 2.6
+  per cent in every month it is published between 2010-01 and 2022-06** -- all 150
+  months, without exception.
+- **Fail S1:** one or more months come in at or below 2.6 per cent. Reported with
+  the months named. A failure here would be genuinely informative: it would mean
+  that even a high-cost lender undercut the HDB rate during the cheap decade,
+  which would make the bank case stronger than the break-even design assumes it
+  needs to be.
+- Reported as a side-note chart or table only (section 9), with its end date
+  marked on the axis so no reader carries the line past June 2022.
+
 ## 7. Sensitivities, all published
 
 1. Refinancing rule: R2 against R3 (R1 dropped, section 5).
@@ -379,8 +454,8 @@ the counterfactual of staying on the HDB loan throughout.
 3. Tenure: 25 years base, 30 years alternative.
 4. Nominal against present value, discounted at the CPF Ordinary Account rate of
    2.5 per cent.
-5. Switching cost in R3: the S$0 / S$3,000 / S$6,000 grid (section 5,
-   PENDING-JACOB), reported at all three points as part of T3.
+5. Switching cost in R3: the S$0 / S$3,000 / S$6,000 grid (section 5, confirmed
+   by Jacob), reported at all three points as part of T3.
 6. Benchmark: SORA throughout, against SIBOR before 2020 if an official history
    can be sourced (F7, PENDING; if not sourced, the pre-2020 numbers carry a
    stated health warning that they are quoted over the wrong benchmark, in a
@@ -389,8 +464,8 @@ the counterfactual of staying on the HDB loan throughout.
    no forward path. The full-tenure projection is published under three: the
    forward path implied by the SGS curve (base), the last observed rate held flat,
    and the long-run average. All three published, with the point where the
-   assumption starts to bite marked on the figure. `(F3?)` does not affect this
-   item; it depends on F1 (SORA and SGS yields), not F3.
+   assumption starts to bite marked on the figure. This item depends on F1 (SORA
+   and SGS yields), which is in `raw/` but unopened until this file is sealed.
 
 ## 8. The compliance line
 
@@ -412,9 +487,10 @@ go into `financing/RESULTS.md`, not the article body:
 2. R3 reported as a band around the R2 line, not a second headline series.
 3. T4, the switch-and-cannot-switch-back borrower, as a worked example.
 
-The T2 crossover table or heatmap (start year x spread) is **the** side-note item,
-not a fourth headline. The full-tenure projection is repository and RESULTS.md
-material, never a headline number.
+Two things sit in the side-note tier, and neither is a headline: the T2 crossover
+table or heatmap (start year x spread), and the S1 finance-company comparison with
+its June 2022 end date marked. The full-tenure projection is repository and
+RESULTS.md material, never a headline number.
 
 ## 10. Chart plan, as the production spec (point F)
 
@@ -431,8 +507,11 @@ must deliver, in this order:
 3. **Three headline numbers**, each with the script that generated it named
    alongside it.
 4. **One finding**, under 60 characters.
-5. **The T2 crossover heatmap**, as the section 9 side-note, plus up to two other
-   side-note candidates.
+5. **The two side-note items** (section 9): the T2 crossover heatmap (start year
+   x spread), and the S1 finance-company housing loan rate against the HDB 2.6 per
+   cent, drawn only to June 2022 with the series end marked on the axis and a
+   caption saying in as many words that it is a finance-company rate and not a
+   bank one.
 
 Both charts as SVG, readable at 390px, with a `prefers-color-scheme` dark-mode
 block, drawn with the same palette and helpers as the published piece's
@@ -464,29 +543,42 @@ financing-cost comparison.
 - Whether any individual borrower's actual spread was inside or outside the
   indistinguishable band. The band is reported per cohort; the article does not
   and cannot place a reader in it.
-- `(F3?)` If F3 shows a usable banks' housing loan rate series, this entire
-  section 3 design is replaced by a direct comparison, and this file is
-  re-sealed from a different section 1 onward rather than patched in place.
+- What a bank actually charged. F3 has been read and publishes no banks' housing
+  loan rate, so the break-even spread remains an inferred quantity and the S1
+  side comparison is a finance-company rate, not a bank one. This design cannot
+  close that gap, and no public source closes it either.
+- Anything about the 2022-2023 rate rise from S1. The finance-company series ends
+  in June 2022 (section 6, S1), so the one published housing loan rate stops
+  exactly where the interesting period begins.
 
 ## 13. Open items, one list
 
-`(F3?)`: sections 2, 4 (cohort range), 12.
+**Blocking the seal, one item only:**
 
-`PENDING-JACOB` (decision only, no sourcing): the R3 switching-cost grid,
-proposed S$0 / S$3,000 / S$6,000 (section 5).
+- **F2, the CPF interest rate history.** Not in `raw/`; not fetchable from this
+  environment (403 at CONNECT to `cpf.gov.sg`); must come from Jacob. Until it
+  arrives the HDB leg rests on four dated anchors rather than a continuous series
+  (section 2).
 
-`PENDING` (sourcing): F7, an official SIBOR history for the pre-2020 cohorts
-(section 7 item 6).
+**Open but not blocking:**
 
-`PENDING` (sourcing, must close before sealing): the basis for the 1.0 point
-threshold in prediction 1b, against F5 and F6 (section 6). Labelled in section 6
-as a judgement threshold until then. This is the only open item that blocks
-sealing on something other than F3.
+- `PENDING` (sourcing): F7, an official SIBOR history for the pre-2020 cohorts
+  (section 7 item 6). If it is never sourced, the pre-2020 numbers carry the
+  stated health warning and the piece still runs.
+- The start date of compounded 3-month SORA inside F1, and whether the early
+  window is official or back-calculated. Deliberately not checked: it needs F1
+  values, which stay unopened until this file is sealed. It is the first thing
+  examined afterwards, and it is a real risk to the 2010-2019 cohorts.
 
-Closed since the previous draft: the indistinguishable-band width is now defined
-in section 3 and is no longer open; the principal is stated in section 4; the
-unsourced justification for the 1.0 threshold is removed and replaced with a
-fixed procedure for settling it.
+**Closed since the previous draft:**
 
-Required data, promoted since the previous draft: **F2 and F8 are now essential**,
-not supporting (section 2).
+- F3 read. No banks' housing loan rate; the design stands; every `(F3?)` marker
+  removed (section 2). F4 no longer needed.
+- The 1.0 threshold. F5 and F6 read; neither publishes a spread or a rate level;
+  1.0 is kept and labelled a judgement threshold, not derived from a source
+  (section 6). No longer an open item, though it remains a judgement.
+- The switching-cost grid, confirmed by Jacob at S$0 / S$3,000 / S$6,000
+  (section 5).
+- F8 obtained, closing the late end of the CPF anchor set (section 2).
+- The indistinguishable band (section 3) and the principal (section 4), both
+  settled in earlier drafts.
