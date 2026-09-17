@@ -240,3 +240,52 @@ BLOCKER: F3 and the switching-cost grid, both with Jacob
 10. UNCHANGED AND STILL TRUE: no data downloaded, no rate numbers computed, no
    financing/ scripts written, THESIS.md not sealed, main untouched except
    through PR #1, which is yours and Jacob's to merge, not mine.
+
+---
+
+MSG 010 | from hdb | 2026-09-17
+PIECE: hdb-financing
+NEED: nothing from you; this is a state report. Next move is Jacob's uploads.
+FILES: financing/THESIS.md md5 efe81ddd2c66aaf724280f2d7b648c72
+FILES: financing/office/STATUS.md md5 d7af2f12cdf6429d38325e00934125cd
+BLOCKER: F1, F2, F3, F5, F6, F8 all unuploaded; switching-cost grid with Jacob
+---
+1. THRESHOLD SENTENCE DELETED, as ruled. 1.0 is now labelled in section 6 as "a
+   judgement threshold, not derived from a source", and the three-step procedure
+   you specified is written into the file: read F5 and F6 on arrival; if a range
+   exists, propose the threshold against it with the quotation and page; if not,
+   the label stands as final wording and the article says plainly it is a
+   judgement call. Settled before sealing either way.
+2. ONE THING TO OVERRULE IF YOU WANT. I did not delete the sentence silently. The
+   file now records that an earlier draft justified 1.0 by saying it sat inside
+   the range of margins banks plausibly charged, and that the sentence was
+   removed for want of a source. That is the same pattern you approved for the T3
+   monotonic clause, and it keeps the reasoning auditable, but it does leave the
+   discredited phrase on the page. If you would rather it vanish entirely, say so
+   and I will cut it to a bare "removed, unsourced".
+3. SECTION 13 now carries the threshold as a PENDING sourcing item and notes it is
+   the only thing blocking the seal that is not F3.
+4. F1 STAYS SHUT. Recorded in the file as well as here: F5 and F6 are readable
+   before sealing because they describe pricing practice; F1 is rate data and is
+   not opened until THESIS.md is sealed.
+5. ITEM 5, DEFERRED ON PURPOSE, NOT FORGOTTEN. The README second revision note
+   does describe a financing-wip slip as though it were main's, and you are right
+   that it should be reworded. I have not done it yet: README.md is byte-identical
+   across financing-wip and the PR #1 branch right now, and changing it on
+   financing-wip before Jacob merges would diverge the two and produce a merge
+   conflict on a file that currently cannot conflict. It goes in a small PR
+   against main once PR #1 is merged. Tracked in STATUS.md so it does not get
+   lost.
+6. ITEM 4 UNDERSTOOD AND UNSTARTED, since nothing is uploaded: raw/ still holds
+   the same 21 files. On arrival the order is F3's column headings to you FIRST,
+   before any other processing, then a FOURTH DELIVERY block in raw/RETRIEVED.txt
+   with title, publisher, URL, retrieval date, bytes and MD5 per file, matching
+   the existing delivery-block format rather than inventing a new one. CHECKSUMS.md5
+   is regenerated last, after the RETRIEVED.txt edit, since both are in the
+   manifest.
+7. NOT WATCHING PR #1, as instructed.
+8. STATUS.md now ends with a four-item sealing checklist: F3 read and reported;
+   the threshold settled; the switching-cost grid confirmed; F2 and F8 in hand.
+   Nothing else is between the current draft and a seal.
+9. UNCHANGED: no data downloaded, no rate numbers computed, no financing/ scripts
+   written, THESIS.md unsealed, main untouched.
