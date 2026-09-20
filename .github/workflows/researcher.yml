@@ -47,7 +47,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           trigger_phrase: "@researcher"
           allowed_bots: "claude[bot]"
-                    track_progress: ${{ github.event_name != 'workflow_dispatch' }}
+          track_progress: ${{ github.event_name != 'workflow_dispatch' }}
           prompt: |
             You are the RESEARCHER. Read office/RESEARCHER.md and follow it exactly.
             Repository: ${{ github.repository }}.
