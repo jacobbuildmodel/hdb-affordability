@@ -86,14 +86,17 @@ def run_fixed(principal, annual_rate_pct, tenure, horizon):
 
 
 def run_floating(principal, spread_pct, rates, start, tenure, horizon,
-                 switch_cost=None, trigger=None):
+                 switch_cost=None, trigger=None, reset_months=None):
     """
     Benchmark-plus-spread loan.
 
     rates      list of monthly benchmark values, per cent
     start      index into rates of the loan's first month
-    switch_cost  None  -> R2, reprice only on the 36-month schedule
+    switch_cost  None  -> R2, reprice only on the contractual schedule
                  float -> R3, also reprice opportunistically when it pays
+    reset_months  the contractual repricing interval. None uses the module
+                 default RESET_MONTHS (36, the base case). Overridden only by
+                 the reset-interval sensitivity in 22b_reset_sensitivity.py.
 
     Returns (cumulative cost path, number of opportunistic switches). The path
     includes switching costs at the month they are paid, so it is total cost,
@@ -103,10 +106,11 @@ def run_floating(principal, spread_pct, rates, start, tenure, horizon,
     if n <= 0:
         return [], 0
 
+    reset = RESET_MONTHS if reset_months is None else reset_months
     rate = (rates[start] + spread_pct) / 100.0
     pay = amortise(principal, rate, tenure)
     bal, cum, path, switches = principal, 0.0, [], 0
-    next_reset = RESET_MONTHS
+    next_reset = reset
 
     for k in range(n):
         remaining = tenure - k
@@ -114,7 +118,7 @@ def run_floating(principal, spread_pct, rates, start, tenure, horizon,
             # contractual reset: both rules do this
             rate = (rates[start + k] + spread_pct) / 100.0
             pay = amortise(bal, rate, remaining)
-            next_reset = k + RESET_MONTHS
+            next_reset = k + reset
         elif k > 0 and switch_cost is not None and trigger is not None:
             market = (rates[start + k] + spread_pct) / 100.0
             if (rate - market) * 100.0 >= trigger:
@@ -125,7 +129,7 @@ def run_floating(principal, spread_pct, rates, start, tenure, horizon,
                 # (THESIS.md section 5), so foresight is what it is for; the
                 # naive version both assumed persistence AND lacked foresight,
                 # which is how it managed to be worse than R2.
-                binds = min(RESET_MONTHS, remaining, len(rates) - (start + k))
+                binds = min(reset, remaining, len(rates) - (start + k))
                 saving = 0.0
                 for j in range(binds):
                     fut = (rates[start + k + j] + spread_pct) / 100.0
@@ -135,7 +139,7 @@ def run_floating(principal, spread_pct, rates, start, tenure, horizon,
                     pay = amortise(bal, rate, remaining)
                     cum += switch_cost
                     switches += 1
-                    next_reset = k + RESET_MONTHS
+                    next_reset = k + reset
         interest = bal * rate / 12.0
         bal = max(0.0, bal + interest - pay)
         cum += interest
@@ -144,7 +148,8 @@ def run_floating(principal, spread_pct, rates, start, tenure, horizon,
     return path, switches
 
 
-def run_r3(principal, spread_pct, rates, start, tenure, horizon, switch_cost):
+def run_r3(principal, spread_pct, rates, start, tenure, horizon, switch_cost,
+          reset_months=None):
     """
     R3: the cheapest outcome over the trigger grid, chosen with hindsight.
 
@@ -157,7 +162,7 @@ def run_r3(principal, spread_pct, rates, start, tenure, horizon, switch_cost):
     best = None
     for th in TRIGGERS:
         path, n = run_floating(principal, spread_pct, rates, start, tenure,
-                               horizon, switch_cost, th)
+                               horizon, switch_cost, th, reset_months)
         if not path:
             continue
         if best is None or path[-1] < best[0][-1] - 1e-9:
@@ -166,7 +171,8 @@ def run_r3(principal, spread_pct, rates, start, tenure, horizon, switch_cost):
 
 
 def breakeven_spread(principal, rates, start, tenure, horizon, hdb_rate_pct,
-                     switch_cost=None, lo=-10.0, hi=20.0, tol=1e-7):
+                     switch_cost=None, lo=-10.0, hi=20.0, tol=1e-7,
+                     reset_months=None):
     """
     The spread at which the bank route's total cost equals the HDB route's
     cumulative interest over the same months.
@@ -176,6 +182,10 @@ def breakeven_spread(principal, rates, start, tenure, horizon, hdb_rate_pct,
     converge, which is the only unreliability condition the sealed file allows
     (section 6, T1). No plausibility filter: a negative spread is a valid
     result and is returned as one.
+
+    reset_months  passed through to run_floating/run_r3; None is the base
+                 case, 36 months (section 5). Used by the reset-interval
+                 sensitivity, AMENDMENT 3.
     """
     hdb = run_fixed(principal, hdb_rate_pct, tenure, horizon)
     if not hdb:
@@ -184,10 +194,11 @@ def breakeven_spread(principal, rates, start, tenure, horizon, hdb_rate_pct,
 
     def excess(s):
         if switch_cost is None:
-            path, _ = run_floating(principal, s, rates, start, tenure, horizon)
+            path, _ = run_floating(principal, s, rates, start, tenure, horizon,
+                                   reset_months=reset_months)
         else:
             path, _n, _t = run_r3(principal, s, rates, start, tenure, horizon,
-                                  switch_cost)
+                                  switch_cost, reset_months=reset_months)
         return (path[-1] - target) if path else None
 
     a, b = excess(lo), excess(hi)
@@ -208,7 +219,7 @@ def breakeven_spread(principal, rates, start, tenure, horizon, hdb_rate_pct,
 
 
 def crossover_month(principal, spread_pct, rates, start, tenure, horizon,
-                    hdb_rate_pct, switch_cost=None):
+                    hdb_rate_pct, switch_cost=None, reset_months=None):
     """
     First month index where the bank route stops being ahead, i.e. cumulative
     bank cost first meets or exceeds cumulative HDB interest.
@@ -219,10 +230,11 @@ def crossover_month(principal, spread_pct, rates, start, tenure, horizon,
     """
     hdb = run_fixed(principal, hdb_rate_pct, tenure, horizon)
     if switch_cost is None:
-        bank, _ = run_floating(principal, spread_pct, rates, start, tenure, horizon)
+        bank, _ = run_floating(principal, spread_pct, rates, start, tenure,
+                               horizon, reset_months=reset_months)
     else:
         bank, _n, _t = run_r3(principal, spread_pct, rates, start, tenure,
-                              horizon, switch_cost)
+                              horizon, switch_cost, reset_months=reset_months)
     n = min(len(hdb), len(bank))
     if n == 0:
         return None

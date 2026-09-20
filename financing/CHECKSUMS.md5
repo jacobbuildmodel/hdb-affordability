@@ -11,23 +11,29 @@
 fe6b3f7c3d465b2b62eef1a247603f48  raw/f6_mas_mortgage_pricing_2021.pdf
 f77691c48c0774cb432700d1bf75e5f5  raw/f8_cpf_rates_q1_2025.pdf
 c6002c7edbcc1571c14a1dad9544938b  financing/20_rates.py
-b414b27c8b6fe453b97a98cab205af21  financing/21_model.py
+3592b587f4653f53e6961ffee1b5be7b  financing/21_model.py
 11f32ff9e8ac2acb1068fc641377224c  financing/22_compute.py
+13d8042432b3d46f009fc1cfe476f6d8  financing/22b_reset_sensitivity.py
 45c8b91fc727e92123c5efb137215667  financing/23_figures.py
-1c9ad2af660b383d4b6364cb7f7f490c  financing/24_results.py
-b91311ea1449171a5a069002fcc553c5  financing/25_manifest.py
-0c1eae0d8a883192e2580b72a5ff7922  financing/THESIS.md
-e8cda12782c9f7f9542f5d903081fe8a  financing/RESULTS.md
+1193eea905f279a544b8e83e57f30a96  financing/24_results.py
+a09a08b974257a491e70e6f6895c23cb  financing/25_manifest.py
+88505417797530584b3d7f14168a88c2  financing/THESIS.md
+78809523ffc7f944cf01bf5cab479647  financing/RESULTS.md
 
 # ---- OUTPUTS ----
 da54950c1f34cbd1c68c64b3593202a4  financing/out/compute_report.txt
 9e835236412781da3579f3c56bb80802  financing/out/figure_captions.txt
 659ae8837bc83c6c114697e76907a999  financing/out/headline_numbers.csv
 a994b413f8140142eeed584fa8c803df  financing/out/rates_monthly.csv
+448b2317cafff7e86b646431395f68e7  financing/out/reset_sensitivity_report.txt
 5b36cf36014c890cc687c1fc1e024cab  financing/out/s1_finance_companies.csv
 f3e02d1e2de98e7a9612a47ce14aeb27  financing/out/t1_breakeven.csv
+5408d6cff57e33579a9ad69bfd66d0c0  financing/out/t1_reset_sensitivity.csv
 6f6ed444774f49b2791d4f5cad53ac16  financing/out/t2_crossover.csv
+7a593f2089b0da399d9446f152007ab0  financing/out/t2_reset_sensitivity.csv
 16312d05fe198607ddfdbbd2a842118a  financing/out/t3_r2_r3.csv
+b7ae9bc581b16d217884a2283ec58636  financing/out/t3_reset_sensitivity.csv
+76595fe0e43ab82f9f7a0a4c6140c8f6  financing/out/t4_reset_sensitivity.csv
 6efe30ac03bf02140acfa96684a152cc  financing/out/t4_switch.csv
 609af260af0aac8e3648e2b5390a6ce4  financing/figs/chart1_hdb_vs_sora.svg
 350048680272de11271635252b270d5b  financing/figs/chart2_breakeven_by_start_year.svg
