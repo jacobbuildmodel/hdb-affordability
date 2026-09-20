@@ -1,4 +1,4 @@
-  # Checker: verifies the researcher work. It can comment but cannot push.
+# Checker: verifies the researcher work. It can comment but cannot push.
 # Two ways to start it:
 #   1. A comment containing "@checker" on an issue or PR.
 #   2. The "Run workflow" button on the Actions tab, with the instruction typed
@@ -47,7 +47,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           trigger_phrase: "@checker"
           allowed_bots: "claude[bot]"
-                   track_progress: ${{ github.event_name != 'workflow_dispatch' }}
+          track_progress: ${{ github.event_name != 'workflow_dispatch' }}
           prompt: |
             You are the CHECKER. Read office/CHECKER.md and office/CHECKPOINTS.md and follow them exactly.
             Repository: ${{ github.repository }}.
