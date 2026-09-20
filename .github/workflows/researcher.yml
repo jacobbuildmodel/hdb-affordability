@@ -33,7 +33,12 @@ jobs:
   research:
     if: github.event_name == 'workflow_dispatch' || contains(github.event.comment.body, '@researcher')
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    # 120, not 60. The researcher's jobs are multi-part (a Checkpoint review can
+    # carry seven fixes plus re-rendered charts). Run 35495167551 used 19 minutes
+    # of the old 60 to reach turn 81 of 80. Raising the turn budget alone would
+    # only have moved the failure to a timeout kill, which posts nothing back to
+    # the issue, whereas a max-turns exit at least posts the progress comment.
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,5 +63,5 @@ jobs:
             and you report back by posting your hand-back comment on issue
             #${{ github.event.inputs.issue }} using the gh CLI.
           claude_args: |
-            --max-turns 80
+            --max-turns 250
             --allowedTools "Bash,Read,Edit,Write,Glob,Grep"
