@@ -1,0 +1,24 @@
+22b_reset_sensitivity.py
+reset intervals tested: 36, 24, 12, 3 months (base case is 36, section 5)
+
+T1 reset sensitivity: 16 cohorts x 4 reset intervals
+
+T1b at 36-month reset: 2010-2015 range 1.641 to 2.046, HOLDS
+T1b at 24-month reset: 2010-2015 range 1.474 to 1.989, HOLDS
+T1b at 12-month reset: 2010-2015 range 1.459 to 1.906, HOLDS
+T1b at  3-month reset: 2010-2015 range 1.431 to 1.890, HOLDS
+
+T2b at 36-month reset: 15 of 24 cells fail
+T2b at 24-month reset: 11 of 24 cells fail
+T2b at 12-month reset: 8 of 24 cells fail
+T2b at  3-month reset: 7 of 24 cells fail
+
+T3 at 36-month reset: largest gap 2010-2015 0.296, largest 2022-2025 1.260
+T3 at 24-month reset: largest gap 2010-2015 0.445, largest 2022-2025 1.252
+T3 at 12-month reset: largest gap 2010-2015 0.179, largest 2022-2025 0.620
+T3 at  3-month reset: largest gap 2010-2015 0.031, largest 2022-2025 0.101
+
+T4a at 36-month reset: 31 of 66 cases worse than staying
+T4a at 24-month reset: 44 of 66 cases worse than staying
+T4a at 12-month reset: 37 of 66 cases worse than staying
+T4a at  3-month reset: 44 of 66 cases worse than staying

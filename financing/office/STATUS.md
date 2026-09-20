@@ -1,8 +1,11 @@
 # STATUS -- hdb-financing
 
-Updated 17 September 2026, MSG 016 (researcher `hdb` to checker `claude-e4`).
+Updated 20 September 2026 (researcher `hdb`, Checkpoint 1 fix, task 1 of 3:
+analysis fixes only, no charts, no prose).
 
-**THESIS.md is SEALED (43bd0a0). Build done. 5 predictions passed, 3 FAILED.**
+**THESIS.md is SEALED (43bd0a0), now with AMENDMENT 1, 2 and 3 appended.
+Build done. 5 predictions passed, 3 FAILED, reset-interval sensitivity added
+for T1b/T2b/T3/T4a.**
 
 | Item | State | Blocker | Next action by |
 |---|---|---|---|
@@ -12,10 +15,11 @@ Updated 17 September 2026, MSG 016 (researcher `hdb` to checker `claude-e4`).
 | Design | break-even spread; A/B/E accepted; C ruled -- R1 dropped (DECISIONS.md 17 Sep) | none | -- |
 | THESIS.md | SEALED 17 Sep at 43bd0a0, sealed on its own commit before F1 was opened; two AMENDMENT blocks appended | none | claude-e4 to rule on AMENDMENT 1 |
 | Predictions | T1a PASS, T1b PASS (weak evidence), T2a PASS, T2b FAIL, T3 FAIL, T4a FAIL, T4b PASS, S1 PASS | none | claude-e4 |
-| financing/ scripts 20-25 | built; selftest, compute, charts, scoring, own CHECKSUMS and number manifest; wired into run_all.sh | none | claude-e4 |
+| financing/ scripts 20-25, 22b | built; selftest, compute, reset-interval sensitivity, charts, scoring, own CHECKSUMS and number manifest; wired into run_all.sh | none | claude-e4 |
 | Charts 1 and 2 | built as SVG, dark mode, checked in Chromium at 390px in both schemes; two rendering defects found and fixed | none | -- |
-| R3 implementation | CHANGED, recorded as AMENDMENT 1 (written AFTER results). Literal sealed rule made R3 cost more than R2, contradicting its own upper-bound description | none | claude-e4 to rule |
+| R3 implementation | CHANGED, recorded as AMENDMENT 1 (written AFTER results). Literal sealed rule made R3 cost more than R2, contradicting its own upper-bound description. ACCEPTED by checker 17 Sep (DECISIONS.md) | none | -- |
 | SGS forward-curve projection | NOT built, recorded as AMENDMENT 2. Two other labelled paths are built | none | claude-e4 |
+| Reset-interval sensitivity | ADDED, recorded as AMENDMENT 3 (written AFTER results). `22b_reset_sensitivity.py` reruns T1/T2b/T3/T4a at 36/24/12/3-month resets; T1b HOLDS at every interval (2010-2015 minimum 1.431); T2b, T3, T4a still FAIL at every interval, with the driver noted per test in RESULTS.md | none | claude-e4 |
 | MSG 005 items 1-11 | ACCEPTED at cb7c941 (MSG 007 item 1) | none | -- |
 | Fix PR against main | VERIFIED by claude-e4 (MSG 009 item 1); open and unmerged | none | Jacob to merge PR #1 |
 | T1 magnitude claim (MSG 007 item 3) | added: realised spread exceeds 1.0 point for every 2010-2015 start, flagged as the headline claim | none | -- |
@@ -49,9 +53,11 @@ Updated 17 September 2026, MSG 016 (researcher `hdb` to checker `claude-e4`).
 ## What is waiting on whom
 
 - **Jacob:** merge PR #2 (README wording, corrected per MSG 015 item 3).
-- **claude-e4:** rule on AMENDMENT 1, the R3 implementation change; review the
-  three failures; say whether the piece proceeds to prose.
-- **hdb:** no prose written and none starting until told. Nothing else pending.
+- **claude-e4:** verify Checkpoint 1 task 1 of 3 (analysis fixes: AMENDMENT 1
+  recorded in DECISIONS.md, AMENDMENT 3 reset-interval sensitivity, reset-driver
+  lines on T2b/T3/T4a); charts and article prose are separate, later tasks.
+- **hdb:** no prose written and none starting until told. Nothing else pending
+  from task 1.
 
 ## Sealing checklist
 

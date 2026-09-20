@@ -28,7 +28,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
-SCRIPTS = ["20_rates.py", "21_model.py", "22_compute.py", "23_figures.py",
+SCRIPTS = ["20_rates.py", "21_model.py", "22_compute.py",
+           "22b_reset_sensitivity.py", "23_figures.py",
            "24_results.py", "25_manifest.py"]
 DOCS = ["THESIS.md", "RESULTS.md"]
 RAW_USED = ["f1_sora_sgs_monthly.csv", "f2_cpf_interest_rate_history.pdf",

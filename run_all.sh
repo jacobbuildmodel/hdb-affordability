@@ -72,6 +72,10 @@ echo "== 22 pre-registered tests T1-T4 and the S1 side comparison"
 python3 financing/22_compute.py
 
 echo
+echo "== 22b reset-interval sensitivity (AMENDMENT 3)"
+python3 financing/22b_reset_sensitivity.py
+
+echo
 echo "== 23 charts"
 python3 financing/23_figures.py
 

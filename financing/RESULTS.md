@@ -10,8 +10,11 @@ wording rather than a paraphrase of it. **5 of 8 predictions passed and
 ## The failures, first
 
 - **T2b FAILED.** 15 of 24 cells fail, 10 of them never cross at all. Predicted: 2020-2023 cross within 3 years at every spread.
+  Reset-interval sensitivity (AMENDMENT 3): cells failing run 15 of 24 at 36m, 11 of 24 at 24m, 8 of 24 at 12m, 7 of 24 at 3m across the 36/24/12/3-month resets; T2b fails at every tested interval, though faster resets cut the failure count roughly in half.
 - **T3 FAILED.** largest gap 2010-2015 is 0.296, largest 2022-2025 is 1.260. Predicted: gap largest for 2010-2015 and below 0.2 for 2022-2025.
+  Reset-interval sensitivity (AMENDMENT 3): the largest gap is bigger for 2022-2025 than for 2010-2015 at every tested reset (36m 0.296 vs 1.260, 24m 0.445 vs 1.252, 12m 0.179 vs 0.620, 3m 0.031 vs 0.101), the opposite ordering of the prediction at every interval; the reset assumption is not what drives this failure.
 - **T4a FAILED.** 31 of 66 cases worse than staying. Predicted: 2021 switch worse for every applicable case.
+  Reset-interval sensitivity (AMENDMENT 3): the 2021 switch is never uniformly worse than staying at any tested reset (31 of 66 at 36m, 44 of 66 at 24m, 37 of 66 at 12m, 44 of 66 at 3m); the reset assumption is not what drives this failure either.
 
 ## Scorecard
 
@@ -40,6 +43,57 @@ the break-even spread over SORA therefore overstates the SIBOR-equivalent
 margin for exactly the cohorts T1b is about. The pass is consistent with
 the claim; it is not strong evidence for it, and this sentence travels with
 the headline number wherever it is published.
+
+## Reset-interval sensitivity (AMENDMENT 3, written after results)
+
+THESIS.md section 5 fixes R2's contractual reset at 36 months and calls
+it "the closest thing to a neutral assumption", not a sourced fact
+about any actual mortgage package. `22b_reset_sensitivity.py` reruns the
+realised break-even spread (R2) at 36, 24, 12 and 3-month resets for
+every cohort, so T1b's dependence on that choice is a reported number,
+not an assumption left untested.
+
+| Start year | 36 months | 24 months | 12 months | 3 months |
+|---|---|---|---|---|
+| 2010 | +2.046 | +1.989 | +1.906 | +1.891 |
+| 2011 | +1.892 | +1.857 | +1.844 | +1.824 |
+| 2012 | +1.940 | +1.878 | +1.766 | +1.743 |
+| 2013 | +1.898 | +1.693 | +1.678 | +1.653 |
+| 2014 | +1.641 | +1.715 | +1.576 | +1.549 |
+| 2015 | +1.693 | +1.474 | +1.459 | +1.431 |
+| 2016 | +1.635 | +1.495 | +1.332 | +1.311 |
+| 2017 | +1.242 | +1.197 | +1.207 | +1.169 |
+| 2018 | +1.327 | +1.266 | +1.029 | +1.027 |
+| 2019 | +1.324 | +0.789 | +0.885 | +0.924 |
+| 2020 | +0.565 | +1.020 | +0.852 | +0.904 |
+| 2021 | +0.924 | +0.670 | +0.737 | +0.654 |
+| 2022 | +1.523 | +0.826 | +0.320 | +0.216 |
+| 2023 | -0.237 | -0.439 | -0.317 | -0.191 |
+| 2024 | -1.055 | -0.512 | -0.222 | +0.122 |
+| 2025 | -0.299 | -0.299 | +0.333 | +0.855 |
+
+Realised break-even spread, points over SORA, R2, by cohort and reset
+interval. Same basis as the base-case table below (loan start to
+2026-07, S$400,000 over 25 years) with only the contractual reset
+interval changed. The 2019-2025 cohorts move the most since they have
+had the fewest reset dates to reach the rate rise; the 2010-2015
+cohorts move little because a decade of sub-2.6 benchmark dominates
+the total regardless of how often the loan repriced.
+
+**T1b scored under all four reset intervals:**
+
+| Reset (months) | 2010-2015 range | T1b (exceeds 1.0 for every start) |
+|---|---|---|
+| 36 | 1.641 to 2.046 | HOLDS |
+| 24 | 1.474 to 1.989 | HOLDS |
+| 12 | 1.459 to 1.906 | HOLDS |
+| 3 | 1.431 to 1.891 | HOLDS |
+
+T1b holds at every tested reset interval: the 2010-2015 minimum across
+all four intervals is 1.431, still above the 1.0 threshold. The
+weak-evidence rule above applies unchanged to all four, since the
+benchmark substitution is a property of the benchmark series, not of
+the reset interval.
 
 ## Realised break-even spread by start year, R2
 

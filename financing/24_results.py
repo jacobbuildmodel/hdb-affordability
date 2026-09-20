@@ -11,7 +11,10 @@ it. Where a prediction is scored FAIL, the sealed wording is quoted so a reader
 can check the call.
 
 Reads:  financing/out/t1_breakeven.csv, t2_crossover.csv, t3_r2_r3.csv,
-        t4_switch.csv, s1_finance_companies.csv
+        t4_switch.csv, s1_finance_companies.csv,
+        t1_reset_sensitivity.csv, t2_reset_sensitivity.csv,
+        t3_reset_sensitivity.csv, t4_reset_sensitivity.csv
+        (the last four from 22b_reset_sensitivity.py, AMENDMENT 3)
 Writes: financing/RESULTS.md, financing/out/headline_numbers.csv
 
 Usage:  python3 24_results.py
@@ -35,6 +38,11 @@ def main():
     t3 = rd("t3_r2_r3.csv")
     t4 = rd("t4_switch.csv")
     s1 = rd("s1_finance_companies.csv")
+    r1 = rd("t1_reset_sensitivity.csv")
+    r2 = rd("t2_reset_sensitivity.csv")
+    r3 = rd("t3_reset_sensitivity.csv")
+    r4 = rd("t4_reset_sensitivity.csv")
+    RESETS = [36, 24, 12, 3]
 
     be = {int(r["start_year"]): float(r["realised_breakeven_spread_r2"])
           for r in t1 if r["realised_breakeven_spread_r2"]}
@@ -116,6 +124,46 @@ def main():
     passes = sum(1 for v in verdicts if v[2])
     fails = len(verdicts) - passes
 
+    # ---- reset-interval sensitivity (AMENDMENT 3) --------------------------
+    reset_be = {int(r["start_year"]): {rm: (float(r["breakeven_reset_%d" % rm])
+                if r["breakeven_reset_%d" % rm] else None) for rm in RESETS}
+                for r in r1}
+    t1b_by_reset = []
+    for rm in RESETS:
+        rvals = [reset_be[y][rm] for y in range(2010, 2016)
+                 if reset_be[y][rm] is not None]
+        holds = bool(rvals) and min(rvals) > 1.0
+        t1b_by_reset.append((rm, min(rvals), max(rvals), holds))
+    reset_min_2010_2015 = min(v[1] for v in t1b_by_reset)
+
+    r2_by_reset = {int(r["reset_months"]): (int(r["cells_failing"]), int(r["cells_total"]))
+                   for r in r2}
+    r3_by_reset = {int(r["reset_months"]): (float(r["max_gap_2010_2015"]), float(r["max_gap_2022_2025"]))
+                   for r in r3}
+    r4_by_reset = {int(r["reset_months"]): (int(r["cases_worse"]), int(r["cases_total"]))
+                   for r in r4}
+
+    reset_notes = {
+        "T2b": ("Reset-interval sensitivity (AMENDMENT 3): cells failing run "
+                "%s across the 36/24/12/3-month resets; T2b fails at every "
+                "tested interval, though faster resets cut the failure count "
+                "roughly in half."
+                % ", ".join("%d of %d at %dm" % (r2_by_reset[rm][0], r2_by_reset[rm][1], rm)
+                             for rm in RESETS)),
+        "T3": ("Reset-interval sensitivity (AMENDMENT 3): the largest gap is "
+               "bigger for 2022-2025 than for 2010-2015 at every tested reset "
+               "(%s), the opposite ordering of the prediction at every "
+               "interval; the reset assumption is not what drives this "
+               "failure."
+               % ", ".join("%dm %.3f vs %.3f" % (rm, r3_by_reset[rm][0], r3_by_reset[rm][1])
+                            for rm in RESETS)),
+        "T4a": ("Reset-interval sensitivity (AMENDMENT 3): the 2021 switch is "
+                "never uniformly worse than staying at any tested reset (%s); "
+                "the reset assumption is not what drives this failure either."
+                % ", ".join("%d of %d at %dm" % (r4_by_reset[rm][0], r4_by_reset[rm][1], rm)
+                             for rm in RESETS)),
+    }
+
     # ---- headline numbers --------------------------------------------------
     y_top = max(be, key=lambda y: be[y])
     y_bot = min(be, key=lambda y: be[y])
@@ -158,6 +206,8 @@ def main():
     for tag, what, ok, detail in verdicts:
         if not ok:
             a("- **%s FAILED.** %s. Predicted: %s." % (tag, detail, what))
+            if tag in reset_notes:
+                a("  %s" % reset_notes[tag])
     a("")
     a("## Scorecard")
     a("")
@@ -180,6 +230,46 @@ def main():
     a("margin for exactly the cohorts T1b is about. The pass is consistent with")
     a("the claim; it is not strong evidence for it, and this sentence travels with")
     a("the headline number wherever it is published.")
+    a("")
+    a("## Reset-interval sensitivity (AMENDMENT 3, written after results)")
+    a("")
+    a("THESIS.md section 5 fixes R2's contractual reset at 36 months and calls")
+    a("it \"the closest thing to a neutral assumption\", not a sourced fact")
+    a("about any actual mortgage package. `22b_reset_sensitivity.py` reruns the")
+    a("realised break-even spread (R2) at 36, 24, 12 and 3-month resets for")
+    a("every cohort, so T1b's dependence on that choice is a reported number,")
+    a("not an assumption left untested.")
+    a("")
+    a("| Start year | 36 months | 24 months | 12 months | 3 months |")
+    a("|---|---|---|---|---|")
+    for y in sorted(reset_be):
+        row = reset_be[y]
+        a("| %d | %s | %s | %s | %s |" % (y,
+            "-" if row[36] is None else "%+.3f" % row[36],
+            "-" if row[24] is None else "%+.3f" % row[24],
+            "-" if row[12] is None else "%+.3f" % row[12],
+            "-" if row[3] is None else "%+.3f" % row[3]))
+    a("")
+    a("Realised break-even spread, points over SORA, R2, by cohort and reset")
+    a("interval. Same basis as the base-case table below (loan start to")
+    a("2026-07, S$400,000 over 25 years) with only the contractual reset")
+    a("interval changed. The 2019-2025 cohorts move the most since they have")
+    a("had the fewest reset dates to reach the rate rise; the 2010-2015")
+    a("cohorts move little because a decade of sub-2.6 benchmark dominates")
+    a("the total regardless of how often the loan repriced.")
+    a("")
+    a("**T1b scored under all four reset intervals:**")
+    a("")
+    a("| Reset (months) | 2010-2015 range | T1b (exceeds 1.0 for every start) |")
+    a("|---|---|---|")
+    for rm, lo, hi, holds in t1b_by_reset:
+        a("| %d | %.3f to %.3f | %s |" % (rm, lo, hi, "HOLDS" if holds else "FAILS"))
+    a("")
+    a("T1b holds at every tested reset interval: the 2010-2015 minimum across")
+    a("all four intervals is %.3f, still above the 1.0 threshold. The" % reset_min_2010_2015)
+    a("weak-evidence rule above applies unchanged to all four, since the")
+    a("benchmark substitution is a property of the benchmark series, not of")
+    a("the reset interval.")
     a("")
     a("## Realised break-even spread by start year, R2")
     a("")

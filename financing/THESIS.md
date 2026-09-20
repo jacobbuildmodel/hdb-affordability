@@ -718,3 +718,37 @@ input this design was built to avoid.
 
 This costs the piece nothing at the headline, which is realised and carries no
 forward path at all. It is recorded as outstanding rather than dropped.
+
+## AMENDMENT 3 -- reset-interval sensitivity for T1b
+
+**Written AFTER results were seen. 20 September 2026.** Raised by the checker,
+who asked whether T1b's magnitude claim survives if the 36-month contractual
+reset in section 5 -- itself called "the closest thing to a neutral
+assumption", not a sourced fact -- is replaced by a shorter interval.
+
+`22b_reset_sensitivity.py` reruns the realised break-even spread (R2) for
+every cohort at 36, 24, 12 and 3-month resets. The 2010-2015 cohorts, which
+T1b is about, move little: the minimum across all sixteen combinations of
+cohort and reset interval, restricted to 2010-2015, is 1.431 points, still
+above the 1.0 threshold at every interval. The 2019-2025 cohorts move much
+more, since they have had the fewest reset dates before the last data month:
+the 2024 start goes from -1.055 points at a 36-month reset to +0.122 at a
+3-month reset, and the 2022 start from +1.523 to +0.216. Full table in
+RESULTS.md.
+
+**T1b holds under all four tested reset intervals.** The weak-evidence rule
+in section 6 (a pass is weak evidence, a fail would be strong evidence, because
+the benchmark substitution favours a pass) is unaffected by this amendment: it
+follows from the SORA-for-SIBOR substitution, which is a property of the
+benchmark series, not of the reset interval, and applies unchanged to all
+four.
+
+This amendment does not change T1a, T2a, T4b or S1, none of which the reset
+interval was in question for. It supplies the same sensitivity to T2b, T3 and
+T4a, all three of which fail under the sealed wording; RESULTS.md reports, for
+each, how much of the failure the 36-month reset choice drives. For T3 and
+T4a the answer is: none of it -- both fail at every one of the four tested
+intervals, for the same reason they fail at 36 months. For T2b the reset
+choice matters more: cells failing fall from 15 of 24 at 36 months to 7 of 24
+at 3 months, but T2b still fails at every tested interval, so this narrows the
+margin of the failure without reversing the verdict.
