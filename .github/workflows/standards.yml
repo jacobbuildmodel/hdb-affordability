@@ -1,0 +1,24 @@
+# Runs the machine-checkable half of STANDARDS v2 on every push and pull request.
+# A failure here is visible before any human looks at the work.
+name: standards
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - name: fast checks
+        run: ./check.sh
+      - name: rebuild, byte-identical outputs, corruption guard
+        run: ./check.sh --full
