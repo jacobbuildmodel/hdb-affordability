@@ -72,6 +72,9 @@ Separately, `run_all.sh` was committed without its executable bit, so the `./run
 invocation documented here failed with "Permission denied" on a fresh clone; the
 mode is now `100755`. Neither fault changed a single reported figure.
 
+**Revision note, 21 September 2026.** Charts redrawn for phone screens (smallest
+text 11.4px at 390px width, previously 6.0px). Layout only; no figure changed.
+
 `08_manifest.py` also audits the article: every number in the prose must appear in
 `number_manifest.csv` against the script that produced it. It currently reports
 "every prose figure is in the manifest".
