@@ -14,16 +14,16 @@ c6002c7edbcc1571c14a1dad9544938b  financing/20_rates.py
 3592b587f4653f53e6961ffee1b5be7b  financing/21_model.py
 11f32ff9e8ac2acb1068fc641377224c  financing/22_compute.py
 13d8042432b3d46f009fc1cfe476f6d8  financing/22b_reset_sensitivity.py
-45c8b91fc727e92123c5efb137215667  financing/23_figures.py
-b33caef3e40103358bd96b6c930eab89  financing/24_results.py
+bbb81a8346b8352c03f3dbadef7c5651  financing/23_figures.py
+6cc7d94bdbf4e1a0c7c4bed9917738d5  financing/24_results.py
 a09a08b974257a491e70e6f6895c23cb  financing/25_manifest.py
 88505417797530584b3d7f14168a88c2  financing/THESIS.md
-4cdc61a8431558772ce5f4746014188f  financing/RESULTS.md
+ae39b1a31e9175bb78fb7cabfdbacf16  financing/RESULTS.md
 
 # ---- OUTPUTS ----
 da54950c1f34cbd1c68c64b3593202a4  financing/out/compute_report.txt
 9e835236412781da3579f3c56bb80802  financing/out/figure_captions.txt
-26e4b140c7ef58f3cd4580f80c3e6af9  financing/out/headline_numbers.csv
+caf91f7e686f17748020135f18e26567  financing/out/headline_numbers.csv
 a994b413f8140142eeed584fa8c803df  financing/out/rates_monthly.csv
 448b2317cafff7e86b646431395f68e7  financing/out/reset_sensitivity_report.txt
 5b36cf36014c890cc687c1fc1e024cab  financing/out/s1_finance_companies.csv
@@ -35,5 +35,5 @@ f3e02d1e2de98e7a9612a47ce14aeb27  financing/out/t1_breakeven.csv
 b7ae9bc581b16d217884a2283ec58636  financing/out/t3_reset_sensitivity.csv
 76595fe0e43ab82f9f7a0a4c6140c8f6  financing/out/t4_reset_sensitivity.csv
 6efe30ac03bf02140acfa96684a152cc  financing/out/t4_switch.csv
-609af260af0aac8e3648e2b5390a6ce4  financing/figs/chart1_hdb_vs_sora.svg
-350048680272de11271635252b270d5b  financing/figs/chart2_breakeven_by_start_year.svg
+d3d353aa39821d035c80afbf4e8cbf22  financing/figs/chart1_hdb_vs_sora.svg
+2b627286f06bee14f56994ea3c8da41d  financing/figs/chart2_breakeven_by_start_year.svg

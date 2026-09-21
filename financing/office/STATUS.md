@@ -1,11 +1,13 @@
 # STATUS -- hdb-financing
 
-Updated 20 September 2026 (researcher `hdb`, Checkpoint 1 fix, task 1 of 3:
-analysis fixes only, no charts, no prose).
+Updated 21 September 2026 (researcher `hdb`, Checkpoint 1 fix, task 3 of 3:
+H3 and finding corrections, chart legibility and Chart 2 rework).
 
 **THESIS.md is SEALED (43bd0a0), now with AMENDMENT 1, 2 and 3 appended.
 Build done. 5 predictions passed, 3 FAILED, reset-interval sensitivity added
-for T1b/T2b/T3/T4a.**
+for T1b/T2b/T3/T4a. Headline numbers and finding are interval-robust
+(task 2); H3 corrected to the first all-negative start year and both charts
+are legible at 390px (task 3).**
 
 | Item | State | Blocker | Next action by |
 |---|---|---|---|
@@ -16,10 +18,12 @@ for T1b/T2b/T3/T4a.**
 | THESIS.md | SEALED 17 Sep at 43bd0a0, sealed on its own commit before F1 was opened; two AMENDMENT blocks appended | none | claude-e4 to rule on AMENDMENT 1 |
 | Predictions | T1a PASS, T1b PASS (weak evidence), T2a PASS, T2b FAIL, T3 FAIL, T4a FAIL, T4b PASS, S1 PASS | none | claude-e4 |
 | financing/ scripts 20-25, 22b | built; selftest, compute, reset-interval sensitivity, charts, scoring, own CHECKSUMS and number manifest; wired into run_all.sh | none | claude-e4 |
-| Charts 1 and 2 | built as SVG, dark mode, checked in Chromium at 390px in both schemes; two rendering defects found and fixed | none | -- |
+| Charts 1 and 2 | built as SVG, dark mode, checked in Chromium at 390px in both schemes. Redrawn 21 Sep (task 3): 480x340 canvas, 14-15px type, smallest rendered text 11.4px at 390px (was 6.0px). Chart 2 labels 2010 not 2025, dims 2024/2025 markers (<36mo realised), adds the AMENDMENT 3 reset-interval range as a second, dashed, clearly labelled band, legend moved to the right margin clear of both bands | none | -- |
 | R3 implementation | CHANGED, recorded as AMENDMENT 1 (written AFTER results). Literal sealed rule made R3 cost more than R2, contradicting its own upper-bound description. ACCEPTED by checker 17 Sep (DECISIONS.md) | none | -- |
 | SGS forward-curve projection | NOT built, recorded as AMENDMENT 2. Two other labelled paths are built | none | claude-e4 |
 | Reset-interval sensitivity | ADDED, recorded as AMENDMENT 3 (written AFTER results). `22b_reset_sensitivity.py` reruns T1/T2b/T3/T4a at 36/24/12/3-month resets; T1b HOLDS at every interval (2010-2015 minimum 1.431); T2b, T3, T4a still FAIL at every interval, with the driver noted per test in RESULTS.md | none | claude-e4 |
+| Headline numbers | H1 2.05, H2 1.43 (task 2, replaced the 36-month-only H2/H3); H3 replaced again (task 3, correction A): first start year negative at every reset interval, 2023, range -0.19 to -0.44 | none | claude-e4 |
+| The finding | task 2's "Banks had room to charge 1.4 points more than HDB" wrongly implied room over the HDB rate and all cohorts; corrected (task 3, correction B) to "Early HDB borrowers lost to any bank under SORA+1.4.", 52 chars, states the SORA benchmark and the 2010-2015 cohort | none | claude-e4 |
 | MSG 005 items 1-11 | ACCEPTED at cb7c941 (MSG 007 item 1) | none | -- |
 | Fix PR against main | VERIFIED by claude-e4 (MSG 009 item 1); open and unmerged | none | Jacob to merge PR #1 |
 | T1 magnitude claim (MSG 007 item 3) | added: realised spread exceeds 1.0 point for every 2010-2015 start, flagged as the headline claim | none | -- |
@@ -53,11 +57,12 @@ for T1b/T2b/T3/T4a.**
 ## What is waiting on whom
 
 - **Jacob:** merge PR #2 (README wording, corrected per MSG 015 item 3).
-- **claude-e4:** verify Checkpoint 1 task 1 of 3 (analysis fixes: AMENDMENT 1
-  recorded in DECISIONS.md, AMENDMENT 3 reset-interval sensitivity, reset-driver
-  lines on T2b/T3/T4a); charts and article prose are separate, later tasks.
-- **hdb:** no prose written and none starting until told. Nothing else pending
-  from task 1.
+- **claude-e4 / checker:** verify Checkpoint 1, all three tasks now pushed to
+  financing-wip: task 1 (analysis fixes), task 2 (headline numbers and
+  finding, interval-robust), task 3 (H3/finding corrections, both charts
+  redrawn legible at 390px, Chart 2 reworked). ./check.sh chart section
+  passes for both financing SVGs (11.4px at 390px, threshold 11px).
+- **hdb:** no prose written and none starting until told. Nothing else pending.
 
 ## Sealing checklist
 

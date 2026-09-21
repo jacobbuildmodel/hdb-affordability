@@ -186,12 +186,20 @@ def main():
     h2_val = min(h2_by_reset)
     h2_lo, h2_hi = min(h2_by_reset), max(h2_by_reset)
 
-    # H3: T3's failure -- the 2022-2025 gap beats the 2010-2015 gap at every
-    # reset. The margin by which it does so is reported at its smallest.
-    margin_by_reset = {rm: r3_by_reset[rm][1] - r3_by_reset[rm][0] for rm in RESETS}
-    assert all(v > 0 for v in margin_by_reset.values()), margin_by_reset
-    h3_val = min(margin_by_reset.values())
-    h3_lo, h3_hi = min(margin_by_reset.values()), max(margin_by_reset.values())
+    # H3 (correction A, Jacob 2026-09-21): the old H3 (T3's margin, 0.07) was
+    # unfollowable and negligible in magnitude. Replaced with the first start
+    # year whose realised break-even spread is negative at every tested reset
+    # interval -- the HDB loan beat the benchmark itself, before any bank
+    # margin, regardless of the reset assumption.
+    h3_year = None
+    for y in sorted(reset_be):
+        yvals = [reset_be[y][rm] for rm in RESETS]
+        if all(v is not None for v in yvals) and all(v < 0 for v in yvals):
+            h3_year = y
+            h3_vals = yvals
+            break
+    assert h3_year is not None, "no start year is negative at every reset interval"
+    h3_lo, h3_hi = min(h3_vals), max(h3_vals)
 
     headline = [
         ("H1", "%.2f" % h1_hi,
@@ -206,14 +214,12 @@ def main():
          "interval (T1b, the headline claim); the minimum-over-cohorts figure "
          "ranges %.2f (3-month reset) to %.2f (36-month reset)" % (h2_lo, h2_hi),
          "22b_reset_sensitivity.py -> out/t1_reset_sensitivity.csv"),
-        ("H3", "%.2f" % h3_val,
-         "percentage points: the minimum margin by which the largest gap over "
-         "2.6 for 2022-2025 starts exceeded the largest gap for 2010-2015 "
-         "starts, across every tested reset interval (T3, the opposite "
-         "ordering from the sealed prediction, holding at every interval); "
-         "margin ranges %.2f (3-month reset) to %.2f (36-month reset)"
-         % (h3_lo, h3_hi),
-         "22b_reset_sensitivity.py -> out/t3_reset_sensitivity.csv"),
+        ("H3", "%d" % h3_year,
+         "the first start year whose realised break-even spread is negative "
+         "at every tested reset interval, meaning the HDB loan beat SORA "
+         "itself before any bank margin; range %.2f to %.2f across resets"
+         % (h3_hi, h3_lo),
+         "22b_reset_sensitivity.py -> out/t1_reset_sensitivity.csv"),
     ]
     with open(os.path.join(OUT, "headline_numbers.csv"), "w", newline="\n") as fh:
         w = csv.writer(fh, lineterminator="\n")
@@ -222,9 +228,14 @@ def main():
 
     # Floor to 1 dp, not round, so the stated figure never overstates the
     # worst-case (minimum-over-cohorts-and-resets) margin it is drawn from.
+    # Correction B (Jacob 2026-09-21): 1.4 is room over SORA, not over HDB,
+    # and it applies only to 2010-2015 starts, so the benchmark and the
+    # cohort are both named. finding_val is a floor, so any bank spread
+    # below it beat every early cohort's realised break-even at every
+    # tested reset interval -- "lost to" is accurate in both directions.
     finding_val = math.floor(h2_val * 10) / 10.0
     assert finding_val <= h2_val, (finding_val, h2_val)
-    finding = "Banks had room to charge %.1f points more than HDB." % finding_val
+    finding = "Early HDB borrowers lost to any bank under SORA+%.1f." % finding_val
     assert len(finding) < 60, len(finding)
 
     # ---- RESULTS.md --------------------------------------------------------
