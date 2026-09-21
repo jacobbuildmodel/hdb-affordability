@@ -76,8 +76,11 @@ def svg(body, aria, title, desc):
             % (W, H, esc(aria), esc(title), esc(desc), STYLE, W, H, body))
 
 
-def gridlines(ylo, yhi, ticks, fmt):
-    x0, x1, y0, y1 = PAD_L, W - PAD_R, H - PAD_B, PAD_T
+def gridlines(ylo, yhi, ticks, fmt, pad_r=None, pad_t=None):
+    x0 = PAD_L
+    x1 = W - (PAD_R if pad_r is None else pad_r)
+    y0 = H - PAD_B
+    y1 = PAD_T if pad_t is None else pad_t
     p = []
     for t in ticks:
         y = sc(t, ylo, yhi, y0, y1)
@@ -88,8 +91,8 @@ def gridlines(ylo, yhi, ticks, fmt):
     return "\n".join(p)
 
 
-def xlabels(xs, labels):
-    x0, x1 = PAD_L, W - PAD_R
+def xlabels(xs, labels, pad_r=None):
+    x0, x1 = PAD_L, W - (PAD_R if pad_r is None else pad_r)
     p = []
     for v, lab in labels:
         x = sc(v, xs[0], xs[-1], x0, x1)
@@ -98,8 +101,12 @@ def xlabels(xs, labels):
     return "\n".join(p)
 
 
-def polyline(xs, ys, xlo, xhi, ylo, yhi, var, fb, width=2.0, dash=None):
-    x0, x1, y0, y1 = PAD_L, W - PAD_R, H - PAD_B, PAD_T
+def polyline(xs, ys, xlo, xhi, ylo, yhi, var, fb, width=2.0, dash=None,
+             pad_r=None, pad_t=None):
+    x0 = PAD_L
+    x1 = W - (PAD_R if pad_r is None else pad_r)
+    y0 = H - PAD_B
+    y1 = PAD_T if pad_t is None else pad_t
     pts = [(sc(x, xlo, xhi, x0, x1), sc(y, ylo, yhi, y0, y1))
            for x, y in zip(xs, ys) if y is not None]
     if not pts:
@@ -194,10 +201,7 @@ def chart1():
 
 def chart2():
     t1 = list(csv.DictReader(open(os.path.join(OUT, "t1_breakeven.csv"))))
-    t3 = list(csv.DictReader(open(os.path.join(OUT, "t3_r2_r3.csv"))))
     rs = list(csv.DictReader(open(os.path.join(OUT, "t1_reset_sensitivity.csv"))))
-    r3_at_zero = {int(r["start_year"]): float(r["breakeven_r3"])
-                  for r in t3 if r["switch_cost"] == "0" and r["breakeven_r3"]}
     RESETS = [36, 24, 12, 3]
     reset_lo, reset_hi = {}, {}
     for r in rs:
@@ -209,26 +213,38 @@ def chart2():
 
     years = [int(r["start_year"]) for r in t1]
     be = [float(r["realised_breakeven_spread_r2"]) for r in t1]
-    hi = [r3_at_zero.get(y) for y in years]
     rlo = [reset_lo.get(y) for y in years]
     rhi = [reset_hi.get(y) for y in years]
     ylo = min([v for v in be + rlo if v is not None] + [-1.5])
-    yhi = max([v for v in hi + rhi if v is not None] + [2.4])
-    x0, x1 = PAD_L, W - PAD_R
-    p = [gridlines(ylo, yhi, [-1, 0, 1, 2], lambda t: "%+.0f" % t if t else "0")]
+    yhi = max([v for v in be + rhi if v is not None] + [2.4])
+
+    # Full-width plot: the legend moved to a single line above the plot, so
+    # the right margin only needs to clear the last point and its threshold
+    # label, not a legend column.
+    PAD_R2, PAD_T2 = 20, 48
+    x0, x1 = PAD_L, W - PAD_R2
+    y0, y1 = H - PAD_B, PAD_T2
+
+    def X(year):
+        return sc(year, years[0], years[-1], x0, x1)
+
+    def Y(v):
+        return sc(v, ylo, yhi, y0, y1)
+
+    p = [gridlines(ylo, yhi, [-1, 0, 2], lambda t: "%+.0f" % t if t else "0",
+                   pad_r=PAD_R2, pad_t=PAD_T2)]
     first_year = years[0]
     p.append(xlabels(years, [(y, str(y)) for y in years
-                             if (y - first_year) % 4 == 0 or y == years[-1]]))
+                             if (y - first_year) % 4 == 0 or y == years[-1]],
+                     pad_r=PAD_R2))
 
     def band(lo_by_i, hi_by_i, var, fb, op, dash=None):
         idx = [i for i in range(len(years))
                if lo_by_i[i] is not None and hi_by_i[i] is not None]
         if not idx:
             return ""
-        top = [(sc(years[i], years[0], years[-1], x0, x1),
-                sc(hi_by_i[i], ylo, yhi, H - PAD_B, PAD_T)) for i in idx]
-        bot = [(sc(years[i], years[0], years[-1], x0, x1),
-                sc(lo_by_i[i], ylo, yhi, H - PAD_B, PAD_T)) for i in idx]
+        top = [(X(years[i]), Y(hi_by_i[i])) for i in idx]
+        bot = [(X(years[i]), Y(lo_by_i[i])) for i in idx]
         d = ("M " + " L ".join("%.1f %.1f" % q for q in top) + " L "
              + " L ".join("%.1f %.1f" % q for q in reversed(bot)) + " Z")
         edge = (' stroke="var(%s, %s)" stroke-width="1" stroke-dasharray="%s"'
@@ -236,65 +252,102 @@ def chart2():
         return ('<path d="%s" fill="var(%s, %s)" fill-opacity="%.2f"%s/>'
                  % (d, var, fb, op, edge))
 
-    # Reset-interval band (AMENDMENT 3, written after results): the realised
-    # break-even spread at 36/24/12/3-month resets. Drawn first, dashed
-    # orange outline, so the sealed R3 band (THESIS.md section 10) sits on
-    # top of it rather than the two fills being indistinguishable.
-    p.append(band(rlo, rhi, "--series-2", "#eb6834", 0.10, dash="3 3"))
+    # Reset-interval band (AMENDMENT 3, written after results): the only
+    # band on this chart. The sealed R3 band lives in RESULTS.md and the
+    # side-note table instead, per Task 3b item 1.
+    p.append(band(rlo, rhi, "--series-2", "#eb6834", 0.14, dash="3 3"))
 
-    # R3 band: between R2 and R3 at zero switching cost (sealed requirement)
-    p.append(band(be, hi, "--series-1", "#2a78d6", 0.16))
+    # pre-2020 starts: benchmark substitution applies. Drawn early, under
+    # the data, so its label at the plot floor overlaps nothing.
+    xsub = X(2019.5)
+    p.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" '
+             'fill="var(--text-secondary, #52514e)" fill-opacity="0.06"/>'
+             % (x0, y1, xsub - x0, y0 - y1))
+    p.append('<text class="note" x="%.1f" y="%.1f">2010-2019: priced off '
+             'SIBOR, quoted here over SORA</text>' % (x0 + 6, y0 - 8))
 
-    # zero line, labelled, because negative values are expected
-    yz = sc(0.0, ylo, yhi, H - PAD_B, PAD_T)
+    # T1b threshold: every 2010-2015 start clears +1.0 at every reset
+    # interval. A labelled dashed line plus an open bracket over the
+    # 2010-2015 span make the claim visible without reading the notes.
+    y_thr = Y(1.0)
+    p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
+             'stroke="var(--text-primary, #0b0b0b)" stroke-width="1.2" '
+             'stroke-dasharray="2 2" stroke-opacity="0.55"/>' % (x0, y_thr, x1, y_thr))
+    x_2015 = X(2015)
+    p.append('<path d="M %.1f %.1f L %.1f %.1f L %.1f %.1f L %.1f %.1f" '
+             'fill="none" stroke="var(--text-secondary, #52514e)" '
+             'stroke-width="1" stroke-dasharray="2 2" stroke-opacity="0.6"/>'
+             % (x0, y_thr, x0, y1, x_2015, y1, x_2015, y_thr))
+    p.append('<text class="note" x="%.1f" y="%.1f">2010-2015</text>'
+             % (x0 + 4, y_thr - 8))
+
+    # zero line: label sits above the plot, clear of every series.
+    yz = Y(0.0)
     p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
              'stroke="var(--text-primary, #0b0b0b)" stroke-width="1.5" '
              'stroke-dasharray="4 3"/>' % (x0, yz, x1, yz))
-    p.append('<text class="note" x="%.1f" y="%.1f">0 = HDB matched the '
-             'benchmark, no bank margin</text>' % (x0 + 4, yz - 6))
-
-    # pre-2020 starts: benchmark substitution applies
-    xsub = sc(2019.5, years[0], years[-1], x0, x1)
-    p.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" '
-             'fill="var(--text-secondary, #52514e)" fill-opacity="0.06"/>'
-             % (x0, PAD_T, xsub - x0, H - PAD_B - PAD_T))
-    p.append('<text class="note" x="%.1f" y="%.1f">2010-2019: priced off '
-             'SIBOR, quoted here over SORA</text>' % (x0 + 6, H - PAD_B - 8))
+    p.append('<text class="note" x="%.1f" y="%.1f" text-anchor="end">'
+             '0 = HDB matched</text>' % (x1, 34))
 
     path, last = polyline(years, be, years[0], years[-1], ylo, yhi,
-                          "--series-1", "#2a78d6", 2.4)
+                          "--series-1", "#2a78d6", 2.4,
+                          pad_r=PAD_R2, pad_t=PAD_T2)
     p.append(path)
 
     # Point markers, dimmed for start years with under 36 months realised
     # (2024, 2025: the last data month is 2026-07).
     for i, y in enumerate(years):
-        cx = sc(y, years[0], years[-1], x0, x1)
-        cy = sc(be[i], ylo, yhi, H - PAD_B, PAD_T)
         op = 0.40 if y >= 2024 else 1.0
         p.append('<circle cx="%.1f" cy="%.1f" r="3" fill="var(--series-1, #2a78d6)" '
-                 'fill-opacity="%.2f"/>' % (cx, cy, op))
+                 'fill-opacity="%.2f"/>' % (X(y), Y(be[i]), op))
 
-    first_pt = (sc(years[0], years[0], years[-1], x0, x1),
-               sc(be[0], ylo, yhi, H - PAD_B, PAD_T))
-    p.append(endlabel(first_pt, "--series-1", "#2a78d6", "%+.2f" % be[0],
-                      "2010 start"))
-    p.append(legend([
-        ("--series-1", "#2a78d6", "R2, realised"),
-        ("--series-1", "#2a78d6", "R3, 0-cost refi", 0.16),
-        ("--series-2", "#eb6834", "Reset range"),
-        ("--series-1", "#2a78d6", "<36mo (faint)", 0.40),
-    ], x=x1 + 10, y=PAD_T))
+    # Only two points labelled: 2010, the widest, and 2023, the first start
+    # negative at every reset interval.
+    i2010, i2023 = years.index(2010), years.index(2023)
+    p.append('<text class="lbl" x="%.1f" y="%.1f" '
+             'fill="var(--series-1, #2a78d6)">%s</text>'
+             % (X(2010) + 10, Y(be[i2010]) - 22, esc("%+.2f" % be[i2010])))
+    p.append('<text class="note" x="%.1f" y="%.1f">widest</text>'
+             % (X(2010) + 10, Y(be[i2010]) - 6))
+    p.append('<text class="lbl" x="%.1f" y="%.1f" text-anchor="end" '
+             'fill="var(--series-1, #2a78d6)">%s</text>'
+             % (X(2023) - 8, Y(be[i2023]) + 28, esc("%+.2f" % be[i2023])))
+    p.append('<text class="note" x="%.1f" y="%.1f" text-anchor="end">'
+             'first below zero, every reset</text>'
+             % (X(2023) - 8, Y(be[i2023]) + 44))
+
+    # Legend: a single line above the plot, so the plot keeps the full
+    # canvas width. Zero-line note shares the row, at the far right.
+    ly = 16
+    p.append('<rect x="%.1f" y="%.1f" width="10" height="10" rx="2" '
+             'fill="var(--series-1, #2a78d6)"/>'
+             '<text class="ax" x="%.1f" y="%.1f">R2 realised</text>'
+             % (x0, ly - 8, x0 + 16, ly))
+    lx2 = x0 + 112
+    p.append('<rect x="%.1f" y="%.1f" width="10" height="10" rx="2" '
+             'fill="var(--series-2, #eb6834)" fill-opacity="0.14" '
+             'stroke="var(--series-2, #eb6834)" stroke-width="1" '
+             'stroke-dasharray="2 2"/>'
+             '<text class="ax" x="%.1f" y="%.1f">Reset range</text>'
+             % (lx2, ly - 8, lx2 + 16, ly))
+    lx3 = lx2 + 112
+    p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
+             'stroke="var(--text-primary, #0b0b0b)" stroke-width="1.2" '
+             'stroke-dasharray="2 2" stroke-opacity="0.55"/>'
+             '<text class="ax" x="%.1f" y="%.1f">threshold 1.0</text>'
+             % (lx3, ly - 3, lx3 + 12, ly - 3, lx3 + 18, ly))
+
     p.append('<text class="note" x="%.1f" y="%.1f">Realised to 2026-07. '
              'S$400,000 over 25 years.</text>' % (PAD_L, H - 24))
-    p.append('<text class="note" x="%.1f" y="%.1f">Not a projection. Dashed '
-             'band: 3-36mo resets (Amdt 3).</text>' % (PAD_L, H - 8))
+    p.append('<text class="note" x="%.1f" y="%.1f">2024 and 2025 dimmed: '
+             'under 36 months realised.</text>' % (PAD_L, H - 8))
 
     body = "\n".join(p)
     return svg(body,
                "Realised break-even spread by loan start year, 2010 to 2025",
                "Break-even spread by start year",
-               "The break-even spread falls from about 2 points for 2010 starts "
-               "to below zero for 2023 to 2025 starts.")
+               "Every 2010-2015 start clears the 1.0 threshold at every "
+               "reset interval; the spread falls below zero from 2023.")
 
 
 def main():
@@ -310,9 +363,12 @@ def main():
         "Chart 1. The HDB concessionary rate has been 2.6 per cent throughout, "
         "while compounded 3-month SORA ran far below it for a decade, rose above "
         "it through 2022 and 2023, and fell back below it by 2026.",
-        "Chart 2. Realised break-even spread by loan start year, R2, with the "
-        "shaded band running up to R3 at zero switching cost. Zero is drawn "
-        "because the 2023 to 2025 cohorts fall below it. Pre-2020 starts are "
+        "Chart 2. Realised break-even spread by loan start year, R2, with a "
+        "band showing the range across 3, 12, 24 and 36-month reset intervals "
+        "(AMENDMENT 3). A dashed line marks the 1.0 threshold discussed in T1b: "
+        "every 2010-2015 start clears it at every reset interval. Zero is drawn "
+        "because the 2023 to 2025 cohorts fall below it. The 2024 and 2025 "
+        "markers are dimmed: under 36 months realised. Pre-2020 starts are "
         "shaded: they were priced off SIBOR and are quoted here over SORA, which "
         "overstates their break-even spread.",
     ]
