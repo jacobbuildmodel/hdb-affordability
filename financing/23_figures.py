@@ -15,6 +15,12 @@ rather than imported, per THESIS.md section 11 (no cross-directory source
 dependency). Both charts carry a prefers-color-scheme dark block and are sized
 to stay readable at 390px.
 
+Canvas, padding and type sizes follow the phone-screen redraw applied to the
+published piece's 07_figures.py on the mobile-charts branch (commit 709f846):
+480x340 canvas, 14-15px text, fewer year labels, more right margin. Smallest
+rendered text at 390px goes from 6.0px to 11.4px or larger; check.sh fails
+anything under 11px.
+
 Usage:  python3 23_figures.py
 """
 
@@ -25,8 +31,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "out")
 FIGS = os.path.join(HERE, "figs")
 
-W, H = 720, 400
-PAD_L, PAD_R, PAD_T, PAD_B = 62, 152, 34, 46
+W, H = 480, 340
+PAD_L, PAD_R, PAD_T, PAD_B = 60, 150, 58, 70
 HDB = 2.6
 
 STYLE = """
@@ -45,9 +51,9 @@ STYLE = """
            --series-2:#eb6834; }
   .viz text { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI,
               Roboto, Helvetica, Arial, sans-serif; }
-  .ax   { font-size: 12px; fill: var(--text-secondary, #52514e); }
-  .lbl  { font-size: 13px; font-weight: 600; }
-  .note { font-size: 11px; fill: var(--text-secondary, #52514e); }
+  .ax   { font-size: 14px; fill: var(--text-secondary, #52514e); }
+  .lbl  { font-size: 15px; font-weight: 600; }
+  .note { font-size: 14px; fill: var(--text-secondary, #52514e); }
 </style>
 """
 
@@ -114,22 +120,28 @@ def endlabel(pt, var, fb, name, sub=None):
          % (pt[0], pt[1], var, fb, pt[0] + 10, pt[1] + 4, var, fb, esc(name)))
     if sub:
         s += ('<text class="note" x="%.1f" y="%.1f">%s</text>'
-              % (pt[0] + 10, pt[1] + 18, esc(sub)))
+              % (pt[0] + 10, pt[1] + 20, esc(sub)))
     return s
 
 
-def legend(items, y_off=0):
-    """items: (var, fallback, label) or (var, fallback, label, opacity)."""
-    lx, ly = PAD_L + 8, PAD_T + 12 + y_off
+def legend(items, x=None, y=None, step=20):
+    """items: (var, fallback, label) or (var, fallback, label, opacity).
+
+    Defaults place the legend in the top-left margin, clear of the plot
+    area; pass x/y (e.g. into the right padding) to keep it clear of a
+    band that covers the left side of the chart.
+    """
+    lx = 8 if x is None else x
+    ly = 18 if y is None else y
     p = []
     for i, it in enumerate(items):
         var, fb, name = it[0], it[1], it[2]
         op = it[3] if len(it) > 3 else 1.0
         p.append('<rect x="%.1f" y="%.1f" width="10" height="10" rx="2" '
                  'fill="var(%s, %s)" fill-opacity="%.2f"/>'
-                 % (lx, ly + i * 18 - 8, var, fb, op))
+                 % (lx, ly + i * step - 8, var, fb, op))
         p.append('<text class="ax" x="%.1f" y="%.1f">%s</text>'
-                 % (lx + 16, ly + i * 18, esc(name)))
+                 % (lx + 16, ly + i * step, esc(name)))
     return "\n".join(p)
 
 
@@ -141,10 +153,11 @@ def chart1():
     ylo, yhi = 0.0, max(max(sora), HDB) * 1.15
     p = [gridlines(ylo, yhi, [0, 1, 2, 3, 4], lambda t: "%.0f%%" % t)]
 
+    first_year = int(rows[0]["month"][:4])
     labels = []
     for i, r in enumerate(rows):
         y, m = r["month"].split("-")
-        if m == "01" and int(y) % 3 == 1:
+        if m == "01" and (int(y) - first_year) % 4 == 0:
             labels.append((i, y))
     last_year = rows[-1]["month"][:4]
     if not any(lab == last_year for _, lab in labels):
@@ -157,7 +170,7 @@ def chart1():
              'stroke="var(--series-2, #eb6834)" stroke-width="2"/>'
              % (PAD_L, yh, W - PAD_R, yh))
     p.append(endlabel((W - PAD_R, yh), "--series-2", "#eb6834", "HDB 2.6%",
-                      "unchanged since 1999"))
+                      "flat since 1999"))
 
     path, last = polyline(xs, sora, 0, len(rows) - 1, ylo, yhi, "--series-1", "#2a78d6")
     p.append(path)
@@ -165,9 +178,10 @@ def chart1():
                       "3-month SORA"))
     p.append(legend([("--series-1", "#2a78d6", "Compounded 3-month SORA"),
                      ("--series-2", "#eb6834", "HDB concessionary rate")]))
-    p.append('<text class="note" x="%.1f" y="%.1f">Monthly, %s to %s. '
-             'Source: MAS via data.gov.sg (F1); CPF Board (F2).</text>'
-             % (PAD_L, H - 8, rows[0]["month"], rows[-1]["month"]))
+    p.append('<text class="note" x="%.1f" y="%.1f">Monthly, %s to %s.</text>'
+             % (PAD_L, H - 24, rows[0]["month"], rows[-1]["month"]))
+    p.append('<text class="note" x="%.1f" y="%.1f">Source: MAS via '
+             'data.gov.sg (F1); CPF Board (F2).</text>' % (PAD_L, H - 8))
 
     body = "\n".join(p)
     return svg(body,
@@ -181,56 +195,99 @@ def chart1():
 def chart2():
     t1 = list(csv.DictReader(open(os.path.join(OUT, "t1_breakeven.csv"))))
     t3 = list(csv.DictReader(open(os.path.join(OUT, "t3_r2_r3.csv"))))
+    rs = list(csv.DictReader(open(os.path.join(OUT, "t1_reset_sensitivity.csv"))))
     r3_at_zero = {int(r["start_year"]): float(r["breakeven_r3"])
                   for r in t3 if r["switch_cost"] == "0" and r["breakeven_r3"]}
+    RESETS = [36, 24, 12, 3]
+    reset_lo, reset_hi = {}, {}
+    for r in rs:
+        y = int(r["start_year"])
+        vals = [float(r["breakeven_reset_%d" % rm]) for rm in RESETS
+                if r["breakeven_reset_%d" % rm]]
+        if vals:
+            reset_lo[y], reset_hi[y] = min(vals), max(vals)
 
     years = [int(r["start_year"]) for r in t1]
     be = [float(r["realised_breakeven_spread_r2"]) for r in t1]
     hi = [r3_at_zero.get(y) for y in years]
-    ylo, yhi = min(min(be), -1.5), max(max(v for v in hi if v is not None), 2.4)
+    rlo = [reset_lo.get(y) for y in years]
+    rhi = [reset_hi.get(y) for y in years]
+    ylo = min([v for v in be + rlo if v is not None] + [-1.5])
+    yhi = max([v for v in hi + rhi if v is not None] + [2.4])
     x0, x1 = PAD_L, W - PAD_R
     p = [gridlines(ylo, yhi, [-1, 0, 1, 2], lambda t: "%+.0f" % t if t else "0")]
-    p.append(xlabels(years, [(y, str(y)) for y in years if y % 3 == 1 or y == years[-1]]))
+    first_year = years[0]
+    p.append(xlabels(years, [(y, str(y)) for y in years
+                             if (y - first_year) % 4 == 0 or y == years[-1]]))
 
-    # R3 band: between R2 and R3 at zero switching cost
-    top = [(sc(y, years[0], years[-1], x0, x1), sc(hi[i], ylo, yhi, H - PAD_B, PAD_T))
-           for i, y in enumerate(years) if hi[i] is not None]
-    bot = [(sc(y, years[0], years[-1], x0, x1), sc(be[i], ylo, yhi, H - PAD_B, PAD_T))
-           for i, y in enumerate(years) if hi[i] is not None]
-    if top:
+    def band(lo_by_i, hi_by_i, var, fb, op, dash=None):
+        idx = [i for i in range(len(years))
+               if lo_by_i[i] is not None and hi_by_i[i] is not None]
+        if not idx:
+            return ""
+        top = [(sc(years[i], years[0], years[-1], x0, x1),
+                sc(hi_by_i[i], ylo, yhi, H - PAD_B, PAD_T)) for i in idx]
+        bot = [(sc(years[i], years[0], years[-1], x0, x1),
+                sc(lo_by_i[i], ylo, yhi, H - PAD_B, PAD_T)) for i in idx]
         d = ("M " + " L ".join("%.1f %.1f" % q for q in top) + " L "
              + " L ".join("%.1f %.1f" % q for q in reversed(bot)) + " Z")
-        p.append('<path d="%s" fill="var(--series-1, #2a78d6)" fill-opacity="0.16" '
-                 'stroke="none"/>' % d)
+        edge = (' stroke="var(%s, %s)" stroke-width="1" stroke-dasharray="%s"'
+                % (var, fb, dash)) if dash else ' stroke="none"'
+        return ('<path d="%s" fill="var(%s, %s)" fill-opacity="%.2f"%s/>'
+                 % (d, var, fb, op, edge))
+
+    # Reset-interval band (AMENDMENT 3, written after results): the realised
+    # break-even spread at 36/24/12/3-month resets. Drawn first, dashed
+    # orange outline, so the sealed R3 band (THESIS.md section 10) sits on
+    # top of it rather than the two fills being indistinguishable.
+    p.append(band(rlo, rhi, "--series-2", "#eb6834", 0.10, dash="3 3"))
+
+    # R3 band: between R2 and R3 at zero switching cost (sealed requirement)
+    p.append(band(be, hi, "--series-1", "#2a78d6", 0.16))
 
     # zero line, labelled, because negative values are expected
     yz = sc(0.0, ylo, yhi, H - PAD_B, PAD_T)
     p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
              'stroke="var(--text-primary, #0b0b0b)" stroke-width="1.5" '
              'stroke-dasharray="4 3"/>' % (x0, yz, x1, yz))
-    p.append('<text class="note" x="%.1f" y="%.1f">0 = the HDB loan matched the '
-             'benchmark itself, before any bank margin</text>' % (x0 + 4, yz - 6))
+    p.append('<text class="note" x="%.1f" y="%.1f">0 = HDB matched the '
+             'benchmark, no bank margin</text>' % (x0 + 4, yz - 6))
 
     # pre-2020 starts: benchmark substitution applies
     xsub = sc(2019.5, years[0], years[-1], x0, x1)
     p.append('<rect x="%.1f" y="%.1f" width="%.1f" height="%.1f" '
              'fill="var(--text-secondary, #52514e)" fill-opacity="0.06"/>'
              % (x0, PAD_T, xsub - x0, H - PAD_B - PAD_T))
-    p.append('<text class="note" x="%.1f" y="%.1f">2010-2019 starts: priced off '
+    p.append('<text class="note" x="%.1f" y="%.1f">2010-2019: priced off '
              'SIBOR, quoted here over SORA</text>' % (x0 + 6, H - PAD_B - 8))
 
     path, last = polyline(years, be, years[0], years[-1], ylo, yhi,
                           "--series-1", "#2a78d6", 2.4)
     p.append(path)
-    p.append(endlabel(last, "--series-1", "#2a78d6", "%+.2f" % be[-1], "2025 start"))
-    p.append(legend([("--series-1", "#2a78d6",
-                      "Realised break-even spread, R2 (points over SORA)"),
-                     ("--series-1", "#2a78d6",
-                      "Band: up to R3, refinancing at zero switching cost",
-                      0.16)]))
-    p.append('<text class="note" x="%.1f" y="%.1f">Realised, loan start to '
-             '2026-07. S$400,000 over 25 years. Not a projection.</text>'
-             % (PAD_L, H - 8))
+
+    # Point markers, dimmed for start years with under 36 months realised
+    # (2024, 2025: the last data month is 2026-07).
+    for i, y in enumerate(years):
+        cx = sc(y, years[0], years[-1], x0, x1)
+        cy = sc(be[i], ylo, yhi, H - PAD_B, PAD_T)
+        op = 0.40 if y >= 2024 else 1.0
+        p.append('<circle cx="%.1f" cy="%.1f" r="3" fill="var(--series-1, #2a78d6)" '
+                 'fill-opacity="%.2f"/>' % (cx, cy, op))
+
+    first_pt = (sc(years[0], years[0], years[-1], x0, x1),
+               sc(be[0], ylo, yhi, H - PAD_B, PAD_T))
+    p.append(endlabel(first_pt, "--series-1", "#2a78d6", "%+.2f" % be[0],
+                      "2010 start"))
+    p.append(legend([
+        ("--series-1", "#2a78d6", "R2, realised"),
+        ("--series-1", "#2a78d6", "R3, 0-cost refi", 0.16),
+        ("--series-2", "#eb6834", "Reset range"),
+        ("--series-1", "#2a78d6", "<36mo (faint)", 0.40),
+    ], x=x1 + 10, y=PAD_T))
+    p.append('<text class="note" x="%.1f" y="%.1f">Realised to 2026-07. '
+             'S$400,000 over 25 years.</text>' % (PAD_L, H - 24))
+    p.append('<text class="note" x="%.1f" y="%.1f">Not a projection. Dashed '
+             'band: 3-36mo resets (Amdt 3).</text>' % (PAD_L, H - 8))
 
     body = "\n".join(p)
     return svg(body,
