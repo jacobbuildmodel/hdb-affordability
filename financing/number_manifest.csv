@@ -1,7 +1,7 @@
 number_id,value,meaning,script,output_file
 H1,2.05,"percentage points: the realised break-even spread for a 2010 start, the widest of any coho",22_compute.py,financing/out/t1_breakeven.csv
-H2,-1.05,"percentage points: the realised break-even spread for a 2024 start. It is NEGATIVE, meanin",22_compute.py,financing/out/t1_breakeven.csv
-H3,31 of 66,"switch-to-bank cases in 2021 that ended worse than staying on the HDB loan, across every a",22_compute.py,financing/out/t1_breakeven.csv
+H2,1.43,"percentage points: the weakest 2010-2015 start's realised break-even spread, the minimum a",22_compute.py,financing/out/t1_breakeven.csv
+H3,0.07,percentage points: the minimum margin by which the largest gap over 2.6 for 2022-2025 star,22_compute.py,financing/out/t1_breakeven.csv
 be_2010,2.0461,"realised break-even spread, 2010 start, R2",22_compute.py,financing/out/t1_breakeven.csv
 be_2011,1.8921,"realised break-even spread, 2011 start, R2",22_compute.py,financing/out/t1_breakeven.csv
 be_2012,1.9401,"realised break-even spread, 2012 start, R2",22_compute.py,financing/out/t1_breakeven.csv

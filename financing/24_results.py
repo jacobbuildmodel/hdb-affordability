@@ -21,6 +21,7 @@ Usage:  python3 24_results.py
 """
 
 import csv
+import math
 import os
 from collections import defaultdict
 
@@ -164,28 +165,66 @@ def main():
                              for rm in RESETS)),
     }
 
-    # ---- headline numbers --------------------------------------------------
-    y_top = max(be, key=lambda y: be[y])
-    y_bot = min(be, key=lambda y: be[y])
+    # ---- headline numbers ---------------------------------------------------
+    # AMENDMENT 3: H2 (-1.05, the 2024 start) and H3 (31 of 66, the 2021
+    # switch cases) depend on the 36-month reset assumption and change sign
+    # or magnitude under the other three tested intervals, so neither is a
+    # headline. Every headline number below is checked to hold, in sign, at
+    # every one of the 36/24/12/3-month resets, and its range across those
+    # resets is reported alongside it.
+
+    # H1: the widest cohort, checked to be the same cohort at every reset.
+    widest_year_by_reset = {rm: max(reset_be, key=lambda y: reset_be[y][rm])
+                             for rm in RESETS}
+    assert len(set(widest_year_by_reset.values())) == 1, widest_year_by_reset
+    y_top = next(iter(widest_year_by_reset.values()))
+    h1_by_reset = [reset_be[y_top][rm] for rm in RESETS]
+    h1_lo, h1_hi = min(h1_by_reset), max(h1_by_reset)
+
+    # H2: the weakest 2010-2015 cohort, minimum across cohorts and resets.
+    h2_by_reset = [lo for rm, lo, hi, holds in t1b_by_reset]
+    h2_val = min(h2_by_reset)
+    h2_lo, h2_hi = min(h2_by_reset), max(h2_by_reset)
+
+    # H3: T3's failure -- the 2022-2025 gap beats the 2010-2015 gap at every
+    # reset. The margin by which it does so is reported at its smallest.
+    margin_by_reset = {rm: r3_by_reset[rm][1] - r3_by_reset[rm][0] for rm in RESETS}
+    assert all(v > 0 for v in margin_by_reset.values()), margin_by_reset
+    h3_val = min(margin_by_reset.values())
+    h3_lo, h3_hi = min(margin_by_reset.values()), max(margin_by_reset.values())
+
     headline = [
-        ("H1", "%.2f" % be[y_top],
+        ("H1", "%.2f" % h1_hi,
          "percentage points: the realised break-even spread for a %d start, the "
-         "widest of any cohort" % y_top, "22_compute.py -> out/t1_breakeven.csv"),
-        ("H2", "%.2f" % be[y_bot],
-         "percentage points: the realised break-even spread for a %d start. It is "
-         "NEGATIVE, meaning the HDB loan beat the benchmark itself before any bank "
-         "margin" % y_bot, "22_compute.py -> out/t1_breakeven.csv"),
-        ("H3", "%d of %d" % (len(worse21), len(s21)),
-         "switch-to-bank cases in 2021 that ended worse than staying on the HDB "
-         "loan, across every applicable start year and grid spread",
-         "22_compute.py -> out/t4_switch.csv"),
+         "widest of any cohort at every tested reset interval; ranges %.2f "
+         "(3-month reset) to %.2f (36-month reset)" % (y_top, h1_lo, h1_hi),
+         "22_compute.py -> out/t1_breakeven.csv; "
+         "22b_reset_sensitivity.py -> out/t1_reset_sensitivity.csv"),
+        ("H2", "%.2f" % h2_val,
+         "percentage points: the weakest 2010-2015 start's realised break-even "
+         "spread, the minimum across every cohort and every tested reset "
+         "interval (T1b, the headline claim); the minimum-over-cohorts figure "
+         "ranges %.2f (3-month reset) to %.2f (36-month reset)" % (h2_lo, h2_hi),
+         "22b_reset_sensitivity.py -> out/t1_reset_sensitivity.csv"),
+        ("H3", "%.2f" % h3_val,
+         "percentage points: the minimum margin by which the largest gap over "
+         "2.6 for 2022-2025 starts exceeded the largest gap for 2010-2015 "
+         "starts, across every tested reset interval (T3, the opposite "
+         "ordering from the sealed prediction, holding at every interval); "
+         "margin ranges %.2f (3-month reset) to %.2f (36-month reset)"
+         % (h3_lo, h3_hi),
+         "22b_reset_sensitivity.py -> out/t3_reset_sensitivity.csv"),
     ]
     with open(os.path.join(OUT, "headline_numbers.csv"), "w", newline="\n") as fh:
         w = csv.writer(fh, lineterminator="\n")
         w.writerow(["id", "value", "meaning", "generated_by"])
         w.writerows(headline)
 
-    finding = "The cheap decade was worth about two points."
+    # Floor to 1 dp, not round, so the stated figure never overstates the
+    # worst-case (minimum-over-cohorts-and-resets) margin it is drawn from.
+    finding_val = math.floor(h2_val * 10) / 10.0
+    assert finding_val <= h2_val, (finding_val, h2_val)
+    finding = "Banks had room to charge %.1f points more than HDB." % finding_val
     assert len(finding) < 60, len(finding)
 
     # ---- RESULTS.md --------------------------------------------------------

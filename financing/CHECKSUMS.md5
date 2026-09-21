@@ -15,15 +15,15 @@ c6002c7edbcc1571c14a1dad9544938b  financing/20_rates.py
 11f32ff9e8ac2acb1068fc641377224c  financing/22_compute.py
 13d8042432b3d46f009fc1cfe476f6d8  financing/22b_reset_sensitivity.py
 45c8b91fc727e92123c5efb137215667  financing/23_figures.py
-1193eea905f279a544b8e83e57f30a96  financing/24_results.py
+b33caef3e40103358bd96b6c930eab89  financing/24_results.py
 a09a08b974257a491e70e6f6895c23cb  financing/25_manifest.py
 88505417797530584b3d7f14168a88c2  financing/THESIS.md
-78809523ffc7f944cf01bf5cab479647  financing/RESULTS.md
+4cdc61a8431558772ce5f4746014188f  financing/RESULTS.md
 
 # ---- OUTPUTS ----
 da54950c1f34cbd1c68c64b3593202a4  financing/out/compute_report.txt
 9e835236412781da3579f3c56bb80802  financing/out/figure_captions.txt
-659ae8837bc83c6c114697e76907a999  financing/out/headline_numbers.csv
+26e4b140c7ef58f3cd4580f80c3e6af9  financing/out/headline_numbers.csv
 a994b413f8140142eeed584fa8c803df  financing/out/rates_monthly.csv
 448b2317cafff7e86b646431395f68e7  financing/out/reset_sensitivity_report.txt
 5b36cf36014c890cc687c1fc1e024cab  financing/out/s1_finance_companies.csv
