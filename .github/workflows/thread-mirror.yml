@@ -1,0 +1,57 @@
+# Copies every issue thread into threads/issue-<n>.md on the office-log branch,
+# so the Cowork checker (which can clone the repository but cannot read the
+# GitHub API) can read bot hand-backs without anyone pasting them.
+# No AI. Pushes made with GITHUB_TOKEN do not trigger other workflows, so this
+# cannot start a loop. Never touches main.
+name: thread-mirror
+on:
+  issue_comment:
+    types: [created, edited]
+  issues:
+    types: [opened, edited]
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: thread-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: mirror the thread to office-log
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          N: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config user.name "thread-mirror"
+          git config user.email "actions@github.com"
+          if git ls-remote --exit-code --heads origin office-log >/dev/null 2>&1; then
+            git fetch -q origin office-log
+            git checkout -q -B office-log origin/office-log
+          else
+            git checkout -q --orphan office-log
+            git rm -rfq .
+          fi
+          mkdir -p threads
+          F="threads/issue-$N.md"
+          gh api "repos/$REPO/issues/$N" \
+            --jq '"# Issue #\(.number): \(.title)\n\n## \(.user.login) at \(.created_at)\n\n\(.body // "")\n"' > "$F"
+          gh api --paginate "repos/$REPO/issues/$N/comments" \
+            --jq '.[] | "\n---\n\n## \(.user.login) at \(.created_at)\n\n\(.body // "")\n"' >> "$F"
+          git add threads
+          if git diff --cached --quiet; then
+            echo "no change"
+          else
+            git commit -qm "mirror issue #$N"
+            git push -q origin office-log
+          fi
