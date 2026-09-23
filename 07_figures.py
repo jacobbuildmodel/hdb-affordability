@@ -51,8 +51,8 @@ OUT = os.path.join(HERE, "out")
 RAW = os.path.join(HERE, "raw")
 FIGS = os.path.join(HERE, "figs")
 
-W, H = 720, 400
-PAD_L, PAD_R, PAD_T, PAD_B = 62, 152, 34, 44
+W, H = 480, 340
+PAD_L, PAD_R, PAD_T, PAD_B = 60, 142, 58, 46
 EHG_CEILING = 9000.0
 
 STYLE = """
@@ -71,9 +71,9 @@ STYLE = """
            --series-2:#eb6834; }
   .viz text { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI,
               Roboto, Helvetica, Arial, sans-serif; }
-  .ax   { font-size: 12px; fill: var(--text-secondary, #52514e); }
-  .lbl  { font-size: 13px; font-weight: 600; }
-  .note { font-size: 11px; fill: var(--text-secondary, #52514e); }
+  .ax   { font-size: 14px; fill: var(--text-secondary, #52514e); }
+  .lbl  { font-size: 15px; font-weight: 600; }
+  .note { font-size: 14px; fill: var(--text-secondary, #52514e); }
 </style>
 """
 
@@ -101,7 +101,7 @@ def frame(years, ylo, yhi, ticks, fmt):
         p.append('<text class="ax" x="%.1f" y="%.1f" text-anchor="end">%s</text>'
                  % (x0 - 8, y + 4, esc(fmt(t))))
     for yr in years:
-        if yr % 3 == 0 or yr == years[-1]:
+        if (yr - years[0]) % 4 == 0 or yr == years[-1]:
             x = sc(yr, min(years), max(years), x0, x1)
             p.append('<text class="ax" x="%.1f" y="%.1f" text-anchor="middle">%d'
                      '</text>' % (x, H - PAD_B + 20, yr))
@@ -130,18 +130,18 @@ def endlabel(pt, var, fb, name, sub=None, dy=0.0):
          % (pt[0], pt[1], var, fb, pt[0] + 10, pt[1] + 4, var, fb, esc(name)))
     if sub:
         s += ('<text class="note" x="%.1f" y="%.1f">%s</text>'
-              % (pt[0] + 10, pt[1] + 18, esc(sub)))
+              % (pt[0] + 10, pt[1] + 20, esc(sub)))
     return s
 
 
 def legend(items):
-    lx, ly = PAD_L + 8, PAD_T + 12
+    lx, ly = 8, 18
     p = []
     for i, (var, fb, name) in enumerate(items):
         p.append('<rect x="%.1f" y="%.1f" width="10" height="10" rx="2" '
-                 'fill="var(%s, %s)"/>' % (lx, ly + i * 18 - 8, var, fb))
+                 'fill="var(%s, %s)"/>' % (lx, ly + i * 20 - 10, var, fb))
         p.append('<text class="ax" x="%.1f" y="%.1f">%s</text>'
-                 % (lx + 16, ly + i * 18, esc(name)))
+                 % (lx + 16, ly + i * 20, esc(name)))
     return "\n".join(p)
 
 
@@ -255,8 +255,8 @@ def fig3(aff, grants):
     p2, l2 = line(years, net, 0, yhi, "--series-1", "#2a78d6")
     p += [p1, p2]
     push = 0.0
-    if l1 and l2 and abs(l1[1] - l2[1]) < 26:
-        push = (26 - abs(l1[1] - l2[1])) / 2.0
+    if l1 and l2 and abs(l1[1] - l2[1]) < 38:
+        push = (38 - abs(l1[1] - l2[1])) / 2.0
         if l1[1] < l2[1]:
             d1, d2 = -push, push
         else:

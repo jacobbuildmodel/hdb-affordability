@@ -35,7 +35,7 @@ fa95d611f53ae43b09e7ee8daea8712c  02_hedonic.py
 6473e5bc478aefc75c25281dab9ef89d  04_grants.py
 c3c8416682303108906f50f02a7c2212  05_affordability.py
 8046d6e528bbc3b3fa21fa5bbcda4b2a  06_tests.py
-f83ce965e1cf304aaaae0b7c45529517  07_figures.py
+b4213514be6821bd6f558c27acdd90d3  07_figures.py
 5f39a96e1c2360df0f62f55a3cd33f50  08_manifest.py
 fbfc4fd8f232e797ba3865b4e202abec  grant_schedule.csv
 efa0fafd29d1f5832c9ad8d43ba58479  ehg_bands.csv
@@ -43,7 +43,7 @@ daaaab8c36f7f315f926e8b1504b7513  ltv_schedule.csv
 15d60ff907feeabeff3684524d373df8  number_manifest.csv
 65916433ad3f776c007a472472fea10d  THESIS.md
 283cb90a333aeb96fd5e6e60bee7f580  THESIS_ADDENDUM.md
-08d95cdecd017fb9bae40215537aa010  README.md
+7ef7159be0c53c9fcfed71bdfd0c7a64  README.md
 23e4358db4c873639c0c5dbdf7e5f727  SOURCES.md
 b130c316853bec365bb519965c6f888d  HANDOVER.md
 a15ce70358bd9aff06b1e0125af67014  RESULTS.md
@@ -66,6 +66,6 @@ bda383a1b9776cbbab637fca5024a398  out/index_basket.csv
 19c50808197366d0f6cafebf22caca36  out/index_hedonic.csv
 cb9a5f2efe63524fd9b4fbf9ee353718  out/index_hedonic_spline.csv
 925a6b41af86c93a506557ca3569e60c  out/resale_clean.csv
-0a81278668e71335fb67fb4ff9e15c6e  figs/fig1_price_to_income.svg
-e73dd419ed0fb96c0c461f329ff3f901  figs/fig2_ehg_crossing.svg
-94210e2175b84d59b014b5bddbea6e4b  figs/fig3_binding_constraint.svg
+b62fbda6ca0d422fd7a66d1cf3b4410d  figs/fig1_price_to_income.svg
+bf0172a63fbd5036edd6adcc18a1cb46  figs/fig2_ehg_crossing.svg
+f632d357a402c5b3354d41dcb24c93e0  figs/fig3_binding_constraint.svg
