@@ -231,7 +231,7 @@ def chart2():
     def Y(v):
         return sc(v, ylo, yhi, y0, y1)
 
-    p = [gridlines(ylo, yhi, [-1, 0, 2], lambda t: "%+.0f" % t if t else "0",
+    p = [gridlines(ylo, yhi, [-1, 0, 1, 2], lambda t: "%+.0f" % t if t else "0",
                    pad_r=PAD_R2, pad_t=PAD_T2)]
     first_year = years[0]
     p.append(xlabels(years, [(y, str(y)) for y in years
