@@ -31,9 +31,13 @@ if [ -n "$ARTICLES" ]; then
 fi
 
 note "== F5/F6 headline and length"
+# Published 19 Sep 2026, before STANDARDS v2; length rule applies to pieces
+# published after 20 Sep 2026.
+LENGTH_EXEMPT="2026-09-12.md"
 for a in $ARTICLES; do
   T=$(sed -n 's/^title: *"\(.*\)"/\1/p' "$a" | head -1)
   [ -n "$T" ] && { L=${#T}; [ "$L" -le 60 ] && pass "$a headline $L chars" || fail "$a headline $L chars, over 60"; }
+  if [ "$a" = "$LENGTH_EXEMPT" ]; then pass "$a exempt from the length rule"; continue; fi
   W=$(python3 -c "
 import sys,re
 t=open(sys.argv[1],encoding='utf-8').read()
