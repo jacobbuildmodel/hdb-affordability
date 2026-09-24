@@ -1,0 +1,4 @@
+id,value,meaning,generated_by
+H1,2.05,"percentage points: the realised break-even spread for a 2010 start, the widest of any cohort at every tested reset interval; ranges 1.89 (3-month reset) to 2.05 (36-month reset)",22_compute.py -> out/t1_breakeven.csv; 22b_reset_sensitivity.py -> out/t1_reset_sensitivity.csv
+H2,1.43,"percentage points: the weakest 2010-2015 start's realised break-even spread, the minimum across every cohort and every tested reset interval (T1b, the headline claim); the minimum-over-cohorts figure ranges 1.43 (3-month reset) to 1.64 (36-month reset)",22b_reset_sensitivity.py -> out/t1_reset_sensitivity.csv
+H3,2023,"the first start year whose realised break-even spread is negative at every tested reset interval, meaning the HDB loan beat SORA itself before any bank margin; range -0.19 to -0.44 across resets",22b_reset_sensitivity.py -> out/t1_reset_sensitivity.csv

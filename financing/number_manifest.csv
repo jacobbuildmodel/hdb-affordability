@@ -1,0 +1,111 @@
+number_id,value,meaning,script,output_file
+H1,2.05,"percentage points: the realised break-even spread for a 2010 start, the widest of any cohort at every tested r",22_compute.py,financing/out/headline_numbers.csv
+H2,1.43,"percentage points: the weakest 2010-2015 start's realised break-even spread, the minimum across every cohort a",22_compute.py,financing/out/headline_numbers.csv
+H3,2023,"the first start year whose realised break-even spread is negative at every tested reset interval, meaning the ",22_compute.py,financing/out/headline_numbers.csv
+be_2010,2.0461,"realised break-even spread, 2010 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2011,1.8921,"realised break-even spread, 2011 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2012,1.9401,"realised break-even spread, 2012 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2013,1.8982,"realised break-even spread, 2013 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2014,1.6406,"realised break-even spread, 2014 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2015,1.6927,"realised break-even spread, 2015 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2016,1.6347,"realised break-even spread, 2016 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2017,1.2421,"realised break-even spread, 2017 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2018,1.3266,"realised break-even spread, 2018 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2019,1.3244,"realised break-even spread, 2019 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2020,0.5647,"realised break-even spread, 2020 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2021,0.9245,"realised break-even spread, 2021 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2022,1.5229,"realised break-even spread, 2022 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2023,-0.2375,"realised break-even spread, 2023 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2024,-1.0548,"realised break-even spread, 2024 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2025,-0.2993,"realised break-even spread, 2025 start, 36-month reset",22_compute.py,financing/out/t1_breakeven.csv
+be_2010_r36,2.0461,"realised break-even spread, 2010 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2010_r24,1.9890,"realised break-even spread, 2010 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2010_r12,1.9059,"realised break-even spread, 2010 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2010_r3,1.8905,"realised break-even spread, 2010 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2011_r36,1.8921,"realised break-even spread, 2011 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2011_r24,1.8573,"realised break-even spread, 2011 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2011_r12,1.8439,"realised break-even spread, 2011 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2011_r3,1.8238,"realised break-even spread, 2011 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2012_r36,1.9401,"realised break-even spread, 2012 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2012_r24,1.8778,"realised break-even spread, 2012 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2012_r12,1.7663,"realised break-even spread, 2012 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2012_r3,1.7433,"realised break-even spread, 2012 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2013_r36,1.8982,"realised break-even spread, 2013 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2013_r24,1.6927,"realised break-even spread, 2013 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2013_r12,1.6778,"realised break-even spread, 2013 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2013_r3,1.6528,"realised break-even spread, 2013 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2014_r36,1.6406,"realised break-even spread, 2014 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2014_r24,1.7147,"realised break-even spread, 2014 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2014_r12,1.5760,"realised break-even spread, 2014 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2014_r3,1.5489,"realised break-even spread, 2014 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2015_r36,1.6927,"realised break-even spread, 2015 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2015_r24,1.4741,"realised break-even spread, 2015 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2015_r12,1.4586,"realised break-even spread, 2015 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2015_r3,1.4310,"realised break-even spread, 2015 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2016_r36,1.6347,"realised break-even spread, 2016 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2016_r24,1.4948,"realised break-even spread, 2016 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2016_r12,1.3317,"realised break-even spread, 2016 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2016_r3,1.3107,"realised break-even spread, 2016 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2017_r36,1.2421,"realised break-even spread, 2017 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2017_r24,1.1968,"realised break-even spread, 2017 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2017_r12,1.2070,"realised break-even spread, 2017 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2017_r3,1.1685,"realised break-even spread, 2017 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2018_r36,1.3266,"realised break-even spread, 2018 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2018_r24,1.2659,"realised break-even spread, 2018 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2018_r12,1.0287,"realised break-even spread, 2018 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2018_r3,1.0271,"realised break-even spread, 2018 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2019_r36,1.3244,"realised break-even spread, 2019 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2019_r24,0.7887,"realised break-even spread, 2019 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2019_r12,0.8846,"realised break-even spread, 2019 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2019_r3,0.9245,"realised break-even spread, 2019 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2020_r36,0.5647,"realised break-even spread, 2020 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2020_r24,1.0203,"realised break-even spread, 2020 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2020_r12,0.8515,"realised break-even spread, 2020 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2020_r3,0.9037,"realised break-even spread, 2020 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2021_r36,0.9245,"realised break-even spread, 2021 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2021_r24,0.6698,"realised break-even spread, 2021 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2021_r12,0.7369,"realised break-even spread, 2021 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2021_r3,0.6538,"realised break-even spread, 2021 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2022_r36,1.5229,"realised break-even spread, 2022 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2022_r24,0.8263,"realised break-even spread, 2022 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2022_r12,0.3204,"realised break-even spread, 2022 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2022_r3,0.2156,"realised break-even spread, 2022 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2023_r36,-0.2375,"realised break-even spread, 2023 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2023_r24,-0.4391,"realised break-even spread, 2023 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2023_r12,-0.3166,"realised break-even spread, 2023 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2023_r3,-0.1914,"realised break-even spread, 2023 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2024_r36,-1.0548,"realised break-even spread, 2024 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2024_r24,-0.5117,"realised break-even spread, 2024 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2024_r12,-0.2216,"realised break-even spread, 2024 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2024_r3,0.1219,"realised break-even spread, 2024 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2025_r36,-0.2993,"realised break-even spread, 2025 start, 36-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2025_r24,-0.2993,"realised break-even spread, 2025 start, 24-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2025_r12,0.3326,"realised break-even spread, 2025 start, 12-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2025_r3,0.8548,"realised break-even spread, 2025 start, 3-month reset",22_compute.py,financing/out/t1_reset_sensitivity.csv
+reset_min_2010_2015,1.4310,"lowest break-even anywhere in the 2010-2015 block (2015 start, 3-month reset)",22_compute.py,financing/out/t1_reset_sensitivity.csv
+reset_min36_2010_2015,1.6406,lowest break-even at the 36-month reset across 2010-2015 (2014 start),22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2010_lo,1.8905,"lowest break-even across resets, 2010 start",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2010_hi,2.0461,"highest break-even across resets, 2010 start",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2023_lo,-0.4391,"lowest break-even across resets, 2023 start",22_compute.py,financing/out/t1_reset_sensitivity.csv
+be_2023_hi,-0.1914,"highest break-even across resets, 2023 start",22_compute.py,financing/out/t1_reset_sensitivity.csv
+t2b_cells_total,24,2020-2023 start-year by spread cells,22_compute.py,financing/out/t2_crossover.csv
+t2b_cells_missed,15,"of those, cells that did not cross within three years",22_compute.py,financing/out/t2_crossover.csv
+t2b_never_crossed,10,"of those, cells that never crossed inside the data",22_compute.py,financing/out/t2_crossover.csv
+t3_gap_max_2010_2015,0.296,"largest R3 minus R2 gap, 2010-2015 starts",22_compute.py,financing/out/t3_r2_r3.csv
+t3_gap_max_2022_2025,1.260,"largest R3 minus R2 gap, 2022-2025 starts",22_compute.py,financing/out/t3_r2_r3.csv
+t4a_cases_total,66,2021-switch start-year by spread cases,22_compute.py,financing/out/t4_switch.csv
+t4a_cases_worse,31,"of those, worse than staying on HDB",22_compute.py,financing/out/t4_switch.csv
+t4a_cases_better,35,"of those, better than staying",22_compute.py,financing/out/t4_switch.csv
+t4b_cases_better,12,early-switch cases that came out ahead of staying,22_compute.py,financing/out/t4_switch.csv
+t4_example_cost_125,128310.97,"2010 start switching in 2021 at 1.25 points, cumulative interest",22_compute.py,financing/out/t4_switch.csv
+t4_example_diff_125,2734.85,"difference against staying on the HDB loan, 1.25 points",22_compute.py,financing/out/t4_switch.csv
+t4_example_cost_025,116182.67,"2010 start switching in 2021 at 0.25 points, cumulative interest",22_compute.py,financing/out/t4_switch.csv
+t4_example_diff_025,9393.45,"difference against staying on the HDB loan, 0.25 points",22_compute.py,financing/out/t4_switch.csv
+t4_example_stay,125576.12,"2010 start staying on the HDB loan, cumulative interest",22_compute.py,financing/out/t4_switch.csv
+s1_months_in_window,150,months the finance-company rate is published inside 2010-2025,22_compute.py,financing/out/s1_finance_companies.csv
+s1_min,2.81,lowest finance-company rate in the window,22_compute.py,financing/out/s1_finance_companies.csv
+s1_max,5.56,highest finance-company rate in the window,22_compute.py,financing/out/s1_finance_companies.csv
+sora_months_above_hdb,28,"consecutive months compounded 3M SORA was above 2.6, 2022-11 to 2025-02",22_compute.py,financing/out/rates_monthly.csv
+f2_quarters_published,109,"quarters the CPF history publishes, every one at a 2.50 per cent Ordinary Account rate",22_compute.py,raw/RETRIEVED.txt
+f2_quarters_window,59,quarters of that history inside the 2010 to Sep 2024 window,22_compute.py,raw/RETRIEVED.txt
+f3_series_count,11,interest rate series published in MAS Table III.3,22_compute.py,raw/f3_mas_msb_iii3_monthly.csv

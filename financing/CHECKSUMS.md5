@@ -1,0 +1,40 @@
+# MD5 checksums, financing piece. Regenerate with:
+#   python3 financing/25_manifest.py
+# Never written by run_all.sh, which only runs --check.
+# Regenerate LAST, after every other edit; see README.md.
+
+# ---- INPUTS ----
+3815799c6a2671fcce4c9b196134e7b9  raw/f1_sora_sgs_monthly.csv
+8657b0352aea8be07977de84e7e8ebca  raw/f2_cpf_interest_rate_history.pdf
+4875312eea850c03a53708be0261a6b2  raw/f3_mas_msb_iii3_monthly.csv
+9bd285ad68a294bd7d050b5be329c384  raw/f5_mas_fsr_2025.pdf
+fe6b3f7c3d465b2b62eef1a247603f48  raw/f6_mas_mortgage_pricing_2021.pdf
+f77691c48c0774cb432700d1bf75e5f5  raw/f8_cpf_rates_q1_2025.pdf
+c6002c7edbcc1571c14a1dad9544938b  financing/20_rates.py
+3592b587f4653f53e6961ffee1b5be7b  financing/21_model.py
+11f32ff9e8ac2acb1068fc641377224c  financing/22_compute.py
+13d8042432b3d46f009fc1cfe476f6d8  financing/22b_reset_sensitivity.py
+a984c56a6db44da0eee07c8f8e6f6b3e  financing/23_figures.py
+6cc7d94bdbf4e1a0c7c4bed9917738d5  financing/24_results.py
+47e3f89a45e976293d87c77951e86790  financing/25_manifest.py
+88505417797530584b3d7f14168a88c2  financing/THESIS.md
+ae39b1a31e9175bb78fb7cabfdbacf16  financing/RESULTS.md
+0194e93bd8c02238cb3b163d10ca9ef6  financing/2026-10-03.md
+
+# ---- OUTPUTS ----
+da54950c1f34cbd1c68c64b3593202a4  financing/out/compute_report.txt
+506d51187544cca482017ba2f2d000f9  financing/out/figure_captions.txt
+caf91f7e686f17748020135f18e26567  financing/out/headline_numbers.csv
+a994b413f8140142eeed584fa8c803df  financing/out/rates_monthly.csv
+448b2317cafff7e86b646431395f68e7  financing/out/reset_sensitivity_report.txt
+5b36cf36014c890cc687c1fc1e024cab  financing/out/s1_finance_companies.csv
+f3e02d1e2de98e7a9612a47ce14aeb27  financing/out/t1_breakeven.csv
+5408d6cff57e33579a9ad69bfd66d0c0  financing/out/t1_reset_sensitivity.csv
+6f6ed444774f49b2791d4f5cad53ac16  financing/out/t2_crossover.csv
+7a593f2089b0da399d9446f152007ab0  financing/out/t2_reset_sensitivity.csv
+16312d05fe198607ddfdbbd2a842118a  financing/out/t3_r2_r3.csv
+b7ae9bc581b16d217884a2283ec58636  financing/out/t3_reset_sensitivity.csv
+76595fe0e43ab82f9f7a0a4c6140c8f6  financing/out/t4_reset_sensitivity.csv
+6efe30ac03bf02140acfa96684a152cc  financing/out/t4_switch.csv
+e96452cb68be4bfefa956197f804831c  financing/figs/chart1_hdb_vs_sora.svg
+9f816b9a92bc7ae52873d225f5552fab  financing/figs/chart2_breakeven_by_start_year.svg
