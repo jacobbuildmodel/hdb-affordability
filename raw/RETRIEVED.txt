@@ -173,8 +173,10 @@ because two of them were actively misleading.
       and Finance Companies, monthly. Publisher: Monetary Authority of Singapore.
       https://www.mas.gov.sg/-/media/mas-media-library/statistics/monthly-statistical-bulletin/msb-historical/interest-rates-of-banks-and-finance-companies---monthly.csv
       Uploaded as "Interest Rates of Banks and Finance Companies - Monthly.csv".
-      THE FILE THAT COULD HAVE OVERTURNED THE DESIGN, AND DID NOT. Twelve data
-      columns; header row is line 5; year in column 1, month in column 2. There
+      THE FILE THAT COULD HAVE OVERTURNED THE DESIGN, AND DID NOT. Eleven
+      interest rate series, in columns 3 to 13 of a 13-column header on line 5,
+      with the year in column 1 and the month in column 2. (An earlier note here
+      said twelve data columns; that was a miscount of the same header.) There
       is NO banks' housing loan rate. The only housing loan rate published is
       "Finance Companies Housing Loans For 15 Years", column 8. Full heading list
       is quoted in financing/THESIS.md section 2.

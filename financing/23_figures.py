@@ -195,8 +195,9 @@ def chart1():
                "Compounded 3-month SORA against the flat HDB concessionary rate, "
                "2010 to 2026",
                "HDB 2.6% against 3-month SORA",
-               "SORA runs far below 2.6 per cent for a decade, rises above it "
-               "through 2022 and 2023, then falls back below it by 2026.")
+               "SORA runs far below 2.6 per cent for more than a decade, rises "
+               "above it from November 2022 to February 2025, then falls back "
+               "below it from March 2025.")
 
 
 def chart2():
@@ -361,8 +362,9 @@ def main():
 
     caps = [
         "Chart 1. The HDB concessionary rate has been 2.6 per cent throughout, "
-        "while compounded 3-month SORA ran far below it for a decade, rose above "
-        "it through 2022 and 2023, and fell back below it by 2026.",
+        "while compounded 3-month SORA ran far below it for more than a decade, "
+        "rose above it for the 28 months from November 2022 to February 2025, and "
+        "fell back below it from March 2025.",
         "Chart 2. Realised break-even spread by loan start year, R2, with a "
         "band showing the range across 3, 12, 24 and 36-month reset intervals "
         "(AMENDMENT 3). A dashed line marks the 1.0 threshold discussed in T1b: "
