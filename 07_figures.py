@@ -26,10 +26,31 @@ context; direct labels at the line ends plus a legend where there are two series
 solid hairline gridlines; a full aria-label; viewBox with no fixed width; CSS
 custom properties with literal fallbacks so the figure follows light and dark mode.
 
-Palette: categorical slots 1 and 2, validated in both modes.
-  light  #2a78d6 blue, #eb6834 orange on surface #fcfcfb
-  dark   #3987e5 blue, #d95926 orange on surface #1a1a19
-Worst adjacent colour-vision-deficiency separation 24.7 light, 26.8 dark, floor 8.
+Palette: shared across the three site repos as of Phase 3 (--fig-* custom
+properties), not just this one. Renamed from --series-1/--series-2/
+--text-primary/--text-secondary/--surface-1/--grid to --fig-subject/
+--fig-subject-2/--fig-ink/--fig-ink-2/--fig-surface/--fig-rule -- matching
+the --fig-subject/--fig-context naming coe-analysis's 09_figures.py already
+used independently, which the website's own economics.css also already
+defines (unconsumed by any actual chart until Phase 3). This repo's fig2/
+fig3 compare two co-equal series rather than a subject against background
+context, so --fig-subject-2 stands in where --fig-context wouldn't fit.
+
+Accent hex values re-picked to actually clear WCAG AA 4.5:1 as text (not
+just the 3:1 non-text floor they were previously validated against) -- the
+old #2a78d6/#eb6834 measured 4.30:1 and 3.12:1 as text on this surface.
+  light  --fig-subject #2873ce, --fig-subject-2 #c44613, on --fig-surface #fcfcfb
+         (4.61:1 and 4.83:1 against surface)
+  dark   --fig-subject #3987e5, --fig-subject-2 #db602f, on --fig-surface #1a1a19
+         (4.79:1 and 4.75:1 against surface)
+Colour-blindness: blue/orange simulated under protanopia, deuteranopia and
+tritanopia (Brettel/Vienot-style linear-RGB matrices), worst-case CIE76 deltaE
+94.8 (dark), 97.1 (light) -- still trivially distinguishable under every
+simulated form, as this hue pair already was.
+
+Canvas and type scale (480x340, 14/15px, verified 11.4px at 390px) are
+unchanged here -- that work merged separately as PR #10 (mobile-charts).
+This pass is the token rename and the contrast fix only.
 
 Reads:  out/affordability.csv, out/grants_by_buyer.csv, out/index_hedonic.csv,
         raw/income_percentiles_excl_cpf.csv
@@ -57,23 +78,23 @@ EHG_CEILING = 9000.0
 
 STYLE = """
 <style>
-  .viz { --surface-1:#fcfcfb; --text-primary:#0b0b0b; --text-secondary:#52514e;
-         --grid:#e4e3df; --series-1:#2a78d6; --series-2:#eb6834; }
+  .viz { --fig-surface:#fcfcfb; --fig-ink:#0b0b0b; --fig-ink-2:#52514e;
+         --fig-rule:#e4e3df; --fig-subject:#2873ce; --fig-subject-2:#c44613; }
   @media (prefers-color-scheme: dark) {
-    .viz { --surface-1:#1a1a19; --text-primary:#ffffff; --text-secondary:#c3c2b7;
-           --grid:#383835; --series-1:#3987e5; --series-2:#d95926; }
+    .viz { --fig-surface:#1a1a19; --fig-ink:#ffffff; --fig-ink-2:#c3c2b7;
+           --fig-rule:#383835; --fig-subject:#3987e5; --fig-subject-2:#db602f; }
   }
-  :root[data-theme="dark"] .viz { --surface-1:#1a1a19; --text-primary:#ffffff;
-           --text-secondary:#c3c2b7; --grid:#383835; --series-1:#3987e5;
-           --series-2:#d95926; }
-  :root[data-theme="light"] .viz { --surface-1:#fcfcfb; --text-primary:#0b0b0b;
-           --text-secondary:#52514e; --grid:#e4e3df; --series-1:#2a78d6;
-           --series-2:#eb6834; }
+  :root[data-theme="dark"] .viz { --fig-surface:#1a1a19; --fig-ink:#ffffff;
+           --fig-ink-2:#c3c2b7; --fig-rule:#383835; --fig-subject:#3987e5;
+           --fig-subject-2:#db602f; }
+  :root[data-theme="light"] .viz { --fig-surface:#fcfcfb; --fig-ink:#0b0b0b;
+           --fig-ink-2:#52514e; --fig-rule:#e4e3df; --fig-subject:#2873ce;
+           --fig-subject-2:#c44613; }
   .viz text { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI,
               Roboto, Helvetica, Arial, sans-serif; }
-  .ax   { font-size: 14px; fill: var(--text-secondary, #52514e); }
+  .ax   { font-size: 14px; fill: var(--fig-ink-2, #52514e); }
   .lbl  { font-size: 15px; font-weight: 600; }
-  .note { font-size: 14px; fill: var(--text-secondary, #52514e); }
+  .note { font-size: 14px; fill: var(--fig-ink-2, #52514e); }
 </style>
 """
 
@@ -97,7 +118,7 @@ def frame(years, ylo, yhi, ticks, fmt):
     for t in ticks:
         y = sc(t, ylo, yhi, y0, y1)
         p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
-                 'stroke="var(--grid, #e4e3df)" stroke-width="1"/>' % (x0, y, x1, y))
+                 'stroke="var(--fig-rule, #e4e3df)" stroke-width="1"/>' % (x0, y, x1, y))
         p.append('<text class="ax" x="%.1f" y="%.1f" text-anchor="end">%s</text>'
                  % (x0 - 8, y + 4, esc(fmt(t))))
     for yr in years:
@@ -125,7 +146,7 @@ def endlabel(pt, var, fb, name, sub=None, dy=0.0):
         return ""
     pt = (pt[0], pt[1] + dy)
     s = ('<circle cx="%.1f" cy="%.1f" r="4" fill="var(%s, %s)" '
-         'stroke="var(--surface-1, #fcfcfb)" stroke-width="2"/>'
+         'stroke="var(--fig-surface, #fcfcfb)" stroke-width="2"/>'
          '<text class="lbl" x="%.1f" y="%.1f" fill="var(%s, %s)">%s</text>'
          % (pt[0], pt[1], var, fb, pt[0] + 10, pt[1] + 4, var, fb, esc(name)))
     if sub:
@@ -150,7 +171,7 @@ def svg(body, aria, title, desc):
             'width="100%%" role="img" aria-label="%s" class="viz" '
             'preserveAspectRatio="xMidYMid meet">\n<title>%s</title>\n'
             '<desc>%s</desc>\n%s\n<rect x="0" y="0" width="%d" height="%d" '
-            'fill="var(--surface-1, #fcfcfb)"/>\n%s\n</svg>\n'
+            'fill="var(--fig-surface, #fcfcfb)"/>\n%s\n</svg>\n'
             % (W, H, esc(aria), esc(title), esc(desc), STYLE, W, H, body))
 
 
@@ -167,15 +188,15 @@ def fig1(aff):
             x = sc(years[i], min(years), max(years), PAD_L, W - PAD_R)
             y = sc(vals[i], ylo, yhi, H - PAD_B, PAD_T)
             p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
-                     'stroke="var(--text-secondary, #52514e)" stroke-width="1" '
+                     'stroke="var(--fig-ink-2, #52514e)" stroke-width="1" '
                      'opacity="0.3"/>' % (x, y, x, H - PAD_B))
             anchor = "start" if i == 0 else "middle"
             p.append('<text class="note" x="%.1f" y="%.1f" text-anchor="%s">'
                      '%s %.2f</text>' % (x, y - 10, anchor, esc(lab), vals[i]))
 
-    path, last = line(years, vals, ylo, yhi, "--series-1", "#2a78d6")
+    path, last = line(years, vals, ylo, yhi, "--fig-subject", "#2873ce")
     p.append(path)
-    p.append(endlabel(last, "--series-1", "#2a78d6", "%.2f years" % vals[-1],
+    p.append(endlabel(last, "--fig-subject", "#2873ce", "%.2f years" % vals[-1],
                       "of median income"))
 
     aria = ("Line chart. The price of a constant-quality four-room HDB resale flat "
@@ -198,14 +219,14 @@ def fig2(med, years):
 
     yc = sc(EHG_CEILING, 0, yhi, H - PAD_B, PAD_T)
     p.append('<line x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f" '
-             'stroke="var(--series-2, #eb6834)" stroke-width="2"/>'
+             'stroke="var(--fig-subject-2, #c44613)" stroke-width="2"/>'
              % (PAD_L, yc, W - PAD_R, yc))
-    p.append(endlabel((W - PAD_R, yc), "--series-2", "#eb6834", "9,000 ceiling",
+    p.append(endlabel((W - PAD_R, yc), "--fig-subject-2", "#c44613", "9,000 ceiling",
                       "frozen since 2019"))
 
-    path, last = line(years, vals, 0, yhi, "--series-1", "#2a78d6")
+    path, last = line(years, vals, 0, yhi, "--fig-subject", "#2873ce")
     p.append(path)
-    p.append(endlabel(last, "--series-1", "#2a78d6", money(vals[-1]),
+    p.append(endlabel(last, "--fig-subject", "#2873ce", money(vals[-1]),
                       "median income"))
 
     # the crossing
@@ -217,13 +238,13 @@ def fig2(med, years):
             cyear = years[i] + f
     if cx:
         p.append('<circle cx="%.1f" cy="%.1f" r="5" fill="none" '
-                 'stroke="var(--text-primary, #0b0b0b)" stroke-width="2"/>'
+                 'stroke="var(--fig-ink, #0b0b0b)" stroke-width="2"/>'
                  % (cx, yc))
         p.append('<text class="note" x="%.1f" y="%.1f" text-anchor="middle">'
                  'crosses %.1f</text>' % (cx, yc - 14, cyear))
 
-    p.append(legend([("--series-1", "#2a78d6", "Median household income"),
-                     ("--series-2", "#eb6834",
+    p.append(legend([("--fig-subject", "#2873ce", "Median household income"),
+                     ("--fig-subject-2", "#c44613",
                       "Enhanced CPF Housing Grant ceiling")]))
 
     aria = ("Line chart in Singapore dollars a month, %d to %d, on one axis. A "
@@ -251,8 +272,8 @@ def fig3(aff, grants):
     p = [frame(years, 0, yhi, ticks,
                lambda t: "%dk" % (t // 1000) if t else "0")]
 
-    p1, l1 = line(years, cap, 0, yhi, "--series-2", "#eb6834")
-    p2, l2 = line(years, net, 0, yhi, "--series-1", "#2a78d6")
+    p1, l1 = line(years, cap, 0, yhi, "--fig-subject-2", "#c44613")
+    p2, l2 = line(years, net, 0, yhi, "--fig-subject", "#2873ce")
     p += [p1, p2]
     push = 0.0
     if l1 and l2 and abs(l1[1] - l2[1]) < 38:
@@ -263,12 +284,12 @@ def fig3(aff, grants):
             d1, d2 = push, -push
     else:
         d1 = d2 = 0.0
-    p.append(endlabel(l1, "--series-2", "#eb6834", "LTV cap",
+    p.append(endlabel(l1, "--fig-subject-2", "#c44613", "LTV cap",
                       money(cap[-1]), dy=d1))
-    p.append(endlabel(l2, "--series-1", "#2a78d6", "price - grants",
+    p.append(endlabel(l2, "--fig-subject", "#2873ce", "price - grants",
                       money(net[-1]), dy=d2))
-    p.append(legend([("--series-1", "#2a78d6", "Price less grants"),
-                     ("--series-2", "#eb6834", "Loan-to-value cap")]))
+    p.append(legend([("--fig-subject", "#2873ce", "Price less grants"),
+                     ("--fig-subject-2", "#c44613", "Loan-to-value cap")]))
 
     aria = ("Line chart in Singapore dollars, %d to %d, on one axis, for a buyer at "
             "the 20th percentile of household income. One line is the loan-to-value "
