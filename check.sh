@@ -115,13 +115,30 @@ if [ $FULL -eq 1 ]; then
   if ./run_all.sh > /tmp/check_run.log 2>&1; then pass "run_all.sh exit 0"; else fail "run_all.sh failed, see /tmp/check_run.log"; fi
   if git diff --quiet; then pass "outputs byte-identical"; else fail "rebuild changed committed outputs"; git diff --stat | tail -5; fi
 
-  note "== A5 a corrupted output must fail the rebuild"
-  VICTIM=$(git ls-files 'out/*.csv' | head -1)
-  if [ -n "$VICTIM" ]; then
-    cp "$VICTIM" /tmp/victim.bak; printf 'corrupted\n' >> "$VICTIM"
-    if ./run_all.sh > /dev/null 2>&1; then fail "corrupted $VICTIM still passed the rebuild"; else pass "corruption detected"; fi
-    cp /tmp/victim.bak "$VICTIM"
-  else note "      (no out/*.csv to corrupt; skipped)"; fi
+  note "== A5 a corrupted checksummed input must fail the rebuild"
+  # Corrupt a file run_all.sh never regenerates, so the corruption is still
+  # there when 08_manifest.py --check runs. (Corrupting an out/ file cannot
+  # fail: run_all.sh rebuilds it before the check, which is why the earlier
+  # version of this test always reported FAIL.) The victim is the first raw/
+  # PDF listed in CHECKSUMS.md5: no script parses a PDF, so the only thing
+  # that can stop the rebuild is the checksum check itself, and the log must
+  # name the victim as MISMATCH, not merely exit non-zero for another reason.
+  VICTIM=$(sed -n 's/^[0-9a-f]\{32\}  \(raw\/.*\.pdf\)$/\1/p' CHECKSUMS.md5 | head -1)
+  if [ -n "$VICTIM" ] && [ -f "$VICTIM" ]; then
+    A5_BAK=$(mktemp); A5_LOG=$(mktemp)
+    cp "$VICTIM" "$A5_BAK"
+    trap 'cp "$A5_BAK" "$VICTIM"' EXIT INT TERM
+    printf 'corrupted\n' >> "$VICTIM"
+    if ./run_all.sh > "$A5_LOG" 2>&1; then
+      fail "corrupted $VICTIM still passed the rebuild"
+    elif grep -qx "MISMATCH  $VICTIM" "$A5_LOG"; then
+      pass "corrupted $VICTIM failed the rebuild with MISMATCH"
+    else
+      fail "rebuild failed with $VICTIM corrupted, but not on its checksum; see $A5_LOG"
+    fi
+    cp "$A5_BAK" "$VICTIM"; trap - EXIT INT TERM; rm -f "$A5_BAK"
+    git diff --quiet -- "$VICTIM" && pass "$VICTIM restored" || fail "$VICTIM not restored"
+  else fail "no checksummed raw/ PDF found to corrupt"; fi
 fi
 
 echo
