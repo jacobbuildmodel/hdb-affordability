@@ -178,9 +178,11 @@ because two of them were actively misleading.
       with the year in column 1 and the month in column 2. (An earlier note here
       said twelve data columns; that was a miscount of the same header.) There
       is NO banks' housing loan rate. The only housing loan rate published is
-      "Finance Companies Housing Loans For 15 Years", column 8. Full heading list
-      is quoted in financing/THESIS.md section 2.
-      Coverage of column 8, established by dates only: populated 1983-01 to
+      "Finance Companies Housing Loans For 15 Years", column 9 counting from 1
+      (index 8 counting from zero, as S1_COL in financing/22_compute.py). Full
+      heading list is quoted in financing/THESIS.md section 2, which calls it
+      column 8 in the zero-based sense.
+      Coverage of that series, established by dates only: populated 1983-01 to
       2022-06 with no internal gaps; 150 of the 192 months of the 2010-2025 study
       window; the file runs to 2023-04 but the final 10 months are empty, so the
       series stops rather than the file ending.
