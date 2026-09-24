@@ -35,7 +35,7 @@ fa95d611f53ae43b09e7ee8daea8712c  02_hedonic.py
 6473e5bc478aefc75c25281dab9ef89d  04_grants.py
 c3c8416682303108906f50f02a7c2212  05_affordability.py
 8046d6e528bbc3b3fa21fa5bbcda4b2a  06_tests.py
-b4213514be6821bd6f558c27acdd90d3  07_figures.py
+df487da64ccfd8f7da3daaa6edd83a01  07_figures.py
 5f39a96e1c2360df0f62f55a3cd33f50  08_manifest.py
 fbfc4fd8f232e797ba3865b4e202abec  grant_schedule.csv
 efa0fafd29d1f5832c9ad8d43ba58479  ehg_bands.csv
@@ -66,6 +66,6 @@ bda383a1b9776cbbab637fca5024a398  out/index_basket.csv
 19c50808197366d0f6cafebf22caca36  out/index_hedonic.csv
 cb9a5f2efe63524fd9b4fbf9ee353718  out/index_hedonic_spline.csv
 925a6b41af86c93a506557ca3569e60c  out/resale_clean.csv
-b62fbda6ca0d422fd7a66d1cf3b4410d  figs/fig1_price_to_income.svg
-bf0172a63fbd5036edd6adcc18a1cb46  figs/fig2_ehg_crossing.svg
-f632d357a402c5b3354d41dcb24c93e0  figs/fig3_binding_constraint.svg
+c1585dbd3964cf34b342d57d4185d7a5  figs/fig1_price_to_income.svg
+4f08c4801cac09557bf295f40cf81651  figs/fig2_ehg_crossing.svg
+0c080b98742f8f482a2e0949c4b0f384  figs/fig3_binding_constraint.svg
