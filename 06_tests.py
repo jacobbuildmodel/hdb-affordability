@@ -313,14 +313,30 @@ def main():
           "living near a parent, so modelling it would mean assuming a living "
           "arrangement." % t34["gy0"])
         A("")
+        # The verdict sentence reads t34["t3"], the same value the Summary
+        # table prints, so the prose cannot contradict the sealed verdict.
+        t3_text = {
+            "OUTSIDE BOTH THRESHOLDS":
+                "T3 is OUTSIDE BOTH THRESHOLDS, neither a pass nor a fail. F3, "
+                "which would have made grants a footnote, needed under 10 per cent "
+                "and is not triggered either. Grants moved, and moved by too little.",
+            "PASS": "T3 PASSES.",
+            "F3 TRIGGERED": "T3 does not pass, and F3 is TRIGGERED: under 10 per "
+                            "cent, grants are a footnote.",
+        }[t34["t3"]]
         A("**T3.** For the 20th-percentile buyer, grants rose by %.0f dollars "
           "between %d and %d while the constant-quality price rose by %.0f. The "
           "grant increase covered **%.1f per cent** of the price increase, against "
-          "a 40 per cent threshold. T3 FAILS. F3, which would have made grants a "
-          "footnote, needed under 10 per cent and is not triggered either. Grants "
-          "moved, and moved by too little."
+          "a 40 per cent threshold. %s"
           % (t34["dgrant"], t34["gy0"], t34["gy1"], t34["dprice"],
-             100 * t34["share"], ))
+             100 * t34["share"], t3_text))
+        A("")
+        A("Revision note, 25 September 2026: this paragraph previously said "
+          "\"T3 FAILS\", contradicting the Summary table, which gives the sealed "
+          "verdict OUTSIDE BOTH THRESHOLDS: 17.0 per cent is below the 40 per cent "
+          "pass line and above the 10 per cent F3 line. The sentence was hard-coded "
+          "in `06_tests.py`; it now reads the same verdict as the table. No number "
+          "changed and no new data was downloaded to produce this revision.")
         A("")
         A("**T4a FAILS, and in the opposite direction to the one written down.** "
           "The mortgage servicing ratio for the 20th-percentile buyer rose %+.1f "

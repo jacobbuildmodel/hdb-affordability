@@ -126,7 +126,9 @@ The 80th percentile household sits above the EHG ceiling in every one of the 13 
 
 The grant series runs from 2019, because the Enhanced CPF Housing Grant replaced the Additional and Special CPF Housing Grants on 11 September 2019 and the schedule it replaced is not sourced. The Proximity Housing Grant is omitted by design: it has no income test and is conditional on living near a parent, so modelling it would mean assuming a living arrangement.
 
-**T3.** For the 20th-percentile buyer, grants rose by 40000 dollars between 2019 and 2025 while the constant-quality price rose by 235857. The grant increase covered **17.0 per cent** of the price increase, against a 40 per cent threshold. T3 FAILS. F3, which would have made grants a footnote, needed under 10 per cent and is not triggered either. Grants moved, and moved by too little.
+**T3.** For the 20th-percentile buyer, grants rose by 40000 dollars between 2019 and 2025 while the constant-quality price rose by 235857. The grant increase covered **17.0 per cent** of the price increase, against a 40 per cent threshold. T3 is OUTSIDE BOTH THRESHOLDS, neither a pass nor a fail. F3, which would have made grants a footnote, needed under 10 per cent and is not triggered either. Grants moved, and moved by too little.
+
+Revision note, 25 September 2026: this paragraph previously said "T3 FAILS", contradicting the Summary table, which gives the sealed verdict OUTSIDE BOTH THRESHOLDS: 17.0 per cent is below the 40 per cent pass line and above the 10 per cent F3 line. The sentence was hard-coded in `06_tests.py`; it now reads the same verdict as the table. No number changed and no new data was downloaded to produce this revision.
 
 **T4a FAILS, and in the opposite direction to the one written down.** The mortgage servicing ratio for the 20th-percentile buyer rose +9.3 points, the median +1.8, the 80th percentile +0.6. The sealed test predicted the low-income buyer's change would be at least 5 points SMALLER than the high-income buyer's. It is 8.8 points LARGER.
 
