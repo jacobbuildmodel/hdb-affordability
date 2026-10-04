@@ -1,6 +1,6 @@
 # FEASIBILITY -- labels and coverage only
 
-Checked 4 October 2026, about 10:10 to 10:40 UTC, from the research session.
+Checked 4 October 2026 from the research session.
 No price value was printed, plotted, summarised or saved to the repo. Coverage
 came from dataset metadata and from queries that asked for the `month` field
 alone (first, last, row total). The COE table was read by its metadata
@@ -10,17 +10,36 @@ Licence for everything on data.gov.sg: Singapore Open Data Licence version
 1.0 (https://data.gov.sg/open-data-licence). SingStat's terms of use say
 datasets on its services are under the same licence.
 
+## Needs Jacob
+
+1. T3's direction, stronger or weaker after 2018 (both cases are in
+   DESIGN_SKETCH.md).
+2. How T1 handles the March 2012 basis switch (options (a) to (d) in
+   DESIGN_SKETCH.md).
+3. Register a OneMap account for a token, and confirm from the Developer
+   Agreement whether coordinates may be committed (section 3).
+4. Save the TfL congestion charge page from a browser into cargradient/raw/.
+5. The paper PDF (a working paper, copyright the authors) is committed in
+   cargradient/raw/ as asked. The repo is public, so confirm it may stay, or
+   keep only its URL and md5.
+
 ## Hosts
 
-| Host | Reachable | Used for |
-|---|---|---|
-| data.gov.sg, api-production.data.gov.sg, api-open.data.gov.sg | yes | HDB resale, COE, MRT exits, HDB buildings |
-| tablebuilder.singstat.gov.sg, www.singstat.gov.sg | yes | COE from 2002 |
-| liberalarts.tulane.edu | NO, 403 | the paper (see PAPER_NOTES.md); stopped |
-| www.onemap.gov.sg | NO, 403 | geocoding; stopped |
-| datamall.lta.gov.sg, www.lta.gov.sg | NO, 403 | LTA data and the 2018 growth-rate notice; stopped |
-| www.hdb.gov.sg | NO, 403 | not needed for these series |
-| tfl.gov.uk | NO, 403 | world-view source; stopped |
+First check 4 October 2026 from about 10:10 UTC. Re-checked after Jacob
+widened the network allowance, from about 10:29 UTC.
+
+| Host | First check | After allowance | Used for |
+|---|---|---|---|
+| data.gov.sg, api-production.data.gov.sg, api-open.data.gov.sg | yes | yes | HDB resale, COE, MRT exits, HDB buildings |
+| tablebuilder.singstat.gov.sg, www.singstat.gov.sg | yes | yes | COE from 2002 |
+| liberalarts.tulane.edu | NO, 403 | yes | the paper (working-paper copy) |
+| www.onemap.gov.sg | NO, 403 | yes | geocoding, section 3 |
+| www.lta.gov.sg | NO, 403 | yes | vehicle growth rate, TEL stage dates |
+| datamall.lta.gov.sg | NO, 403 | allowed, not needed yet | -- |
+| www.hdb.gov.sg | NO, 403 | allowed, not needed yet | -- |
+| doi.org, ideas.repec.org | NO, 403 | yes | the published version's citation |
+| www.sciencedirect.com | NO, 403 | connects, answers 403 | published text not read |
+| tfl.gov.uk | NO, 403 | connects, answers 403 "Verification required" | world view; stopped, not bypassed |
 
 ## 1. HDB resale flat prices (collection 189, publisher HDB)
 
@@ -57,45 +76,127 @@ M651121. SingStat footnote, in short: February and March 2002 first bidding
 was closed bidding; open bidding from April 2002; no bidding in April, May
 and June 2020. Category definitions changed (the data.gov.sg description
 dates one change to the May 2022 first exercise); SingStat labels use one
-label across the whole series. Which category and which averaging the paper
-used is unknown until the paper is read.
+label across the whole series. The paper used categories A and B, with each
+bidding weighted by successful bids and averaged within the quarter (PAPER_NOTES
+section 4). M651121 carries all three inputs per bidding, so it can be rebuilt
+exactly.
 
 ## 3. OneMap geocoding
 
-www.onemap.gov.sg is refused (403). Terms of use, rate limits and whether
-bulk geocoding is allowed: NOT CHECKED, stopped for that host.
+Search API: GET https://www.onemap.gov.sg/api/common/elastic/search
+(?searchVal=...&returnGeom=Y&getAddrDetails=Y&pageNum=1). Read 4 October 2026
+from the API docs (https://www.onemap.gov.sg/apidocs/, served as a script
+bundle), the API Terms of Service
+(https://www.onemap.gov.sg/legal/apitermsofservice.html) and the site Terms of
+Use (https://www.onemap.gov.sg/legal/termsofuse.html).
 
-Reachable alternatives, labels only, for Jacob to weigh:
-- "HDB Existing Building", d_16b157c52ed637edd6ba1232e026258d, GeoJSON,
-  57 MB, fields OBJECTID, BLK_NO, ST_COD, ENTITYID, POSTAL_COD, INC_CRC,
-  FMEL_UPD_D, SHAPE.AREA, SHAPE.LEN. It keys on a street CODE, not the street
-  name the resale files carry, so a join needs a code-to-name table not found
-  yet. Current buildings only (coverage start 2025-11-04).
-- "HDB Property Information", d_17f5382f26140b1fdae0ba2ef6239d2f, CSV,
-  13,357 rows, blk_no and street (names) and year_completed among 24 columns,
-  no coordinates.
+**Token.** The docs list no header parameter for Search, unlike Reverse
+Geocode, which lists "API token provided by the Authentication Service". In
+the live test below, each Search call returned HTTP 200 WITH results, AND an
+error field: "Authentication token missing. Please create an account and
+generate or renew your API Token." So it works without a token today but asks
+for one. A full run uses a registered account and token
+(POST /api/auth/post/getToken). Jacob registers; the token never goes in the
+repo.
+
+**Rate limit.** No number is published on the Search page. The API terms
+say limits are "found on the individual pages of each API". The docs warn
+against "overloading OneMap API which might result in rate limited ban", and
+list "429 - Quota exceeded" on other endpoints. The estimates below are
+therefore assumptions, not a sourced limit.
+
+**Bulk use for a public research site.** Quoted:
+- API Terms of Service: "Use of the datasets is governed by the Singapore
+  Open Data Licence." "You can use, access, call, command, query or request
+  the API, whether commercially or non-commercially". "You shall not
+  interfere with or disrupt the API or the servers".
+- Site Terms of Use: "SLA grants to you a non-transferable, non-exclusive,
+  royalty-free, revocable licence to access, view, download, print or
+  otherwise use the SLA Data and the SLA Material for any usage, subject to
+  the terms". Anyone building on the API "will need to complete the online
+  registration process and ... accept the terms of the Developer Agreement."
+  (The Developer Agreement itself was not read; it is shown at registration.)
+- Reading: nothing quoted forbids a one-off, rate-limited batch of address
+  look-ups for research. Results are datasets under the Open Data Licence, so
+  derived distances can be published with attribution. Whether the
+  coordinates themselves may be committed to a public repo is for Jacob to
+  confirm against the Developer Agreement at registration.
+
+**Unique addresses.** cargradient/00_addresses.py reads only block,
+street_name and month from the five resale datasets (no price field
+requested; the script asserts it). Result: cargradient/out/addresses.csv,
+md5 1b9d1be0fba0ecff2b5d2e1458885885.
+- Rows read: 988,123, all five files.
+- Unique block + street pairs: 10,016, on 597 street names.
+- Pairs with any sale in T1's window (2002-04 to 2015-12): 8,516.
+- Pairs with any sale in T2's window (2016-01 to 2026-10): 9,770.
+
+**Run time for 10,016 calls, one call each (assumed rates):**
+- 1 per second: about 2.8 hours.
+- 4 per second: about 42 minutes.
+- Add retries for non-matches by hand-expanding abbreviations (NTH, ST,
+  AVE, DR, C'WEALTH).
+
+**Live test, 5 addresses only** (4 October 2026, no token; raw responses not
+kept):
+
+| Block, street (resale file) | Found | Top result | Block and road match |
+|---|---|---|---|
+| 525 BEDOK NTH ST 3 | 2 | 525 BEDOK NORTH STREET 3, 460525 | yes |
+| 213 TAMPINES ST 23 | 1 | 213 TAMPINES STREET 23, 520213 | yes |
+| 688F WOODLANDS DR 75 | 1 | 688F WOODLANDS DRIVE 75, 736688 | yes |
+| 514 BEDOK NTH AVE 2 | 1 | 514 BEDOK NORTH AVENUE 2, 460514 | yes |
+| 181A BOON LAY DR | 1 | 181A BOON LAY DRIVE, 641181 | yes |
+
+5 of 5 matched on block and road, with the abbreviations expanded by
+OneMap itself. Five easy cases prove little: blocks demolished under SERS
+since 1990 may no longer geocode at all. Count those in the full run before
+sealing.
+
+Fallbacks, labels only: "HDB Existing Building" (d_16b157c52ed637edd6ba1232e026258d,
+GeoJSON, BLK_NO, ST_COD, POSTAL_COD; keys on a street code, not a street name)
+and "HDB Property Information" (d_17f5382f26140b1fdae0ba2ef6239d2f, 13,357
+rows, blk_no and street, no coordinates). Both are current buildings only.
 
 ## 4. The CBD point the paper uses
 
-Unknown: it is in the paper, which is blocked. Not substituted.
+Raffles Place MRT station (paper p. 11, note 19), with City Hall MRT station as
+a robustness check (Table 5). Both are in the data.gov.sg MRT exit layer below,
+with 10 exits for Raffles Place and 4 for City Hall (exits, not station
+centres). How an exit set becomes one point (mean of
+exits, or one named exit) is a choice to seal. The paper used MapInfo station
+points (p. 15), which are not public.
 
-## 5. MRT station locations (only if the paper's controls need them)
+## 5. MRT station locations
+
+The paper needs them only for one robustness check: projects more than 1,000 m
+from the nearest of "all 2015 proposed and existing stations" (p. 15).
 
 "LTA MRT Station Exit (GEOJSON)", d_b39d3a0871985372d7e1637193335da5:
-613 exit points, 190 station names, fields OBJECTID, STATION_NA, EXIT_CODE,
-INC_CRC, FMEL_UPD_D. A current snapshot (coverage start 2025-08-18) with no
-opening dates, so a station that opened in 2013 or 2020 cannot be dated from
-it. LTA DataMall is refused (403).
+- 613 exit points under 190 station names; fields OBJECTID, STATION_NA,
+  EXIT_CODE, INC_CRC, FMEL_UPD_D.
+- A current snapshot (coverage start 2025-08-18) with no opening dates.
+- Opening dates for the newer lines are on LTA's line pages, for example the
+  TEL stages in raw/lta_tel_project_page.html. They are not in one table.
 
 ## 6. The February 2018 zero-growth change
 
-The date and the rate need a primary source (LTA). www.lta.gov.sg is refused
-(403); not sourced yet.
+- Start date and rate: LTA, 13 Aug 2020, saved as
+  raw/lta_20200813_vehicle_growth_rate.html: "0% per annum for Categories A, B
+  and D since February 2018".
+- Announcement date (23 October 2017): news reports only. LTA's own October
+  2017 release was not found on lta.gov.sg. NEEDS-PRIMARY before T3's
+  dropped window is sealed.
 
 ## Exposure, disclosed
 
-- No resale price, COE premium or derived figure was seen in this session.
-- This repo already holds resale files (raw/, registration-date basis,
-  2012 onward) and the affordability piece's RESULTS.md, built on them. They
-  were not opened for this piece. The checker decides whether that earlier
+- No HDB resale price was requested, printed or saved. The address pull asked
+  for block, street_name and month only, and asserts that no other field came
+  back.
+- Reading the paper showed its COE premium summary for 2002Q2-2015Q4 and its
+  Figure 3 (PAPER_NOTES.md, Exposure). Those are COE values, not HDB prices.
+  No COE value was requested from SingStat or data.gov.sg.
+- This repo already holds resale files (raw/, registration-date basis, 2012
+  onward) and the affordability piece's RESULTS.md, which is built on them.
+  Neither was opened for this piece. The checker decides whether that earlier
   piece's town-level findings bear on these tests.

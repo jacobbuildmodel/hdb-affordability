@@ -28,11 +28,12 @@ fee per day of use) instead of rationing who may own a car, as Singapore's
 COE does.
 
 Source: Transport for London, "Congestion Charge",
-https://tfl.gov.uk/modes/driving/congestion-charge . NOT RETRIEVED: tfl.gov.uk
-is refused by this session's network policy (CONNECT 403, 4 October 2026),
-as are www.gov.uk, www.legislation.gov.uk and www.london.gov.uk. Before this
-line is used anywhere public, Jacob saves the page to cargradient/raw/ and
-the start date and charge are taken from it, not from memory.
+https://tfl.gov.uk/modes/driving/congestion-charge . NOT RETRIEVED. The host
+now connects, but on 4 October 2026 it answered the session with HTTP 403 and
+a "Verification required" page. The session stopped there and did not try to
+get past the check. Before this line is used anywhere public, Jacob saves the
+page from a browser into cargradient/raw/, and the start date and the charge
+are taken from that page, not from memory.
 
 ## Still open at Checkpoint 0 (not done here)
 

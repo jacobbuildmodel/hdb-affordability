@@ -1,0 +1,36 @@
+RETRIEVED.txt -- cargradient/raw/
+
+Downloaded by the research session (curl, TLS verified through the session
+proxy) on 4 October 2026. Times are UTC.
+
+FILE                                    BYTES   MD5                               RETRIEVED
+huang_li_ross_2018.pdf                  760426  b74310b9081111c3c8a179ec5bce842d  2026-10-04 10:29 UTC
+  URL: https://liberalarts.tulane.edu/sites/default/files/sites/default/files/Ross_Ownership.pdf
+  What it is: Huang, Li and Ross, "The Impact of the Cost of Car Ownership on
+  the Housing Price Gradient in Singapore", WORKING PAPER dated 26 December
+  2016, 38 pages. Not the published version (Regional Science and Urban
+  Economics 68, 2018, pp. 160-171, doi:10.1016/j.regsciurbeco.2017.10.009),
+  which was not retrieved: www.sciencedirect.com answers 403 to the session.
+
+lta_20200813_vehicle_growth_rate.html   49498   085dddee49563cd58749aab0f153e15d  2026-10-04 10:32 UTC
+  URL: https://www.lta.gov.sg/content/ltagov/en/newsroom/2020/8/news-releases/current-vehicle-growth-rate-to-continue-until-31-january-2022.html
+  What it is: LTA news release, 13 Aug 2020. States the vehicle growth rate
+  "has been set at 0% per annum for Categories A, B and D since February
+  2018". Saved as the HTML the server returned; a PDF print was not made
+  because headless Chromium does not trust the session proxy's certificate,
+  and certificate checks were not turned off.
+  The original October 2017 LTA release announcing the cut was NOT found on
+  lta.gov.sg. The 23 October 2017 announcement date rests on news reports
+  only (NEEDS-PRIMARY).
+
+lta_tel_project_page.html               103584  6a434f9cb3a3c5a1588e873a874b8f8d  2026-10-04 10:34 UTC
+  URL: https://www.lta.gov.sg/content/ltagov/en/upcoming_projects/rail_expansion/thomson_east_coast_line.html
+  What it is: LTA Thomson-East Coast Line project page; stage opening dates
+  (31 Jan 2020, 28 Aug 2021, 13 Nov 2022, 23 Jun 2024). Used in
+  DESIGN_SKETCH.md for the T3 "weaker" case.
+
+NOT RETRIEVED
+  TfL congestion charge page, https://tfl.gov.uk/modes/driving/congestion-charge
+  The host now connects, but answers automated requests with HTTP 403 and a
+  "Verification required" page. Stopped there; the check was not bypassed.
+  Jacob saves the page from a browser into this folder.
