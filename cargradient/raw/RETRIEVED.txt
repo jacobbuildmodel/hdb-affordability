@@ -11,6 +11,10 @@ huang_li_ross_2018.pdf                  760426  b74310b9081111c3c8a179ec5bce842d
   2016, 38 pages. Not the published version (Regional Science and Urban
   Economics 68, 2018, pp. 160-171, doi:10.1016/j.regsciurbeco.2017.10.009),
   which was not retrieved: www.sciencedirect.com answers 403 to the session.
+  NOT IN THE REPO (Jacob's decision, 5 October 2026): the PDF was removed
+  from every commit on cargradient-wip and cargradient/raw/*.pdf is in
+  .gitignore. Anyone checking PAPER_NOTES.md downloads it from the URL above
+  and compares the md5.
 
 lta_20200813_vehicle_growth_rate.html   49498   085dddee49563cd58749aab0f153e15d  2026-10-04 10:32 UTC
   URL: https://www.lta.gov.sg/content/ltagov/en/newsroom/2020/8/news-releases/current-vehicle-growth-rate-to-continue-until-31-january-2022.html
@@ -29,8 +33,13 @@ lta_tel_project_page.html               103584  6a434f9cb3a3c5a1588e873a874b8f8d
   (31 Jan 2020, 28 Aug 2021, 13 Nov 2022, 23 Jun 2024). Used in
   DESIGN_SKETCH.md for the T3 "weaker" case.
 
-NOT RETRIEVED
-  TfL congestion charge page, https://tfl.gov.uk/modes/driving/congestion-charge
-  The host now connects, but answers automated requests with HTTP 403 and a
-  "Verification required" page. Stopped there; the check was not bypassed.
-  Jacob saves the page from a browser into this folder.
+tfl_congestion_charge.html              34264   1c017bb804f365fc1dff27b436f1e572  saved 5 October 2026
+  URL: https://tfl.gov.uk/modes/driving/congestion-charge
+  What it is: Transport for London, "Congestion Charge (Official) - Transport
+  for London", saved by Jacob from a browser on 5 October 2026 and uploaded
+  to this branch in commit fc2d448 "Add files via upload" (commit timestamp
+  2026-10-04 20:28 +0800; rewritten to 0f6c4db when the PDF was removed).
+  The session's own requests to tfl.gov.uk got HTTP 403 and a "Verification
+  required" page; that check was not bypassed.
+  Used for: the world view in office/RULE0.md. The page gives the daily
+  charge and the hours; it does not give the scheme's start date.

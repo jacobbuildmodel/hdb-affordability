@@ -23,17 +23,20 @@ numbers here; Jacob sets those alone, later.
 
 ## World view: a place that prices cars differently
 
-London charges for driving into the centre (the congestion charge, a daily
-fee per day of use) instead of rationing who may own a car, as Singapore's
-COE does.
+London charges for driving in the centre instead of rationing who may own a
+car, as Singapore's COE does. Transport for London's page says the
+Congestion Charge "is an GBP 18 daily charge (if paid on the day or in
+advance) or GBP 21 (if paid by midnight of the third day after travel)",
+payable "if you drive within the Congestion Charge zone 7:00-18:00
+Monday-Friday and 12:00-18:00 Sat-Sun and bank holidays". (The page writes
+the pound sign; GBP here keeps the file in plain ASCII.)
 
 Source: Transport for London, "Congestion Charge",
-https://tfl.gov.uk/modes/driving/congestion-charge . NOT RETRIEVED. The host
-now connects, but on 4 October 2026 it answered the session with HTTP 403 and
-a "Verification required" page. The session stopped there and did not try to
-get past the check. Before this line is used anywhere public, Jacob saves the
-page from a browser into cargradient/raw/, and the start date and the charge
-are taken from that page, not from memory.
+https://tfl.gov.uk/modes/driving/congestion-charge, saved by Jacob from a
+browser on 5 October 2026: cargradient/raw/tfl_congestion_charge.html, md5
+1c017bb804f365fc1dff27b436f1e572. The saved page gives no start date for the
+scheme. None is stated here, and none is taken from memory. If the piece
+needs one, it comes from a second saved TfL source.
 
 ## Still open at Checkpoint 0 (not done here)
 
