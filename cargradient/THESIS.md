@@ -114,9 +114,13 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
   resale_price (the outcome, unopened).
 - **COE:** SingStat M651121 (data source LTA), 2002 Feb to 2026 Sep, saved
   in raw/singstat_M651121/. No bidding was held in April to June 2020.
-- **Block coordinates:** OneMap Search, 10,016 unique block and street
-  pairs (out/addresses.csv). The full run waits for Jacob's OneMap
-  credentials.
+- **Block coordinates:** OneMap Search, 5 October 2026, 10,016 unique
+  block and street pairs.
+  - 9,856 were matched on block and street: 9,855 exact, 1 expanded.
+  - 160 were not matched.
+  - Unmatched sales: 0.83 per cent of T1's window and none of T2's
+    (office/GEOCODE_REPORT.md).
+  - The fallback for the unmatched pairs waits for Jacob.
 - **Raffles Place and City Hall MRT:** data.gov.sg exit layer
   d_b39d3a0871985372d7e1637193335da5 (10 and 4 exits).
 - **The 2018 change:** LTA, 13 Aug 2020 (raw/), "0% per annum for Categories
@@ -327,8 +331,11 @@ confidences, set at the seal.
 
 ## 10. Open before the seal
 
-1. **OneMap credentials** (Jacob), then the full geocode. Report the match
-   rate before the seal (gate 1 is defined on it).
+1. **The geocode.** Done, 5 October 2026. Gate 1 passes: 99.17 per cent of
+   T1's sales and 100 per cent of T2's are geocoded. Still open:
+   - Jacob's choice of fallback for the 160 unmatched pairs
+     (office/GEOCODE_REPORT.md);
+   - which station point is used (mean of exits, or the nearest exit).
 2. **The before-window for T3 and the first-stage gate.** Approved by
    Jacob, 5 October 2026: 2012Q2 to 2017Q3, and F below 10 in either window
    means not scored.

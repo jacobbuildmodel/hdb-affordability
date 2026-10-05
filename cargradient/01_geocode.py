@@ -7,6 +7,7 @@ writes cargradient/out/blocks_geocoded.csv. Run from the repository root:
 
     python cargradient/01_geocode.py            # geocode, resumable
     python cargradient/01_geocode.py --write    # rebuild the CSV from the cache
+    python cargradient/01_geocode.py --redo-nil # re-query tenant-record matches
 
 Credentials come from ONEMAP_EMAIL and ONEMAP_PASSWORD. The token lives in
 memory only: it is never printed, logged or written to disk.
@@ -143,11 +144,17 @@ class OneMap:
 
 
 def pick(results, block, street):
+    """The first result on the block and street, preferring the block's own
+    address record (a real POSTAL) over a tenant's record in the same block
+    (a shop or preschool, which OneMap gives POSTAL "NIL")."""
     want = norm(expand(street))
-    for r in results:
-        if r.get("BLK_NO", "").upper() == block.upper() and norm(r.get("ROAD_NAME", "")) == want:
+    hits = [r for r in results
+            if r.get("BLK_NO", "").upper() == block.upper()
+            and norm(r.get("ROAD_NAME", "")) == want]
+    for r in hits:
+        if r.get("POSTAL", "NIL") not in ("", "NIL"):
             return r
-    return None
+    return hits[0] if hits else None
 
 
 def load_cache():
@@ -177,6 +184,14 @@ def main():
     with open(ADDRESSES) as f:
         pairs = [(r["block"], r["street_name"]) for r in csv.DictReader(f)]
     done = load_cache()
+    if "--redo-nil" in sys.argv:
+        # Re-query pairs whose accepted result was a tenant record (POSTAL
+        # NIL), now that pick() prefers the block's own address record. The
+        # cache keeps the last record per pair, so appending supersedes.
+        nil = {k for k, r in done.items() if r["match_type"] != "none" and r["postal"] == "NIL"}
+        log(f"re-querying {len(nil)} pairs whose match had POSTAL NIL")
+        for k in nil:
+            del done[k]
     if "--write" in sys.argv:
         write_csv(done, pairs)
         return
