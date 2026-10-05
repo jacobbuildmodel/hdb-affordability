@@ -43,3 +43,17 @@ tfl_congestion_charge.html              34264   1c017bb804f365fc1dff27b436f1e572
   required" page; that check was not bypassed.
   Used for: the world view in office/RULE0.md. The page gives the daily
   charge and the hours; it does not give the scheme's start date.
+
+singstat_M651121/s21.json s23.json s25.json s27.json s31.json s33.json s35.json s37.json
+                                        98262 total                                       2026-10-05 11:49 UTC
+  URL: https://tablebuilder.singstat.gov.sg/api/table/tabledata/M651121?seriesNoORrowNo=<n>
+  What it is: SingStat table M651121 (data source LTA, data last updated
+  28/09/2026), one file per series, 2002 Feb to 2026 Sep: Cars Up To 1600cc
+  And 97kW (A) successful bids and quota premium, 1st and 2nd bidding (21,
+  23, 25, 27); Cars Above 1600cc Or 97kW (B), the same (31, 33, 35, 37).
+  COE values are not this piece's outcome; the checker allowed reading them
+  (round 3, item 4). Used by 01_coe_ranges.py.
+  MD5: s21 ec43295b0972882aa4d0ae9c57165830  s23 8394a237f84f87bdacfa41cdeec6dcdc
+       s25 d32e356cfcf145e08f9b5f11905229a1  s27 10d12decc00a73fc453d99ad43162a95
+       s31 0bb879d4cfa1dc62d155aeb94010c9cf  s33 48bf2ae9c2c1ebdb17770d9f2dec3153
+       s35 3bbcdf24c545f5d7644caa599e7a4354  s37 79b1a4dbb545881ec2b70ad6b685f475

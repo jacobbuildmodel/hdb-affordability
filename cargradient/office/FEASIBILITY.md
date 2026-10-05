@@ -10,18 +10,21 @@ Licence for everything on data.gov.sg: Singapore Open Data Licence version
 1.0 (https://data.gov.sg/open-data-licence). SingStat's terms of use say
 datasets on its services are under the same licence.
 
-## Needs Jacob
+## Needs Jacob (updated round 3, 5 October 2026)
 
-1. T3's direction, stronger or weaker after 2018 (both cases are in
-   DESIGN_SKETCH.md).
-2. How T1 handles the March 2012 basis switch (options (a) to (d) in
-   DESIGN_SKETCH.md).
-3. Register a OneMap account for a token, and confirm from the Developer
-   Agreement whether coordinates may be committed (section 3).
-4. Save the TfL congestion charge page from a browser into cargradient/raw/.
-5. The paper PDF (a working paper, copyright the authors) is committed in
-   cargradient/raw/ as asked. The repo is public, so confirm it may stay, or
-   keep only its URL and md5.
+Done in round 3:
+- T3's direction (weaker).
+- The March 2012 options ((a) plus (d), with (c) as a sensitivity).
+- The TfL page (saved by Jacob).
+- The PDF (removed from the repo).
+
+Still open:
+1. OneMap credentials in the environment. The full geocode waits for them.
+2. Approve or change the T3 before-window and the first-stage gate
+   (DESIGN_SKETCH item 4).
+3. Primary sources not yet found: the 0.25% rate before February 2018 and
+   LTA's October 2017 release. www.mot.gov.sg and www.gov.sg refuse the
+   session (CONNECT 403).
 
 ## Hosts
 
@@ -184,9 +187,14 @@ from the nearest of "all 2015 proposed and existing stations" (p. 15).
 - Start date and rate: LTA, 13 Aug 2020, saved as
   raw/lta_20200813_vehicle_growth_rate.html: "0% per annum for Categories A, B
   and D since February 2018".
-- Announcement date (23 October 2017): news reports only. LTA's own October
-  2017 release was not found on lta.gov.sg. NEEDS-PRIMARY before T3's
-  dropped window is sealed.
+- Announcement date (23 October 2017): news reports only. LTA's newsroom on
+  lta.gov.sg lists releases from 2020 onward, so the October 2017 release is
+  not there. www.mot.gov.sg and www.gov.sg refuse the session (CONNECT 403,
+  5 October 2026); the search stopped for those hosts. NEEDS-PRIMARY. T3
+  drops 2017Q4 to 2018Q1, which covers any announcement day in that quarter.
+- The rate before February 2018 (0.25%, Jacob's figure): not confirmed by a
+  primary source. LTA's 2020 release says only that Category C "was
+  maintained at 0.25% per annum". NEEDS-PRIMARY.
 
 ## Exposure, disclosed
 

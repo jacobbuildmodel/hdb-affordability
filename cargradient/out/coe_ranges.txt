@@ -1,0 +1,9 @@
+before 2016Q1-2017Q3: quarters 7 | min 45,827 (2017Q3) | max 53,960 (2016Q3) | max/min 1.18 | sd 2,609 | biddings/qtr 6-6
+after 2018Q2-2026Q3: quarters 33 | min 28,222 (2018Q4) | max 129,951 (2026Q3) | max/min 4.60 | sd 33,538 | biddings/qtr 6-6
+alt before 2013Q1-2017Q3: quarters 19 | min 45,827 (2017Q3) | max 82,867 (2013Q1) | max/min 1.81 | sd 11,544 | biddings/qtr 6-6
+alt before 2010Q1-2017Q3: quarters 31 | min 22,832 (2010Q1) | max 82,867 (2013Q1) | max/min 3.63 | sd 14,456 | biddings/qtr 6-6
+T1 2002Q2-2015Q4: quarters 55 | min 3,599 (2009Q1) | max 82,867 (2013Q1) | max/min 23.03 | sd 24,483 | biddings/qtr 6-6
+2020 quarters: {'2020Q1': 6, '2020Q3': 6, '2020Q4': 6}
+last quarter 2026Q3 6
+reg-basis before 2012Q2-2017Q3: quarters 22 | min 45,827 (2017Q3) | max 82,867 (2013Q1) | max/min 1.81 | sd 11,790
+after excl WFH 2018Q2-2019Q4 + 2023Q1-2026Q3: quarters 22 | min 28,222 (2018Q4) | max 129,951 (2026Q3) | max/min 4.60 | sd 35,792
