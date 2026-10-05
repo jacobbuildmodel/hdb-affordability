@@ -57,3 +57,17 @@ singstat_M651121/s21.json s23.json s25.json s27.json s31.json s33.json s35.json 
        s25 d32e356cfcf145e08f9b5f11905229a1  s27 10d12decc00a73fc453d99ad43162a95
        s31 0bb879d4cfa1dc62d155aeb94010c9cf  s33 48bf2ae9c2c1ebdb17770d9f2dec3153
        s35 3bbcdf24c545f5d7644caa599e7a4354  s37 79b1a4dbb545881ec2b70ad6b685f475
+
+lta_mrt_station_exit.geojson            213057  df9fd5566a3f9d540bc8a816adc59b9f  2026-10-05 12:39 UTC
+  URL: https://api-open.data.gov.sg/v1/public/api/datasets/d_b39d3a0871985372d7e1637193335da5/poll-download
+  What it is: "LTA MRT Station Exit (GEOJSON)", data.gov.sg, last updated
+  2026-09-16. 613 exit points, coordinates lon, lat. Used by 02_distance.py
+  for Raffles Place (10 exits) and City Hall (4 exits).
+
+OneMap Search (not a file)
+  URL: https://www.onemap.gov.sg/api/common/elastic/search, with a token from
+  https://www.onemap.gov.sg/api/auth/post/getToken (Jacob's account; the
+  token is never stored). Queried 5 October 2026 by 01_geocode.py, one call
+  per second. Results: out/blocks_geocoded.csv.
+  Contains information from OneMap (Singapore Land Authority), accessed 5
+  October 2026, under the Singapore Open Data Licence version 1.0.

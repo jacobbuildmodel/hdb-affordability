@@ -7,7 +7,7 @@ Table) are to the working-paper PDF (see PAPER_NOTES.md and raw/RETRIEVED.txt;
 the PDF itself is not in the repo). The full draft is cargradient/THESIS.md,
 UNSEALED.
 
-## Decided by Jacob (round 3)
+## Decided by Jacob (round 3, and 5 October 2026)
 
 1. The paper PDF is out of the repo. It is in no commit on cargradient-wip,
    and cargradient/raw/*.pdf is gitignored. Its URL, date and md5 stay in
@@ -44,6 +44,14 @@ UNSEALED.
    - Status: NEEDS-PRIMARY. The figure is used only in Jacob's Why line,
      which stays verbatim. No test depends on it.
 
+4. T3's before-window and gate (approved by Jacob, 5 October 2026):
+   - The before-window is 2012Q2-2017Q3.
+   - 2016Q1-2017Q3 stays as a reported sensitivity.
+   - T3 is NOT SCORED if the first-stage F for COE premium x distance is
+     below 10 in either window.
+   - Disclosed: the window was chosen after seeing COE ranges (item 4
+     below), not prices. COE is not the outcome.
+
 ## Common set-up (following the paper's column 4, Table 3b, p. 30)
 
 - **Unit:** each resale, with block fixed effects and controls for flat
@@ -74,8 +82,8 @@ allowed reading it.
 | After: 2018Q2-2026Q3 | 33 | 28,222 (2018Q4) | 129,951 (2026Q3) | 4.60 | 33,538 |
 | Before, proposed: 2012Q2-2017Q3 | 22 | 45,827 (2017Q3) | 82,867 (2013Q1) | 1.81 | 11,790 |
 
-- **Proposal: move the before-window to 2012Q2-2017Q3**, and keep
-  2016Q1-2017Q3 as a reported sensitivity.
+- **Proposal (APPROVED by Jacob, 5 October 2026): move the before-window to
+  2012Q2-2017Q3**, and keep 2016Q1-2017Q3 as a reported sensitivity.
 - Reasons:
   - The drafted window has almost no COE movement: highest over lowest is
     1.18. So the slope before 2018 would be estimated from noise, and any
@@ -85,7 +93,8 @@ allowed reading it.
     the March 2012 switch.
   - 22 quarters before against 33 after; the before-window's SD rises from
     2,609 to 11,790.
-- **Backstop gate, outcome-blind:** T3 is NOT SCORED if the first-stage F
+- **Backstop gate, outcome-blind (APPROVED by Jacob, 5 October 2026):** T3
+  is NOT SCORED if the first-stage F
   statistic for COE premium x distance is below 10 in either window.
   - The first stage uses only COE, quota, distance and which blocks traded
     when. It never uses prices, so it can be computed and gated without

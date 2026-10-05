@@ -133,15 +133,19 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
   fixed now, and does not move if the seal slips. 2020Q2 has no bidding and
   is dropped. 42 quarters.
 - **T3:**
-  - Before-window (PROPOSED, checker item 4): 2012Q2 to 2017Q3, 22 quarters,
-    registration date throughout.
+  - Before-window: 2012Q2 to 2017Q3, 22 quarters, registration date
+    throughout (approved by Jacob, 5 October 2026).
+  - Disclosed: this window was chosen after seeing COE ranges, not prices.
+    COE is not the outcome, and the checker allowed reading it.
+    2016Q1-2017Q3 (7 quarters) stays as a reported sensitivity (section 7,
+    G).
   - After-window: 2018Q2 to 2026Q3, less 2020Q2, 33 quarters.
   - Dropped: 2017Q4 to 2018Q1, between the announcement and the first full
     quarter of 0 per cent growth.
 - **COE movement in each window** (out/coe_ranges.txt; COE is not the
   outcome):
   - T1: high over low 23.03.
-  - T3 before (proposed): 1.81.
+  - T3 before: 1.81.
   - T3 after: 4.60.
   - The before-window as first drafted (2016Q1 to 2017Q3) was 1.18, too
     flat to read. That is why the window moved.
@@ -167,7 +171,9 @@ seal.
   concentrated in demolished, older, central estates).
 - **First stage:** the test is NOT SCORED if the first-stage F statistic
   for `COEP_q x DD_b` is below 10 (judgement: the usual weak-instrument
-  line).
+  line). For T3 this is checked in each window, before and after; a value
+  below 10 in either means T3 is not scored (approved by Jacob, 5 October
+  2026).
 
 ### T1. Their sign, on HDB flats, over their years
 
@@ -323,8 +329,9 @@ confidences, set at the seal.
 
 1. **OneMap credentials** (Jacob), then the full geocode. Report the match
    rate before the seal (gate 1 is defined on it).
-2. **The before-window for T3** (proposed 2012Q2 to 2017Q3) and the
-   first-stage gate: Jacob approves or changes them.
+2. **The before-window for T3 and the first-stage gate.** Approved by
+   Jacob, 5 October 2026: 2012Q2 to 2017Q3, and F below 10 in either window
+   means not scored.
 3. **Primary sources still missing:**
    - the 0.25% growth rate before February 2018;
    - LTA's October 2017 release;
