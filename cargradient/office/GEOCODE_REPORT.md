@@ -54,7 +54,15 @@ assert it).
 - **Gate 1 (THESIS section 6, 95 per cent of a window's sales geocoded)
   passes:** T1 99.17 per cent, T2 100 per cent.
 
-## Fallback: proposal for Jacob
+## Fallback: DECIDED (Jacob, 6 October 2026): option C
+
+- The 160 unmatched pairs are left out of the scored runs. Street-level
+  points (option B) are a reported sensitivity (THESIS section 7, J).
+- The exclusion is not random: 111 of the 160 last sold before 2010 (likely
+  SERS or demolished), and older estates sit nearer town. At 0.83 per cent
+  of T1-window rows and none of T2's, it is disclosed, not corrected.
+
+## Fallback: the proposal as made
 
 - **(A) "HDB Existing Building" GeoJSON via postal code. Not proposed.**
   - The resale files carry no postal code.

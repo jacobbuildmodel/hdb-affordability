@@ -71,3 +71,31 @@ OneMap Search (not a file)
   per second. Results: out/blocks_geocoded.csv.
   Contains information from OneMap (Singapore Land Authority), accessed 5
   October 2026, under the Singapore Open Data Licence version 1.0.
+
+hansard/ -- Parliament of Singapore, Official Report (Hansard), retrieved 6 October 2026, 11:40 to 11:43 UTC
+  URL: POST https://sprs.parl.gov.sg/search/getHansardTopic with {"id": "<report id>"}
+  (the JSON the site's own search page fetches; the content field holds the
+  text). Each file is the server's response, unedited.
+
+  FILE                                      BYTES   MD5                               WHAT IT SETTLES
+  20130205_oral-answer-194.json             3805    4bca9818f093ed8f47ec4eeffaf0a00a  MOT, 5 Feb 2013, "Car Ownership Trends": vehicle growth
+      rate 3% per annum from 1990, "to 1.5% per annum in 2009", "to 1% per annum in 2012 and to 0.5% per annum in February 2013"
+  20150311_budget-465.json                  204504  e391b67a2aba96820f512366f3245cde  MOT, Committee of Supply, 11 Mar 2015: "We have lowered
+      the vehicle population growth rate from 0.5% per annum to 0.25% per annum"
+  20160509_written-answer-na-2786.json      1480    16fc54815c8a1648f38df07796cd38dd  MOT, 9 May 2016: "currently 0.25% per year, effective until
+      January 2018"
+  20171106_oral-answer-1804.json            5896    0360af780c5c570268cfa91c4a35fad3  MOT, 6 Nov 2017: Categories A, B and D "from the current
+      0.25% per annum to 0% with effect from February 2018"
+  20220704_written-answer-10703.json        2415    919cb13396443156f12758fc977684b6  MND, 4 Jul 2022: resale flats sold for $1 million or more
+      rose "from 46 flats in 2017 to 259 flats in 2021"; "0.4% of all HDB resale transactions in the past five years"
+  20260407_oral-answer-4103.json            5172    4bae5e97aae76c7913e6c0808598199d  MND, 7 Apr 2026: "In 2025, about 6% of resale flats transacted
+      above $1 million" (Minister); the question cites 1,594 units in 2025, up 54.7% (the Member's figure, not the Minister's)
+
+  The two news counts the brief named (82 in 2020, SRX via Malay Mail, 8 Jan
+  2021; 1,035 in 2024, reports of 24 Jan 2025) were NOT retrieved. These
+  hosts refuse the session (CONNECT 403, 6 October 2026): www.malaymail.com,
+  www.srx.com.sg, www.straitstimes.com, www.channelnewsasia.com,
+  www.businesstimes.com.sg, www.edgeprop.sg, www.todayonline.com,
+  www.99.co, mothership.sg, sg.news.yahoo.com, www.asiaone.com,
+  www.propnex.com, smartwealth.sg and www.mnd.gov.sg. The session stopped
+  for each.

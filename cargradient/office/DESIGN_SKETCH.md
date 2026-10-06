@@ -1,4 +1,4 @@
-# DESIGN_SKETCH -- three tests, Checkpoint 0 round 3
+# DESIGN_SKETCH -- three tests, Checkpoint 0 (round 3; reframed 6 October 2026)
 
 A conceptual replication. Their result was on URA REALIS private homes; these
 tests use public HDB resale data, and every write-up says so. There are no
@@ -29,20 +29,10 @@ UNSEALED.
    honest best guess is close to "no clear change," given how small the 2018
    change was."
 
-   **Jacob's 0.25% figure, checked:**
-   - NOT verified from a primary source.
-   - What was found: LTA's 13 Aug 2020 release says Category C's rate "was
-     maintained at 0.25% per annum" when A, B and D went to 0% in February
-     2018 (raw/lta_20200813_vehicle_growth_rate.html). That fits 0.25% for
-     all categories before, but does not say it for A and B.
-   - News reports give 0.25% from February 2015 to January 2018 (for
-     example Fortune, 23 Oct 2017; The Edge Malaysia).
-   - LTA's newsroom index on lta.gov.sg starts in 2020, so its 2014 and
-     2017 releases are not there.
-   - www.mot.gov.sg and www.gov.sg refuse the session (CONNECT 403), so
-     the search stopped for those hosts.
-   - Status: NEEDS-PRIMARY. The figure is used only in Jacob's Why line,
-     which stays verbatim. No test depends on it.
+   **Jacob's 0.25% figure, checked (6 October 2026): CONFIRMED.**
+   - MOT, 6 Nov 2017: Categories A, B and D go "from the current 0.25% per
+     annum to 0% with effect from February 2018"
+     (raw/hansard/20171106_oral-answer-1804.json).
 
 4. T3's before-window and gate (approved by Jacob, 5 October 2026):
    - The before-window is 2012Q2-2017Q3.
@@ -51,6 +41,46 @@ UNSEALED.
      below 10 in either window.
    - Disclosed: the window was chosen after seeing COE ranges (item 4
      below), not prices. COE is not the outcome.
+
+5. Geocode fallback (Jacob, 6 October 2026): option C.
+   - The 160 unmatched pairs are left out of the scored runs. They are 0.83
+     per cent of T1-window rows and 0 per cent of T2's.
+   - Street-level points are a reported sensitivity (THESIS section 7, J).
+   - The exclusion is not random. 111 of the 160 last sold before 2010
+     (likely SERS or demolished), and older estates sit nearer town. At
+     this size it is disclosed, not corrected.
+6. The reframe (6 October 2026), after the reader tests:
+   - Title: "Million-dollar flats came with $100,000 COEs. Coincidence?"
+     (office/TITLES.md).
+   - RULE0 items 1 to 5, and the honest limit: at most part of the
+     near-town premium, not million-dollar flats as a whole
+     (office/RULE0.md).
+   - A reported, not scored, calculation of the money answer (THESIS
+     section 7A).
+   - The verdict in plain words, and "What it changes" (THESIS sections 8
+     and 8A).
+   - The tests, windows and bets are unchanged.
+
+## What T3 compares, exactly (6 October 2026)
+
+The before-window, 2012Q2-2017Q3, is not one 0.25% period. The vehicle
+growth rate was cut in steps (Parliament, raw/hansard/):
+
+| Rate per annum | From | Source |
+|---|---|---|
+| 1.5% | 2009 | MOT, 5 Feb 2013 |
+| 1% | 2012 (the month is not in the saved record) | MOT, 5 Feb 2013 |
+| 0.5% | February 2013 | MOT, 5 Feb 2013 |
+| 0.25% | by 11 March 2015, until January 2018 | MOT, 11 Mar 2015; 9 May 2016 |
+| 0% (A, B, D) | February 2018 | MOT, 6 Nov 2017; LTA, 13 Aug 2020 |
+
+- The before-window spans 1.5% or 1% (2012), 0.5% (from February 2013) and
+  0.25% (from early 2015). The after-window is 0% throughout.
+- **T3 compares a period of step-by-step cuts against 0%, not 0.25%
+  against 0%.**
+- The window and the bet are Jacob's, approved, and are not changed.
+- The dates Jacob gave from memory (about 1% to mid-2013, 0.5% from August
+  2013) differ from the record. The record says 0.5% from February 2013.
 
 ## Common set-up (following the paper's column 4, Table 3b, p. 30)
 
@@ -159,6 +189,16 @@ estates nearer town).**
 - Jacob and the chats saw town-level HDB price findings in the earlier
   affordability piece. That is prior knowledge of price levels, not of the
   COE x distance interaction.
+- The hook's sources (6 October 2026) carry HDB price-level information,
+  not the COE x distance link:
+  - counts of million-dollar resale flats (MND: 46 in 2017, 259 in 2021;
+    about 6% of resale flats in 2025);
+  - the Member's 2025 figure in the same record (1,594, up 54.7%);
+  - the Minister's examples of 4-room resale prices in six named towns
+    (7 Apr 2026).
+- The brief also named the news counts of 82 (2020) and 1,035 (2024).
+  They were read only as figures in the brief; their hosts refuse the
+  session.
 
 ## The tests (detail and verdict rule in THESIS.md)
 
@@ -167,8 +207,9 @@ estates nearer town).**
   - The interaction is negative, 95 per cent interval excluding zero.
 - **T2. 2016Q1 to 2026Q3.** The same.
 - **T3. WEAKER after 2018.**
-  - The after-window interaction (2018Q2 to 2026Q3) minus the before-window
-    interaction (proposed 2012Q2 to 2017Q3) is POSITIVE: closer to zero, a
+  - The after-window interaction (2018Q2 to 2026Q3, 0% growth) minus the
+    before-window interaction (2012Q2 to 2017Q3, the step-by-step cuts) is
+    POSITIVE: closer to zero, a
     flatter tilt toward town. 95 per cent interval excluding zero.
   - 2017Q4 to 2018Q1 dropped.
   - First-stage gate as above.

@@ -1,0 +1,11 @@
+Category A (Cars Up To 1600cc And 97kW): first at or above $100,000 in 2023-04 bidding 2
+  run: 2023-04 bidding 2 to 2023-05 bidding 1
+  run: 2023-08 bidding 2 to 2023-10 bidding 2
+  run: 2024-10 bidding 1 to 2024-10 bidding 2
+  run: 2025-05 bidding 1 to 2025-05 bidding 2
+  run: 2025-07 bidding 1 to latest (2026-09 bidding 2)
+Category B (Cars Above 1600cc Or 97kW): first at or above $100,000 in 2022-06 bidding 1
+  run: 2022-06 bidding 1 to 2022-09 bidding 2
+  run: 2022-10 bidding 2 to 2023-12 bidding 2
+  run: 2024-01 bidding 2 to 2024-02 bidding 1
+  run: 2024-04 bidding 1 to latest (2026-09 bidding 2)

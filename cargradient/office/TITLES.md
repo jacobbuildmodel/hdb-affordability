@@ -1,50 +1,95 @@
-# TITLES -- open question page, Checkpoint 0 proposals
+# TITLES -- open question page
 
-For the Editor's blind review (office/EDITOR.md in the site repo), then real
-readers. These follow QUESTION_RULES H1-H7 and STORY_CRAFT (site repo main);
-the hook is RULE0's belief, "a COE is a car-owner's problem". Every title is
-under 60 characters and is a question, not a claim. No number appears in any
-of them.
+## Chosen title (real reader, 5 October 2026)
+
+**Million-dollar flats came with $100,000 COEs. Coincidence?** (58
+characters)
+
+- **Chosen by a real reader in the second friend test, 5 October 2026.**
+  The reader's words: "curious... maybe there is some insight to this that
+  we do not know about."
+- **Why the framing changed:** the first friend test failed the topic ("no
+  need to understand it"). So the question is now framed around two
+  headlines people already argue about: million-dollar HDB flats and
+  $100,000 COEs (RULE0 item 1).
+- **Techniques:**
+  - H2: the belief on trial is that these are separate stories.
+  - L2: two facts that seem not to belong together.
+  - H7: the reader's "curious".
+- **"Coincidence?"** gets a money answer in the article: the reported
+  calculation in THESIS.md section 7A.
+
+## Earlier proposals (round 3, 4 October 2026), kept for the record
 
 | # | Title | Characters | Technique |
 |---|---|---|---|
-| 1 | No car. Does the COE still reach your flat's price? | 51 | H1 (the reader who does not drive), H2 (their belief on trial), H7 |
-| 2 | A COE is a car problem. Or a flat problem too? | 46 | L1 (the settled belief, then turned), H2 |
-| 3 | When cars cost more, do flats near town cost more? | 50 | H3 (60 per cent of the piece in the title), H4 (plain words) |
+| 1 | No car. Does the COE still reach your flat's price? | 51 | H1, H2, H7 |
+| 2 | A COE is a car problem. Or a flat problem too? | 46 | L1, H2 |
+| 3 | When cars cost more, do flats near town cost more? | 50 | H3, H4 |
 
-First choice: 1. It starts from the person the belief says is safe, someone
-without a car, and asks whether that is true (H1, H2). It says "reach", not
-"set", because the bet is about a tilt in prices, not who sets them (R4).
+None was chosen. The round 3 opening paragraph is replaced below.
 
-## Opening paragraph, for title 1 (the bet in the first screen: H3, H5)
+## Opening paragraph (bet in the first screen: H3, H5)
 
-Most of us file the COE under cars: if you never buy one, its price is
-someone else's problem. Picture two families who will never own a car, one
-buying a flat a short train ride from Raffles Place, the other near the end
-of the line. When a COE gets dearer, nothing changes for either of them, or
-so the story goes. Three economists found something else in private condos
-from 2002 to 2015: when COEs cost more, homes near the city centre gained
-more than homes further out. Their explanation is that when cars cost more,
-more people go without one and pay to live close in. My bet, sealed before I
-open the data: the same tilt shows up in HDB resale flats, in their years
-and in the years since. And since growth in car numbers was cut to zero in
-February 2018, that tilt has got weaker, not stronger.
+Everyone knows a COE is a car-owner's problem. Million-dollar HDB flats make
+one set of headlines and $100,000 COEs another, and the two rarely meet.
+Picture two families who will never own a car, one buying an HDB flat a
+short train ride from Raffles Place, the other a flat at the end of the
+line. Huang, Li and Ross (2018) studied private condos, not HDB flats, from
+2002 to 2015. They found that when COEs cost more, homes near the city
+centre gained more than homes further out. Their explanation is that when
+owning a car costs more, more households go without one and pay to live
+close in. My bet, sealed before I open the HDB data: the same tilt shows up
+in HDB flats over their years, 2002 to 2015, and in the years since, 2016
+to 2026. And since growth in the car quota was cut to zero in February
+2018, that tilt has got weaker, not stronger. At most, this would explain
+part of what a flat near town costs, not million-dollar flats as a whole.
 
-Checks, against the rules:
-- H3 and H5: the bet is in the first paragraph, in all three parts (their
-  years, since, weaker after 2018).
-- S1: the specimen is a labelled thought experiment ("Picture..."), not an
-  invented person quoted as real.
-- R1: "you" is not used to tell anyone what to do. Banned-word grep
-  (should, recommend, choose, better option, you should) is clean on the
-  paragraph.
-- R4: "found" reports their result in their sample, and "explanation" marks
-  the mechanism as theirs. No causal verb is applied to HDB data.
-- Facts carried, each with its source:
-  - private condos, 2002 to 2015, and the direction (paper, pp. 4, 15, 30);
-  - zero growth from February 2018 (LTA, 13 Aug 2020, raw/);
-  - Raffles Place as the centre (paper, p. 11).
-- The page must say elsewhere, in the first screen or the next, that this
-  is a conceptual replication on different homes (HDB, not private condos).
-- No confidence is in the paragraph. Jacob adds his at the seal, in his
-  words.
+**The bets** (confidences are Jacob's, set at the seal):
+
+1. In HDB flats, 2002 to 2015: when COEs cost more, flats near town gained
+   relative to flats further out (T1). Confidence: [Jacob, at seal].
+2. The same, 2016 to 2026 (T2). Confidence: [Jacob, at seal].
+3. After growth in the car quota was cut to zero in February 2018, that
+   tilt got weaker (T3). Confidence: [Jacob, at seal].
+
+   Why (Jacob, verbatim): "I'd lean weaker, but not by much. The "stronger"
+   story needs a big change, and 2018 was a small one. Moving from 0.25%
+   growth to 0% hardly changes how many households can get a car. It's hard
+   to see that pushing many more families to stay car-free and pay up for
+   flats near town. Most of what changed after 2018 cuts the other way. New
+   rail lines and working from home both make living further out cheaper in
+   time and effort. Either would make a COE rise matter less for where people
+   choose to live. Two catches. A weaker result wouldn't tell you whether rail
+   or COVID caused it, so the bet is about direction, not the reason. And my
+   honest best guess is close to "no clear change," given how small the 2018
+   change was."
+
+## Checks against the rules
+
+- **H1-H7.**
+  - H1: the scene is a family buying an HDB flat.
+  - H2: the belief, separate stories, is on trial.
+  - H3 and H5: all three bets are in the first paragraph.
+  - H4: plain words ("near town", "tilt").
+  - H6: no politics.
+  - H7: the reader-tested title.
+- **No "we", "us" or "our"** in the paragraph or the bets. "You" does not
+  appear in the paragraph. Jacob's Why line is his, verbatim; its "tell you"
+  is not advice.
+- **Banned-word grep** (should, recommend, choose, better option, you
+  should): clean on the paragraph and the bets. Jacob's verbatim Why
+  contains "choose to live", describing what people do, not telling anyone
+  what to do. It stays verbatim and is flagged here for the checker.
+- **The paragraph names** the authors, Huang, Li and Ross (2018), and says
+  up front that their result was private condos.
+- **The policy** reads "growth in the car quota was cut to zero in February
+  2018" (MOT, 6 Nov 2017, raw/hansard/).
+- **Raffles Place** is named once.
+- **The mechanism** is "their explanation". No causal verb is applied to HDB
+  data.
+- **The limit** ("part of what a flat near town costs, not million-dollar
+  flats as a whole") is in the first screen.
+- **No claim about where million-dollar flats are.**
+- **S1:** the specimen is a labelled thought experiment ("Picture...").
+- **L1 wink:** "Everyone knows a COE is a car-owner's problem."

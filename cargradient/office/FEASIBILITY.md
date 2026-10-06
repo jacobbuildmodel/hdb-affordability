@@ -19,12 +19,13 @@ Done in round 3:
 - The PDF (removed from the repo).
 
 Still open:
-1. OneMap credentials in the environment. The full geocode waits for them.
-2. Approve or change the T3 before-window and the first-stage gate
-   (DESIGN_SKETCH item 4).
-3. Primary sources not yet found: the 0.25% rate before February 2018 and
-   LTA's October 2017 release. www.mot.gov.sg and www.gov.sg refuse the
-   session (CONNECT 403).
+1. OneMap: done 5 October 2026 (office/GEOCODE_REPORT.md). Fallback C
+   decided 6 October 2026.
+2. T3 before-window and first-stage gate: approved 5 October 2026.
+3. Updated 6 October 2026: the growth-rate steps, including 0.25% before
+   February 2018, are sourced from Parliament (raw/hansard/; THESIS section
+   4). LTA's October 2017 release is still not found. www.mot.gov.sg and
+   www.gov.sg are now allowed.
 
 ## Hosts
 

@@ -1,6 +1,8 @@
 # THESIS -- cargradient piece
 
-**UNSEALED DRAFT, 5 October 2026.** Nothing here is fixed until the commit
+**UNSEALED DRAFT, 5 October 2026; reframed 6 October 2026** (title chosen
+by a real reader; Rule 0 item 5; a reported calculation; the verdict in
+plain words). Nothing here is fixed until the commit
 "cargradient: SEAL". Until then this file changes by ordinary edits on
 cargradient-wip, recorded in the commit history. After the seal it is never
 edited; changes go in THESIS_ADDENDUM.md, dated, and are reported, not
@@ -10,10 +12,16 @@ Written before any HDB resale price was opened. The resale files were read
 for labels, coverage and addresses only (office/FEASIBILITY.md). COE values
 were read; they are not the outcome, and the checker allowed it (round 3,
 item 4).
+- The hook's sources (Parliament records, 6 October 2026) carry HDB
+  price-level information: counts of million-dollar flats, and the
+  Minister's examples of 4-room prices in named towns.
+- None of it bears on the COE x distance link (DESIGN_SKETCH item 9).
 
 Author: research session. Repository: hdb-affordability, subdirectory
 `cargradient/`, branch `cargradient-wip`. The title and the opening are not
-part of this file: office/TITLES.md proposes them for the Editor and Jacob.
+part of this file. The title, chosen by a real reader on 5 October 2026, is
+"Million-dollar flats came with $100,000 COEs. Coincidence?" (office/TITLES.md).
+The verdict rule (section 8) answers it in plain words.
 
 **Confidences are Jacob's**, set at the seal. None appears in this draft.
 Each test carries "Confidence at seal: [Jacob, at seal]". T3's direction and
@@ -27,19 +35,29 @@ version (office/PAPER_NOTES.md).
 
 ## 1. The question
 
-**The belief on trial.** A COE is a car-owner's problem. If you never buy a
-car, its price is none of your business.
+**What people argue about** (office/RULE0.md). Million-dollar HDB flats and
+$100,000 COEs are both constant headlines, argued about separately.
+- Flats sold for $1 million or more rose "from 46 flats in 2017 to 259 flats
+  in 2021" (MND, 4 Jul 2022). In 2025, "about 6% of resale flats transacted
+  above $1 million" (MND, 7 Apr 2026).
+- Category B COEs were first at or above $100,000 in June 2022, and
+  Category A in April 2023 (SingStat M651121).
 
-**The rival explanation (the paper's).** When owning a car costs more, more
-households go without one, and being near the centre is worth more to them.
-So flats near town gain relative to flats further out. Part of the COE lands
-on the price of every flat, car or no car.
+**The belief on trial.** Car prices and flat prices are separate stories. A
+COE is a car-owner's problem.
+
+**The rival explanation** (the paper's). When owning a car costs more, living
+near town is worth more. So part of the near-town premium moves with the COE.
+
+**The honest limit, stated up front.** At most, this explains part of the
+near-town premium, not million-dollar flats as a whole. Nothing in this file
+says where million-dollar flats are.
 
 **Sealed question 1.** "When COE premiums were higher, did HDB resale flats
 near Raffles Place gain relative to flats further out, as the paper found for
 private homes, over its years (2002 to 2015) and since (2016 to 2026)?"
 
-**Sealed question 2.** "After growth in car numbers was cut to 0 per cent in
+**Sealed question 2.** "After growth in the car quota was cut to zero in
 February 2018, did that tilt get weaker?"
 
 Question 1 tests the belief directly: a tilt means the COE reaches flats.
@@ -120,12 +138,29 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
   - 160 were not matched.
   - Unmatched sales: 0.83 per cent of T1's window and none of T2's
     (office/GEOCODE_REPORT.md).
-  - The fallback for the unmatched pairs waits for Jacob.
+  - Fallback (Jacob, 6 October 2026, option C): the 160 unmatched pairs are
+    left out of the scored runs. Street-level points are a reported
+    sensitivity (section 7, J).
+  - The exclusion is not random. 111 of the 160 last sold before 2010
+    (likely SERS or demolished), and older estates sit nearer town. At 0.83
+    per cent of T1's rows and none of T2's, it is disclosed, not corrected.
 - **Raffles Place and City Hall MRT:** data.gov.sg exit layer
   d_b39d3a0871985372d7e1637193335da5 (10 and 4 exits).
-- **The 2018 change:** LTA, 13 Aug 2020 (raw/), "0% per annum for Categories
-  A, B and D since February 2018". The October 2017 announcement is from
-  news reports only (NEEDS-PRIMARY).
+- **The vehicle growth rate, step by step** (Parliament, raw/hansard/; LTA,
+  raw/):
+
+  | Rate per annum | From | Source |
+  |---|---|---|
+  | 3% | 1990 | MOT, 5 Feb 2013 |
+  | 1.5% | 2009 | MOT, 5 Feb 2013 |
+  | 1% | 2012 (the month is not in the saved record) | MOT, 5 Feb 2013 |
+  | 0.5% | February 2013 | MOT, 5 Feb 2013 |
+  | 0.25% | by 11 March 2015 ("We have lowered ... from 0.5% per annum to 0.25%"), "effective until January 2018" | MOT, 11 Mar 2015; MOT, 9 May 2016 |
+  | 0% (A, B and D) | February 2018 ("from the current 0.25% per annum to 0% with effect from February 2018") | MOT, 6 Nov 2017; LTA, 13 Aug 2020 |
+
+  - The October 2017 announcement itself is not found as a primary
+    source. Parliament's 6 Nov 2017 answer shows the change was public by
+    then. Both dates fall inside T3's dropped quarters.
 
 ## 5. Windows, fixed now (quarters)
 
@@ -146,6 +181,17 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
   - After-window: 2018Q2 to 2026Q3, less 2020Q2, 33 quarters.
   - Dropped: 2017Q4 to 2018Q1, between the announcement and the first full
     quarter of 0 per cent growth.
+  - **What T3 compares, exactly.** The before-window is not one 0.25%
+    period. It spans step-by-step cuts:
+    - 1.5% or 1% in 2012 (the month of the 2012 cut is not in the saved
+      record);
+    - 0.5% from February 2013;
+    - 0.25% from early 2015 (in force by 11 March 2015) to January 2018.
+
+    The after-window is 0% throughout. So T3 compares a period of
+    step-by-step cuts against 0%, not 0.25% against 0%. The window and the
+    bet are Jacob's, approved; this only describes them correctly. Jacob's
+    Why line speaks of the last step (0.25% to 0%) and stays verbatim.
 - **COE movement in each window** (out/coe_ranges.txt; COE is not the
   outcome):
   - T1: high over low 23.03.
@@ -213,8 +259,9 @@ seal.
   including `beta`. The test number is `beta_after - beta_before`: the
   coefficient on `COEP_q x DD_b x AFTER_q`, instrumented by
   `COEQ_q x DD_b x AFTER_q`.
-- **Prediction.** After growth in car numbers was cut to 0 per cent, a rise
-  in the COE tilted HDB prices toward the centre less than before.
+- **Prediction.** After growth in the car quota was cut to zero in February
+  2018, a rise in the COE tilted HDB prices toward the centre less than
+  during the step-by-step cuts before it (section 5).
 - **Survive if:** `beta_after - beta_before` > 0 (closer to zero, a flatter
   tilt), with its 95 per cent interval excluding zero.
 - **Fail if:** the interval includes zero ("no clear change"), or the
@@ -241,8 +288,10 @@ seal.
   or COVID caused it, so the bet is about direction, not the reason. And my
   honest best guess is close to "no clear change," given how small the 2018
   change was."
-  - Note: the 0.25% before February 2018 is not yet confirmed by a primary
-    source (DESIGN_SKETCH item 3). The Why line stays as written.
+  - Note: the 0.25% before February 2018 is confirmed (MOT, 6 Nov 2017,
+    "from the current 0.25% per annum"). The before-window as a whole
+    spans 1.5% or 1%, then 0.5%, then 0.25% (section 5). The Why line
+    stays as written.
 - **Confidence at seal: [Jacob, at seal].**
 
 ### Computation, fixed with the analysis scripts (before the seal)
@@ -258,9 +307,9 @@ As for the sgd and pwm pieces:
 
 Before the seal:
 - `00_addresses.py` (addresses only);
-- `01_coe_ranges.py` (COE only);
-- the geocoding script, once Jacob's OneMap credentials are in the
-  environment.
+- `01_coe_ranges.py` and `04_coe_crossings.py` (COE only);
+- `01_geocode.py`, `02_distance.py` and `03_unmatched.py` (addresses, OneMap
+  and row counts only).
 
 None of these reads a resale price.
 
@@ -284,34 +333,138 @@ None of these reads a resale price.
   4), using today's exit layer. The paper used 2015's existing and proposed
   stations; today's layer includes lines opened since, which is stated
   beside it.
+- **J. The 160 unmatched block-and-street pairs, put back** (Jacob's option
+  C). Each gets a street-level point from a scripted OneMap Search on its
+  street name, labelled match_type "street". T1 is re-run with them. T2 has
+  none.
+
+## 7A. Reported calculation: the money answer to "Coincidence?" (sealed, not scored)
+
+Descriptive, with no pass line. The article states its 95 per cent interval.
+The numbers are computed only after the seal.
+
+**Inputs.**
+- `beta_T2`: T2's IV estimate of `beta` (section 3), in Singapore dollars
+  per square metre, per km, per dollar of COE premium, with its 95 per cent
+  interval (clustered by block).
+- `dCOE = COEbar_2023 - COEbar_2020`.
+  - `COEbar_Y` is the mean of `COEP_q` over the quarters of year Y that had
+    bidding: all four for 2023; 2020Q1, Q3 and Q4 for 2020 (no bidding in
+    2020Q2).
+  - `COEP_q` is built as in section 3 (A and B, weighted by successful bids,
+    averaged within the quarter).
+  - COE is not the outcome, but this difference is computed only with the
+    rest, after the seal.
+- `theta_Y`: the year-specific distance slope from the T2 sample.
+  - Same specification as section 3, but with `COEP_q x DD_b` replaced by
+    `DD_b x 1[year = Y]` for each year Y in 2016 to 2026, base year 2020
+    (`theta_2020 = 0`).
+  - Estimated by OLS: it is a description, not a causal estimate.
+
+**The gap.** Prices are linear in distance in this model, so the gap per
+square metre between a flat 5 km and one 20 km from Raffles Place is
+`(5 - 20) x slope = -15 x slope`.
+
+**Implied change in the gap, 2020 to 2023, from the COE rise:**
+
+    dGAP_implied = -15 x beta_T2 x dCOE        (dollars per square metre)
+
+Its 95 per cent interval is `-15 x dCOE` times the interval of `beta_T2`
+(`dCOE` is treated as known).
+
+**Actual change in the gap, 2020 to 2023:**
+
+    dGAP_actual = -15 x (theta_2023 - theta_2020) = -15 x theta_2023
+
+**Share:**
+
+    SHARE = dGAP_implied / dGAP_actual
+
+- Its 95 per cent interval comes from a block-cluster bootstrap (999 draws)
+  of both regressions together.
+- **Reported only if** `dGAP_actual`'s interval excludes zero and both
+  changes have the same sign.
+- Otherwise the article reports `dGAP_implied` alone and says the share is
+  not meaningful: the gap did not clearly change, or moved the other way.
+- **Not scored, and no pass line.** It answers "how much money", not "is
+  there a link"; T2 answers that.
 
 ## 8. The verdict rule (fixed at seal)
 
-The verdict has two parts in one sentence.
+The verdict answers the title, "Million-dollar flats came with $100,000
+COEs. Coincidence?", in plain words. It is one sentence, built from Part A
+then Part B. The title is about recent years, so T2 leads and T1 follows.
 
-**Part A, question 1 (T1 and T2).** For each window, exactly one of these:
-- **"the record cannot say"**: a gate fails.
-- **"HDB flats near town gained relative to flats further out when COEs cost
-  more"**: the test survives.
-- **"no clear tilt toward town when COEs cost more"**: the interval includes
-  zero.
-- **"flats further out gained relative to flats near town when COEs cost
-  more"**: `beta` > 0 with an interval excluding zero.
+**Part A, the link (T2, then T1).** For T2 (2016 to 2026), exactly one of:
+- **SURVIVE:** "Not only a coincidence: in HDB flats, the gap between near
+  and far widened more when COEs rose, since 2016."
+- **Interval includes zero (FAIL):** "No sign of a link in HDB flats since
+  2016."
+- **`beta` > 0, interval excluding zero (FAIL):** "If anything the
+  opposite: since 2016, flats further out gained on flats near town when
+  COEs rose."
+- **A gate fails (not scored):** "The record cannot say whether there is a
+  link in HDB flats since 2016."
 
-**Part B, question 2 (T3).** Exactly one of these:
-- **"there was no tilt before 2018 to weaken"**: `beta_before` is not
-  negative with an interval excluding zero.
-- **"the record cannot say"**: a gate fails.
-- **"the tilt got weaker after 2018"**: T3 survives. The weak-evidence
-  sentence is printed beside it.
-- **"no clear change after 2018"**: the interval includes zero.
-- **"the tilt got stronger after 2018"**: the difference is negative, with an
-  interval excluding zero.
+Then T1 (2002 to 2015, the paper's years), in the same words for its
+years:
+- "... and the same was true in 2002 to 2015";
+- "... and there was no sign of it in 2002 to 2015";
+- "... and the opposite in 2002 to 2015";
+- "... and the record cannot say for 2002 to 2015".
+
+**Part B, after the 2018 cut (T3).** Exactly one of:
+- **SURVIVE:** "The link weakened after growth in the car quota was cut to
+  zero in 2018." The weak-evidence sentence is printed beside it: the
+  record cannot say whether rail, working from home or something else
+  weakened it.
+- **Interval includes zero (FAIL):** "No clear change after the 2018 cut."
+- **Difference negative, interval excluding zero (FAIL):** "The link got
+  stronger after the 2018 cut."
+- **No tilt before 2018 (not scored):** "There was no link before 2018 to
+  weaken."
+- **A gate fails (not scored):** "The record cannot say whether the 2018
+  cut changed it."
+
+**Beside the verdict.**
+- The reported calculation (section 7A), when it can be read: "Of the
+  change in the gap between a flat 5 km and one 20 km from Raffles Place
+  from 2020 to 2023, about X per cent (95 per cent interval L to U) lines
+  up with the COE rise."
+- **The limit, always:** at most part of the near-town premium, not
+  million-dollar flats as a whole.
 
 **The scorecard.** Three tests: T1, T2 and T3. A test not scored drops out
 of both the count and the Brier score. Each confidence is the chance the
 test holds if it is scored. Jacob's expected count is the sum of his three
-confidences, set at the seal.
+confidences, set at the seal. Section 7A is not scored.
+
+## 8A. What it changes (planned for both directions)
+
+Every answer article carries this section (QUESTION_RULES, WEBSITE project).
+It states what the result changes for each reader in RULE0 item 5. It never
+tells anyone what to do.
+
+**If the link holds (T2 SURVIVE):**
+- *A buyer comparing a flat near town with one further out:* part of the
+  gap between them tracked how scarce cars were. That part could shrink if
+  quotas loosen.
+- *Vehicle-quota policy:* the quota had a side-effect on households that
+  never drive. It reached them through the price of where they live.
+- *The pricing of new flats near town (the Prime Location model):* the
+  near-town premium it prices includes a part that moves with COEs, which
+  it does not count now.
+
+**If there is no sign of a link (T2 FAIL):**
+- *A buyer:* no sign that the gap between near and far moved with COEs in
+  HDB flats since 2016. The near-town premium is about other things.
+- *Vehicle-quota policy:* no evidence here of a side-effect on flat prices
+  for households that never drive.
+- *The Prime Location model:* no case from this data for counting COEs in
+  the near-town premium.
+
+**For T3, either way:** whether the 2018 cut changed the link, and the
+limit that the record cannot say why.
 
 ## 9. What would prove the framing wrong, and what it leaves out
 
@@ -328,24 +481,28 @@ confidences, set at the seal.
   - Why the tilt changed, if it did (rail, working from home, other). Jacob's
     bet is on direction only.
   - Rents, and flats sold new by HDB.
+  - Million-dollar flats as such. At most, this explains part of the
+    near-town premium. Nothing here says where million-dollar flats are.
 
 ## 10. Open before the seal
 
 1. **The geocode.** Done, 5 October 2026. Gate 1 passes: 99.17 per cent of
    T1's sales and 100 per cent of T2's are geocoded. Still open:
-   - Jacob's choice of fallback for the 160 unmatched pairs
-     (office/GEOCODE_REPORT.md);
    - which station point is used (mean of exits, or the nearest exit).
+   - The fallback is decided (Jacob, 6 October 2026, option C, section 4).
 2. **The before-window for T3 and the first-stage gate.** Approved by
    Jacob, 5 October 2026: 2012Q2 to 2017Q3, and F below 10 in either window
    means not scored.
-3. **Primary sources still missing:**
-   - the 0.25% growth rate before February 2018;
-   - LTA's October 2017 release;
+3. **Primary sources.**
+   - The growth-rate steps are now sourced (section 4; raw/hansard/).
+   - Still missing:
+     - the month of the 2012 cut to 1%;
+     - LTA's October 2017 release (inside T3's dropped quarters);
    - the dates of the 2017 lease statements and of VERS (hdb.gov.sg is now
      allowed).
 4. **The analysis scripts, the synthetic suite and the SEALED guard.**
 5. **Jacob's confidences** for T1, T2 and T3, with his Why lines.
 6. **The answer date and the seal date.**
-7. **Title and opening:** Editor's blind review of office/TITLES.md, then
-   readers.
+7. **Title and opening:** the title is chosen by a real reader (5 October
+   2026). The opening paragraph (office/TITLES.md) goes to the Editor's blind
+   review.
