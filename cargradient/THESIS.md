@@ -88,28 +88,66 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
     p_ibq = beta * COEP_q x DD_b + kappa * POST12_q x DD_b
             + gamma_b + delta_q + lambda_{L(i),q} + X_i' theta + u_ibq
 
-- `p_ibq`: resale price per square metre of sale i in block b in quarter q,
-  in Singapore dollars (levels, as the paper uses). The paper takes project
-  medians because its units are near-identical within a project (p. 14). HDB
-  blocks mix flat types, so this uses each sale, with controls.
+- `p_ibq`: resale price per square metre of sale i in block b in quarter q
+  (resale_price divided by floor_area_sqm), in Singapore dollars, in levels
+  as the paper uses.
+  - **The unit is one row per resale.** The paper takes project medians
+    because its units are near-identical within a project (p. 14). HDB
+    blocks mix flat types, so this uses each sale, with controls.
+  - A block is a block number and street name pair. The sale quarter comes
+    from the file's month.
 - `COEP_q`: the quarterly COE premium, categories A and B. Each bidding's A
   and B premiums are weighted by successful bids, then the biddings in the
   quarter are averaged (p. 14). Source: SingStat M651121.
-- `DD_b`: great-circle distance in km from block b to Raffles Place MRT
-  station. The station point is the mean of its exit points in the LTA exit
-  layer.
+- `DD_b`: great-circle distance in km from block b's OneMap point to
+  Raffles Place MRT station (02_distance.py; mean Earth radius 6,371.0088
+  km).
+  - The station point is the mean of its 10 exit points in the LTA exit
+    layer (point (i); decided 6 October 2026).
+  - The exit nearest that mean (Exit D) is 9.7 m away, and no block's
+    distance differs by more than 9.8 m between the two points.
 - `POST12_q x DD_b`: Jacob's option (a) for the March 2012 switch from
   approval date to registration date (T1 only; section 5).
 - `gamma_b`: block fixed effects. They take each block's fixed distance and
   amenities, as the paper's project effects do.
 - `delta_q`: year x quarter fixed effects. They take the COE level and the
   whole market; `COEP_q` alone is absorbed, as in the paper's column (4).
-- `lambda_{L(i),q}`: remaining-lease band (5-year bands) x year-quarter
-  fixed effects. The price of a given lease left may change every quarter
-  (checker item 5).
-- `X_i`: flat type, storey range, floor area and flat model.
-- **IV** (p. 13): `COEP_q x DD_b` is instrumented by `COEQ_q x DD_b`, the
-  quarterly A plus B quota built the same way.
+- `lambda_{L(i),q}`: remaining-lease band x year-quarter fixed effects.
+  - Remaining lease at sale = 99 - (sale year - lease_commence_date), in
+    years. Band = 5 x floor(remaining lease / 5).
+  - These effects nest `delta_q`. They let the price of a given lease left
+    change every quarter (checker item 5).
+- `X_i`: flat type, storey range and flat model as fixed effects (labels
+  as in the files, upper case, "MULTI GENERATION" read as
+  "MULTI-GENERATION"), and floor area in square metres, linear.
+- **IV** (p. 13): `COEP_q x DD_b` is instrumented by `COEQ_q x DD_b`.
+  `COEQ_q` is the quarterly quota: Category A plus Category B quota in each
+  bidding, then the mean of the quarter's biddings.
+
+**Estimation** (11_tests.py).
+- **Demeaning:** every variable is demeaned over the fixed effects by
+  alternating projections. This uses pyfixest 0.60.0's
+  `pyfixest.estimation.demean`, tolerance 1e-10, on columns scaled to unit
+  standard deviation.
+- **Absorbed controls:** a control whose demeaned spread is below 1e-8 of its
+  raw spread is absorbed by the fixed effects and dropped. If the regressor
+  or the instrument is absorbed, the run stops with an error.
+- **Two-stage least squares** on the demeaned data, written in the script.
+  - Clustered variance: V = c x B (sum over clusters g of s_g s_g') B,
+    with B = (Xhat'Xhat)^-1, s_g the sum over g of Xhat_i u_i, and
+    u = y - X beta.
+  - Small-sample factor: c = G/(G-1) x (N-1)/(N-K), where K counts the
+    columns of X, not the fixed effects.
+  - Two-way clustering is V_block + V_quarter - V_block-quarter.
+- **Cross-check:** for T1 and T2 (one endogenous regressor), pyfixest.feols
+  must give the same `beta` to 1e-6. T3 has two endogenous regressors,
+  which pyfixest.feols does not take.
+- **Scored intervals:** 95 per cent, beta +/- 1.959964 x se, clustered by
+  block (as the paper clusters by project, p. 16).
+- **Independent route** (15_reproduce.py): csv and json reading, a
+  hand-written numpy demeaning loop (tolerance 1e-12) and the same formulas
+  written again. It must match every scored number to 1e-6 relative, and
+  every outcome exactly.
 - **The test number:** `beta`. The paper's sign is negative: when COEs cost
   more, prices fall faster with distance.
 
@@ -130,8 +168,13 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
   (registration date). Fields: month, town, flat_type, block, street_name,
   storey_range, floor_area_sqm, flat_model, lease_commence_date, and
   resale_price (the outcome, unopened).
+- **The five resale files, all columns:** raw/resale/, downloaded 6
+  October 2026. Their md5s and row counts are in raw/RETRIEVED.txt.
+  Coverage was listed by labels and counts only (out/coverage.txt). Prices
+  are read only after `SEALED` exists.
 - **COE:** SingStat M651121 (data source LTA), 2002 Feb to 2026 Sep, saved
-  in raw/singstat_M651121/. No bidding was held in April to June 2020.
+  in raw/singstat_M651121/. Premium, successful bids and quota for
+  categories A and B. No bidding was held in April to June 2020.
 - **Block coordinates:** OneMap Search, 5 October 2026, 10,016 unique
   block and street pairs.
   - 9,856 were matched on block and street: 9,855 exact, 1 expanded.
@@ -221,7 +264,14 @@ seal.
   concentrated in demolished, older, central estates).
 - **First stage:** the test is NOT SCORED if the first-stage F statistic
   for `COEP_q x DD_b` is below 10 (judgement: the usual weak-instrument
-  line). For T3 this is checked in each window, before and after; a value
+  line).
+  - The F is the squared t of `COEQ_q x DD_b` in the first stage (with the
+    test's controls and fixed effects).
+  - The F is clustered two ways, by block and by quarter. The instrument
+    varies only by quarter. On invented data where the quota does not move
+    the premium, a block-clustered F still read in the thousands, so the
+    gate could never fire. The two-way F fires (tests/, scenarios E and F).
+    This is the researcher's choice, flagged for Jacob (DESIGN_SKETCH). For T3 this is checked in each window, before and after; a value
   below 10 in either means T3 is not scored (approved by Jacob, 5 October
   2026).
 
@@ -255,10 +305,19 @@ seal.
 ### T3. Weaker after February 2018 (Jacob's direction)
 
 - **Estimate.** One regression on the before-window and the after-window
-  together. Every term in section 3 is allowed to differ after 2018,
-  including `beta`. The test number is `beta_after - beta_before`: the
-  coefficient on `COEP_q x DD_b x AFTER_q`, instrumented by
-  `COEQ_q x DD_b x AFTER_q`.
+  together, with `AFTER_q` = 1 from 2018Q2.
+  - Every term in section 3 is allowed to differ after 2018:
+    - block, flat type, storey range and flat model effects are each
+      interacted with `AFTER_q`;
+    - floor area enters alone and times `AFTER_q`;
+    - the lease band x quarter effects are already period-specific.
+  - Two endogenous regressors, `COEP_q x DD_b` and `COEP_q x DD_b x
+    AFTER_q`, instrumented by the same terms in `COEQ_q`.
+  - The test number is `beta_after - beta_before`, the coefficient on the
+    second. `beta_before` is the coefficient on the first.
+  - Clustered by block.
+  - The first-stage F (gate 2) is computed in each window separately, with
+    section 3's controls and two-way clustering.
 - **Prediction.** After growth in the car quota was cut to zero in February
   2018, a rise in the COE tilted HDB prices toward the centre less than
   during the step-by-step cuts before it (section 5).
@@ -305,38 +364,73 @@ As for the sgd and pwm pieces:
 - every printed number goes through one function;
 - an independent reproduction script re-derives every scored number.
 
-Before the seal:
+The scripts:
+- `cglib.py`: windows, thresholds, the guard, the outcome rules;
+- `10_load.py`: the panel;
+- `11_tests.py`: the tests, the gates, the sensitivities, 7A and the verdict;
+- `12_figures.py`: two charts, titles set by fixed rules from the outcomes;
+- `13_results.py`: RESULTS.md, failures first;
+- `14_manifest.py`: the checksums, the number check, and `--seal`;
+- `15_reproduce.py`: the second route;
+- `tests/make_fixtures.py`, `tests/test_pipeline.py`;
+- `run_all.sh`, `requirements.txt`.
+
+**Fixture suite.** 47 tests on invented data, 6 October 2026, all
+passing. They force every branch:
+- T1 and T2: SURVIVE, FAIL_NO_LINK, FAIL_OPPOSITE, and NOT_SCORED by each
+  gate;
+- T3: SURVIVE, FAIL_NO_CHANGE, FAIL_STRONGER, NOT_SCORED_NO_TILT, and
+  NOT_SCORED by each gate;
+- 7A: readable and not readable;
+- the Brier score;
+- the guard: 10_load.py and 15_reproduce.py exit 3 on the real raw/ while
+  `SEALED` is absent.
+
+Before the seal, none of these reads a resale price:
+- `00_coverage.py` (labels and counts only);
 - `00_addresses.py` (addresses only);
 - `01_coe_ranges.py` and `04_coe_crossings.py` (COE only);
-- `01_geocode.py`, `02_distance.py` and `03_unmatched.py` (addresses, OneMap
-  and row counts only).
+- `01_geocode.py`, `02_distance.py`, `03_unmatched.py` and
+  `05_street_points.py` (addresses, OneMap and row counts only).
 
 None of these reads a resale price.
 
 ## 7. Sensitivities (sealed, reported, not scored)
 
+Each is fitted as in section 3, unless stated. It is reported with the
+outcome it would have by the section 6 rule, ignoring the gates. None is
+scored.
+
 - **A. The split run (Jacob's option (c)).** T1 on 2002Q2 to 2011Q4
-  (approval date only) and 2012Q2 to 2015Q4 (registration date only),
-  separately.
-- **B. City Hall** as the centre (the paper's Table 5).
-- **C. Log price** per square metre instead of levels.
-- **D. OLS** beside every IV estimate (the paper's Table 2).
+  (approval date only) and on 2012Q2 to 2015Q4 (registration date only),
+  separately. There is no `POST12` term, since neither half crosses the
+  switch.
+- **B. City Hall** as the centre (the paper's Table 5), mean of its 4 exits:
+  T1, T2 and T3.
+- **C. Log price** per square metre instead of levels: T1 and T2.
+- **D. OLS** beside the IV estimate (the paper's Table 2): T1 and T2.
 - **E. Two-way clustering** by block and quarter, beside the block-clustered
-  interval, for every test (checker item 7). With 22 to 54 quarters, it
-  rests on few time clusters.
-- **F. Without 2020 to 2022** (checker item 6). T2 and T3's after-window
+  interval (checker item 7): T1, T2 and T3. With 22 to 54 quarters, it rests
+  on few time clusters.
+- **F. Without 2020 to 2022** (checker item 6): T2, and T3's after-window,
   drop 2020Q1 to 2022Q4. The after-window keeps 22 quarters, with COE high
   over low still 4.60.
 - **G. T3's first-drafted before-window**, 2016Q1 to 2017Q3 (7 quarters).
-- **H. Planning-area x year linear trends** (the paper's column (5)).
-- **I. Blocks more than 1 km from the nearest station** (the paper's Table
-  4), using today's exit layer. The paper used 2015's existing and proposed
-  stations; today's layer includes lines opened since, which is stated
-  beside it.
-- **J. The 160 unmatched block-and-street pairs, put back** (Jacob's option
-  C). Each gets a street-level point from a scripted OneMap Search on its
-  street name, labelled match_type "street". T1 is re-run with them. T2 has
-  none.
+- **H. Town x year linear trends**, the paper's column (5): T1 and T2.
+  - Each HDB town in the resale files (26), less one, times (sale year -
+    2000).
+  - The files carry the HDB town, not the URA planning area the paper used;
+    the town stands in for it.
+- **I. Blocks more than 1 km from the nearest MRT exit** (the paper's Table
+  4): T1 and T2.
+  - Measured in today's exit layer. The paper used 2015's existing and
+    proposed stations; today's layer includes lines opened since, which is
+    stated beside the result.
+- **J. The unmatched pairs, put back** (Jacob's option C): T1 only (T2 has
+  none).
+  - Each unmatched pair takes its street's point: the first OneMap Search
+    result whose road name equals the expanded street (05_street_points.py).
+  - 49 of the 55 streets have one. Pairs on the other 6 streets stay out.
 
 ## 7A. Reported calculation: the money answer to "Coincidence?" (sealed, not scored)
 
@@ -380,8 +474,14 @@ Its 95 per cent interval is `-15 x dCOE` times the interval of `beta_T2`
 
     SHARE = dGAP_implied / dGAP_actual
 
-- Its 95 per cent interval comes from a block-cluster bootstrap (999 draws)
-  of both regressions together.
+- Its 95 per cent interval comes from a block-cluster bootstrap of both
+  regressions together.
+  - 999 draws, seed 20261006.
+  - Each draw resamples blocks with replacement, and each copy of a block
+    is its own block.
+  - The interval is the 2.5th and 97.5th percentiles of the draws.
+- `theta_Y` is estimated by OLS, clustered by block. `dGAP_actual`'s 95 per
+  cent interval is `-15 x (theta_2023 +/- 1.959964 se)`.
 - **Reported only if** `dGAP_actual`'s interval excludes zero and both
   changes have the same sign.
 - Otherwise the article reports `dGAP_implied` alone and says the share is
@@ -486,23 +586,22 @@ limit that the record cannot say why.
 
 ## 10. Open before the seal
 
-1. **The geocode.** Done, 5 October 2026. Gate 1 passes: 99.17 per cent of
-   T1's sales and 100 per cent of T2's are geocoded. Still open:
-   - which station point is used (mean of exits, or the nearest exit).
-   - The fallback is decided (Jacob, 6 October 2026, option C, section 4).
-2. **The before-window for T3 and the first-stage gate.** Approved by
-   Jacob, 5 October 2026: 2012Q2 to 2017Q3, and F below 10 in either window
-   means not scored.
-3. **Primary sources.**
-   - The growth-rate steps are now sourced (section 4; raw/hansard/).
-   - Still missing:
-     - the month of the 2012 cut to 1%;
-     - LTA's October 2017 release (inside T3's dropped quarters);
-   - the dates of the 2017 lease statements and of VERS (hdb.gov.sg is now
-     allowed).
-4. **The analysis scripts, the synthetic suite and the SEALED guard.**
-5. **Jacob's confidences** for T1, T2 and T3, with his Why lines.
-6. **The answer date and the seal date.**
-7. **Title and opening:** the title is chosen by a real reader (5 October
-   2026). The opening paragraph (office/TITLES.md) goes to the Editor's blind
-   review.
+1. **Jacob's confidences** for T1, T2 and T3, with his Why lines (T3's Why
+   is in already). They go in at the seal, in the "Confidence at seal" lines.
+2. **The seal date and the answer date**, in the seal commit.
+3. **Choices flagged for Jacob** (DESIGN_SKETCH, round 5), made by the
+   researcher in the scripts:
+   - the first-stage F clustered two ways (section 6);
+   - pyfixest for the demeaning, with the 2SLS written out (section 3);
+   - the HDB town standing in for the planning area (section 7, H).
+   Each is in the scripts as described. Jacob approves or changes it before
+   the seal.
+
+Closed in round 5 (6 October 2026):
+- the unit (per sale);
+- the station point (mean of exits);
+- the fallback (option C, section 4);
+- the hook figures (Parliament's);
+- the growth-rate steps (section 4);
+- the data (raw/resale/, 6 October 2026);
+- the guard and the fixture suite (section 6).

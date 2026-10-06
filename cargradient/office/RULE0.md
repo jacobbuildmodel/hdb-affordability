@@ -54,9 +54,9 @@ one location line in the sources is MND's (4 Jul 2022): flats at high
 prices "tend to be in very favourable locations or come with larger floor
 areas". It names no distance or town and is not used as one.
 
-**Not retrieved:** the news counts named in the brief (82 in 2020; 1,035 in
-2024). Their hosts refuse the session, so the session stopped for each (list
-in raw/RETRIEVED.txt). The Parliament figures above stand in for them.
+**Hook figures (checker's ruling, 6 October 2026):** Parliament's numbers
+above are primary and are used. The news counts once named (82 in 2020;
+1,035 in 2024) are dropped.
 
 ## World view: a place that prices cars differently
 

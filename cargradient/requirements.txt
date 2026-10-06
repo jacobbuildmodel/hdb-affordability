@@ -1,0 +1,10 @@
+# Pinned to the versions this piece was built and tested on.
+# Python 3.11.15
+# 00-05 and 15 use numpy (15) or the standard library; 10-14 use pandas,
+# numpy and pyfixest (pyfixest's fixed-effect demeaning and, for T1 and T2,
+# its IV fit as a cross-check). 15_reproduce.py uses numpy only, a different
+# path on purpose.
+pandas==3.0.6
+numpy==2.4.6
+scipy==1.17.1
+pyfixest==0.60.0

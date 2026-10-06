@@ -99,3 +99,32 @@ hansard/ -- Parliament of Singapore, Official Report (Hansard), retrieved 6 Octo
   www.99.co, mothership.sg, sg.news.yahoo.com, www.asiaone.com,
   www.propnex.com, smartwealth.sg and www.mnd.gov.sg. The session stopped
   for each.
+
+resale/ -- HDB resale flat prices, data.gov.sg collection 189, all columns, retrieved 6 October 2026, 12:09 to 12:10 UTC
+  URL: https://api-open.data.gov.sg/v1/public/api/datasets/<id>/poll-download (the signed download link it returns)
+  Licence: Singapore Open Data Licence version 1.0. Publisher: HDB.
+  The price column is not read before cargradient/SEALED exists (10_load.py guard);
+  coverage was listed by labels and counts only (00_coverage.py, out/coverage.txt).
+
+  FILE                                        BYTES     ROWS    MONTHS             MD5
+  d_ebc5ab87086db484f88045b47411ebc5.csv      22635623  287196  1990-01 to 1999-12  671b5585bde0b52cc6621cfe39b533ba  approval date
+  d_43f493c6c50d54243cc1eab0df142d6a.csv      29369945  369651  2000-01 to 2012-02  9d5deed09f977c0199c025c8147e3d2a  approval date
+  d_2d5ff9ea31397b66239f245f57751537.csv       4160771   52203  2012-03 to 2014-12  8aa48307d40c1a6d56b1eeaba28576f7  registration date
+  d_ea9ed51da2787afaf8e51f827c304208.csv       3070924   37153  2015-01 to 2016-12  7b41c07e962ac3e781c15309c9941cfe  registration date
+  d_8b84c4ee58e3cfc0ece0d773c8ca6abc.csv      23940111  242032  2017-01 to 2026-10  d52595bea116539dccab39cccf8fce8a  registration date
+  The 2017-onwards file had 241,920 rows on 4 October and 242,032 on 6 October
+  (later months filled in); its block-and-street pairs are all in
+  out/addresses.csv (checked by address fields only).
+
+singstat_M651121/s20.json s24.json s30.json s34.json -- COE quota, retrieved 6 October 2026, 12:11 UTC
+  URL: https://tablebuilder.singstat.gov.sg/api/table/tabledata/M651121?seriesNoORrowNo=<n>
+  Quota, 1st and 2nd bidding, Category A (20, 24) and B (30, 34), 2002 Feb to
+  2026 Sep: the instrument (THESIS section 3).
+  MD5: s20 8fc3766a7b38ab402de86a8d1d8844fb  s24 846a176af28b3a58960d90fb7941375c
+       s30 1512f9ba3ccd1ff1864198585e842003  s34 5e0ff49000c3d2e86f10da9bcc188b25
+
+OneMap Search, street-level points (05_street_points.py), 6 October 2026, 12:11 to 12:12 UTC
+  55 streets holding the 160 unmatched pairs; 49 matched a road of the same
+  name. Output out/street_points.csv. Contains information from OneMap
+  (Singapore Land Authority), accessed 6 October 2026, under the Singapore
+  Open Data Licence version 1.0.

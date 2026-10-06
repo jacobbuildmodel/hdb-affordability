@@ -61,6 +61,51 @@ UNSEALED.
      and 8A).
    - The tests, windows and bets are unchanged.
 
+7. Checker's rulings (round 5, 6 October 2026):
+   - **Hook figures:** Parliament's numbers, not news reports. 46 in 2017
+     and 259 in 2021 (MND, 4 Jul 2022); "about 6%" in 2025 (7 Apr 2026). 82
+     and 1,035 are dropped.
+   - **Jacob's verbatim Why keeps "choose"** ("where people choose to live"
+     is not advice). If Vale flags it on the open page, only that quote is
+     wrapped in a scoped Vale off/on comment.
+   - **The opening paragraph stays as it is.** The Editor's edits come with
+     the seal prompt.
+
+## Round 5 (Checkpoint S preparation): choices flagged for Jacob
+
+The scripts (10-15, tests/, run_all.sh) are written and tested on invented
+data only: 47 tests, every outcome branch forced, all passing. Three choices
+were made by the researcher and need Jacob's approval before the seal.
+
+1. **The first-stage F (gate 2) is clustered two ways, by block and by
+   quarter.**
+   - The instrument, quota x distance, varies only by quarter.
+   - On invented data where the quota does not move the premium at all, a
+     block-clustered F still read 6,943. The gate could never fire.
+   - The two-way F fell below 10 and the gate fired (tests/, scenarios E
+     and F).
+   - THESIS section 6 now says this.
+2. **Estimator and library.**
+   - Each sale is one row (THESIS already said so).
+   - Fixed effects are swept out with pyfixest 0.60.0's demeaning
+     (alternating projections).
+   - The 2SLS and the clustered variance are written in 11_tests.py.
+   - Why: pyfixest's own IV fit takes only one endogenous regressor, and
+     T3 has two. For T1 and T2, pyfixest.feols is run as well and must
+     agree to 1e-6.
+   - The second route (15_reproduce.py) uses numpy only.
+3. **Town for planning area** (sensitivity H). The resale files carry the
+   HDB town, not the URA planning area. Town x year trends stand in.
+
+**A note for the checker, not a change.** The scored intervals are clustered
+by block, as the paper clusters by project; that was the checker's ruling
+(item 7). But the instrument varies only by quarter. On invented data the
+two-way interval for T2 was about 50 times wider than the block-clustered
+one, enough to turn SURVIVE into no clear link (sensitivity E). If the real
+data does the same, sensitivity E will show it beside every test. Whether the
+scored interval stays block-clustered is the checker's and Jacob's call
+before the seal.
+
 ## What T3 compares, exactly (6 October 2026)
 
 The before-window, 2012Q2-2017Q3, is not one 0.25% period. The vehicle

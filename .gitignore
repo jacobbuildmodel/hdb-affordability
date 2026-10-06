@@ -1,3 +1,4 @@
 cargradient/raw/*.pdf
 cargradient/out/geocode_cache.jsonl
 cargradient/out/geocode_progress.log
+__pycache__/
