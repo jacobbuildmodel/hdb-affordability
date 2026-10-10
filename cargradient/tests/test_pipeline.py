@@ -97,7 +97,7 @@ class Scenario(unittest.TestCase):
 
 
 class A_AllSurvive(Scenario):
-    params = dict(confidences={"T1": 70, "T2": 60, "T3": 40}, actual_gap_shift=-0.6)
+    params = dict(confidences={"T1": 70, "T2": 60, "T3": 40}, beta_after=-0.003)
     expect = {"T1": "SURVIVE", "T2": "SURVIVE", "T3": "SURVIVE"}
     readable = True
 

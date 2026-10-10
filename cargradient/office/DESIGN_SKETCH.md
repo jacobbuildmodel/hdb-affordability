@@ -71,6 +71,20 @@ UNSEALED.
    - **The opening paragraph stays as it is.** The Editor's edits come with
      the seal prompt.
 
+## Pre-seal round (6 October 2026): Jacob's approvals
+
+Jacob approved all three round-5 choices:
+1. **Two-way clustering, by block and quarter,** for every scored interval
+   (T1, T2, the T3 difference) and for the F gate. Block-only clustering is
+   sensitivity E, for comparison with the paper. The reason is in THESIS
+   section 3: the COE and the quota vary only by quarter.
+2. **pyfixest demeaning with a hand-written 2SLS,** cross-checked by
+   15_reproduce.py.
+3. **HDB town for planning area** (sensitivity H).
+
+New before the seal: a placebo coverage check (06_coverage_check.py; THESIS
+section 6). It uses the real design and invented prices with no link.
+
 ## Round 5 (Checkpoint S preparation): choices flagged for Jacob
 
 The scripts (10-15, tests/, run_all.sh) are written and tested on invented
@@ -142,7 +156,8 @@ growth rate was cut in steps (Parliament, raw/hansard/):
   and quota x distance as instruments (p. 13).
 - **Test number:** the coefficient on COE premium x distance. The paper's
   sign is negative.
-- **Main intervals:** 95 per cent, clustered by block.
+- **Main intervals:** 95 per cent, clustered by block and quarter (Jacob, 6
+  October 2026); block-only is sensitivity E.
 
 ## Checker considerations: proposals for Jacob to approve
 

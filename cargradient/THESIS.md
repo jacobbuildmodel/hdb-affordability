@@ -142,8 +142,17 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
 - **Cross-check:** for T1 and T2 (one endogenous regressor), pyfixest.feols
   must give the same `beta` to 1e-6. T3 has two endogenous regressors,
   which pyfixest.feols does not take.
-- **Scored intervals:** 95 per cent, beta +/- 1.959964 x se, clustered by
-  block (as the paper clusters by project, p. 16).
+- **Scored intervals:** 95 per cent, beta +/- 1.959964 x se, clustered TWO
+  WAYS, by block and by quarter (Jacob, 6 October 2026). This applies to T1,
+  T2 and the T3 difference, and to the first-stage F of gate 2.
+  - **Why:** the COE premium and the quota change only from quarter to
+    quarter. So the evidence on how prices move with them is about 54
+    quarters for T1 and 42 for T2, not hundreds of thousands of independent
+    sales. Clustering by block alone would treat every sale in a quarter as
+    a separate draw of the COE, and overstate certainty.
+  - Block-only clustering, as the paper clusters by project (p. 16), is
+    sensitivity E, reported for comparison.
+  - Pre-seal check: section 6, "Placebo coverage".
 - **Independent route** (15_reproduce.py): csv and json reading, a
   hand-written numpy demeaning loop (tolerance 1e-12) and the same formulas
   written again. It must match every scored number to 1e-6 relative, and
@@ -271,9 +280,9 @@ seal.
     varies only by quarter. On invented data where the quota does not move
     the premium, a block-clustered F still read in the thousands, so the
     gate could never fire. The two-way F fires (tests/, scenarios E and F).
-    This is the researcher's choice, flagged for Jacob (DESIGN_SKETCH). For T3 this is checked in each window, before and after; a value
-  below 10 in either means T3 is not scored (approved by Jacob, 5 October
-  2026).
+    Approved by Jacob, 6 October 2026.
+  - For T3 the F is checked in each window, before and after. A value below
+    10 in either means T3 is not scored (approved by Jacob, 5 October 2026).
 
 ### T1. Their sign, on HDB flats, over their years
 
@@ -282,7 +291,7 @@ seal.
 - **Prediction.** When COEs cost more, HDB flats near Raffles Place gained
   relative to flats further out.
 - **Survive if:** `beta` < 0 and its 95 per cent interval (clustered by
-  block) excludes zero.
+  block and quarter) excludes zero.
 - **Fail if:** the interval includes zero, or `beta` > 0.
 - **Weak evidence, stated now.** COE premiums rise in good times. If good
   times also lift central flats more than outer ones, for reasons that have
@@ -315,7 +324,7 @@ seal.
     AFTER_q`, instrumented by the same terms in `COEQ_q`.
   - The test number is `beta_after - beta_before`, the coefficient on the
     second. `beta_before` is the coefficient on the first.
-  - Clustered by block.
+  - Clustered by block and quarter.
   - The first-stage F (gate 2) is computed in each window separately, with
     section 3's controls and two-way clustering.
 - **Prediction.** After growth in the car quota was cut to zero in February
@@ -366,6 +375,7 @@ As for the sgd and pwm pieces:
 
 The scripts:
 - `cglib.py`: windows, thresholds, the guard, the outcome rules;
+- `06_coverage_check.py`: the placebo coverage check (below), pre-seal;
 - `10_load.py`: the panel;
 - `11_tests.py`: the tests, the gates, the sensitivities, 7A and the verdict;
 - `12_figures.py`: two charts, titles set by fixed rules from the outcomes;
@@ -375,7 +385,7 @@ The scripts:
 - `tests/make_fixtures.py`, `tests/test_pipeline.py`;
 - `run_all.sh`, `requirements.txt`.
 
-**Fixture suite.** 47 tests on invented data, 6 October 2026, all
+**Fixture suite.** 48 tests on invented data, 6 October 2026, all
 passing. They force every branch:
 - T1 and T2: SURVIVE, FAIL_NO_LINK, FAIL_OPPOSITE, and NOT_SCORED by each
   gate;
@@ -386,8 +396,44 @@ passing. They force every branch:
 - the guard: 10_load.py and 15_reproduce.py exit 3 on the real raw/ while
   `SEALED` is absent.
 
+**Placebo coverage (pre-seal check, 10 October 2026).** `06_coverage_check.py`
+fits the scored models on the REAL design with INVENTED prices:
+- real: which block traded in which quarter, with its flat type, storey
+  range, flat model, floor area and lease (the price column is excluded when
+  the resale files are read); the real block distances to Raffles Place; the
+  real quarterly A/B COE premium and quota;
+- invented: price per sqm = block effect (sd 400) + common quarterly shock
+  (sd 300) + noise (sd 800), with a true COE x distance slope of ZERO;
+- seed 20261006; X, Z and the controls are demeaned by the scored code; each
+  invented outcome is projected on the fixed effects exactly, which matches
+  the scored demeaning to within 5.6e-7 of its spread in every test.
+
+Share of runs whose 95% interval excludes zero (the test's nominal rate is
+5%):
+
+| Test | Sales | Runs | Two-way (scored) | Block-only (E) |
+|---|---|---|---|---|
+| T1 | 349,122 | 1,000 | 4.9% | 3.9% |
+| T2 | 257,854 | 1,000 | 5.4% | 4.4% |
+| T3 difference | 315,931 | 1,000 | 6.2% | 4.6% |
+
+- **PASS:** the two-way rate lies between 2% and 9% for each test.
+- **First-stage F (two-way).** It depends on the design, not on prices, so
+  it is the same in every run: T1 86.7, T2 74.8, T3 before 142.5, T3 after
+  30.0. The F gate (F < 10) fires in 0% of runs, for every test.
+- **Stress cases** (reported, not part of the PASS line): a quarterly shock
+  to the distance slope itself, sd 15 per km.
+  - Independent across quarters: two-way 6.6%, 7.4%, 8.4% (T1, T2, T3);
+    block-only 73.0%, 73.4%, 66.4%. This is what quarter clustering is for.
+  - Persistent (AR(1), 0.8): two-way 51.6%, 56.0%, 50.0%; block-only 87.0%,
+    89.2%, 86.0%. Neither clustering covers a slow drift in the distance
+    slope that happens to move with a persistent COE premium. This limit
+    bears on a SURVIVE, not on a FAIL_NO_LINK.
+
 Before the seal, none of these reads a resale price:
 - `00_coverage.py` (labels and counts only);
+- `06_coverage_check.py` (the price column is excluded when the files are
+  read; prices are invented);
 - `00_addresses.py` (addresses only);
 - `01_coe_ranges.py` and `04_coe_crossings.py` (COE only);
 - `01_geocode.py`, `02_distance.py`, `03_unmatched.py` and
@@ -409,9 +455,10 @@ scored.
   T1, T2 and T3.
 - **C. Log price** per square metre instead of levels: T1 and T2.
 - **D. OLS** beside the IV estimate (the paper's Table 2): T1 and T2.
-- **E. Two-way clustering** by block and quarter, beside the block-clustered
-  interval (checker item 7): T1, T2 and T3. With 22 to 54 quarters, it rests
-  on few time clusters.
+- **E. Block-only clustering**, as the paper clusters by project, beside the
+  scored two-way interval: T1, T2 and T3. Reported for comparison with the
+  paper. It treats every sale as independent of the quarter's COE, so it
+  will look more certain.
 - **F. Without 2020 to 2022** (checker item 6): T2, and T3's after-window,
   drop 2020Q1 to 2022Q4. The after-window keeps 22 quarters, with COE high
   over low still 4.60.
@@ -440,7 +487,7 @@ The numbers are computed only after the seal.
 **Inputs.**
 - `beta_T2`: T2's IV estimate of `beta` (section 3), in Singapore dollars
   per square metre, per km, per dollar of COE premium, with its 95 per cent
-  interval (clustered by block).
+  interval (clustered by block and quarter).
 - `dCOE = COEbar_2023 - COEbar_2020`.
   - `COEbar_Y` is the mean of `COEP_q` over the quarters of year Y that had
     bidding: all four for 2023; 2020Q1, Q3 and Q4 for 2020 (no bidding in
@@ -480,7 +527,7 @@ Its 95 per cent interval is `-15 x dCOE` times the interval of `beta_T2`
   - Each draw resamples blocks with replacement, and each copy of a block
     is its own block.
   - The interval is the 2.5th and 97.5th percentiles of the draws.
-- `theta_Y` is estimated by OLS, clustered by block. `dGAP_actual`'s 95 per
+- `theta_Y` is estimated by OLS, clustered by block and quarter. `dGAP_actual`'s 95 per
   cent interval is `-15 x (theta_2023 +/- 1.959964 se)`.
 - **Reported only if** `dGAP_actual`'s interval excludes zero and both
   changes have the same sign.
@@ -586,22 +633,18 @@ limit that the record cannot say why.
 
 ## 10. Open before the seal
 
-1. **Jacob's confidences** for T1, T2 and T3, with his Why lines (T3's Why
-   is in already). They go in at the seal, in the "Confidence at seal" lines.
-2. **The seal date and the answer date**, in the seal commit.
-3. **Choices flagged for Jacob** (DESIGN_SKETCH, round 5), made by the
-   researcher in the scripts:
-   - the first-stage F clustered two ways (section 6);
-   - pyfixest for the demeaning, with the 2SLS written out (section 3);
-   - the HDB town standing in for the planning area (section 7, H).
-   Each is in the scripts as described. Jacob approves or changes it before
-   the seal.
+1. **Jacob's three confidences**, for T1, T2 and T3, set at the seal in the
+   "Confidence at seal" lines. T3's Why is in already. T1's and T2's Why
+   lines come with them.
 
-Closed in round 5 (6 October 2026):
-- the unit (per sale);
-- the station point (mean of exits);
-- the fallback (option C, section 4);
-- the hook figures (Parliament's);
-- the growth-rate steps (section 4);
-- the data (raw/resale/, 6 October 2026);
-- the guard and the fixture suite (section 6).
+Everything else is closed (6 October 2026):
+- the clustering (two-way, scored);
+- the estimator and library;
+- town for planning area;
+- the placebo coverage check (section 6);
+- the opening (office/TITLES.md) and the open page draft
+  (office/OPEN_QUESTION_DRAFT.md);
+- the unit, the station point, the fallback, the hook figures, the
+  growth-rate steps, the data, the guard and the fixture suite.
+
+The seal date and the answer date are written in the seal commit.

@@ -15,9 +15,12 @@ standard errors computed here:
   s_g = sum over rows in g of Xhat_i u_i,  u = y - X beta,
   c = G/(G-1) x (N-1)/(N-K),  K = columns of X (fixed effects not counted).
 
-Two-way clustering: V = V_block + V_quarter - V_block-quarter, each with its
-own c. Used for the first-stage F of gate 2 (the instrument varies only by
-quarter) and for sensitivity E. The 95 per cent interval is beta +/- 1.959964 se. For T1
+Two-way clustering, by block and by quarter: V = V_block + V_quarter -
+V_block-quarter, each with its own c. Every scored interval (T1, T2, the T3
+difference), the first-stage F of gate 2 and the 7A slopes use it, because
+the COE premium and the quota vary only by quarter (Jacob, 6 October 2026).
+Block-only clustering is sensitivity E. The 95 per cent interval is
+beta +/- 1.959964 se. For T1
 and T2 the same estimate is also fitted with pyfixest.feols (one endogenous
 regressor) and must agree to 1e-6; T3 has two endogenous regressors, which
 pyfixest.feols does not take.
@@ -153,7 +156,7 @@ def town_trends(d):
     return cols
 
 
-def fit_single(d, exog, iv=True, twoway=False):
+def fit_single(d, exog, iv=True, twoway=True):
     """One endogenous regressor cd (instrument qd) or OLS on cd."""
     cols = ["yv", "cd", "qd"] + exog
     M = demeaned(d, cols, FE)
@@ -183,7 +186,7 @@ def crosscheck_pyfixest(d, exog, res):
     return b
 
 
-def fit_t3(df, before, after, dd="dd", twoway=False, wfh=False):
+def fit_t3(df, before, after, dd="dd", twoway=True, wfh=False):
     after_q = [q for q in after if not (wfh and L.WFH[0] <= q <= L.WFH[1])]
     d = prepare(df, list(before) + after_q, dd=dd)
     d["after"] = (d["quarter"] >= L.T3_AFTER[0]).astype(int)
@@ -229,7 +232,7 @@ def year_slopes(d, years):
     M = demeaned(d, allc, FE)
     M = M[:, keep(M, d[allc].to_numpy(dtype=float), 1 + len(cols))]
     X = M[:, 1:]
-    beta, se = tsls(M[:, 0], X, X, cluster_codes(d, False))
+    beta, se = tsls(M[:, 0], X, X, cluster_codes(d, True))
     return {y: (0.0, 0.0) if y == L.CALC_YEARS[0] else (beta[cols.index(f"ddy_{y}")], se[cols.index(f"ddy_{y}")])
             for y in years}
 
@@ -327,7 +330,7 @@ def main():
         add("B_cityhall", t, fit_single(prepare(df, L.window(w), dd="dd_cityhall"), exog))
         add("C_log_price", t, fit_single(prepare(df, L.window(w), log=True), exog))
         add("D_ols", t, fit_single(prepare(df, L.window(w)), exog, iv=False))
-        add("E_twoway", t, fit_single(prepare(df, L.window(w)), exog, twoway=True))
+        add("E_block_only", t, fit_single(prepare(df, L.window(w)), exog, twoway=False))
         d = prepare(df, L.window(w))
         add("H_town_trends", t, fit_single(d, exog + town_trends(d)))
         add("I_far_from_mrt", t, fit_single(prepare(df, L.window(w), mrt_far=True), exog),
@@ -336,7 +339,7 @@ def main():
     t2w = [q for q in L.window("T2") if not (L.WFH[0] <= q <= L.WFH[1])]
     add("F_without_2020_2022", "T2", fit_single(prepare(df, t2w), ["floor_area"]))
     add("B_cityhall", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), dd="dd_cityhall"))
-    add("E_twoway", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), twoway=True))
+    add("E_block_only", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), twoway=False))
     add("F_without_2020_2022", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), wfh=True))
     add("G_before_2016Q1_2017Q3", "T3", fit_t3(df, L.qrange(*L.T3_BEFORE_SENS), L.window("T3_after")))
 

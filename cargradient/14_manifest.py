@@ -25,12 +25,13 @@ import sys
 import cglib as L
 
 SCRIPTS = ["cglib.py", "00_coverage.py", "01_geocode.py", "02_distance.py", "03_unmatched.py",
-           "04_coe_crossings.py", "05_street_points.py", "10_load.py", "11_tests.py", "12_figures.py",
+           "04_coe_crossings.py", "05_street_points.py", "06_coverage_check.py", "10_load.py", "11_tests.py", "12_figures.py",
            "13_results.py", "14_manifest.py", "15_reproduce.py", "run_all.sh", "requirements.txt",
            "tests/make_fixtures.py", "tests/test_pipeline.py"]
 PRESEAL_OUT = ["out/addresses.csv", "out/address_rowcounts.csv", "out/blocks_geocoded.csv",
                "out/block_distance.csv", "out/station_points.csv", "out/street_points.csv",
-               "out/unmatched.csv", "out/coe_ranges.txt", "out/coe_crossings.txt", "out/coverage.txt"]
+               "out/unmatched.csv", "out/coe_ranges.txt", "out/coe_crossings.txt", "out/coverage.txt",
+               "out/coverage_check.csv", "out/coverage_check.txt"]
 OUTPUTS = ["out/coe_quarterly.csv", "out/geocode_coverage.csv", "out/panel.csv.gz", "out/tests.csv",
            "out/sensitivities.csv", "out/year_slopes.csv", "out/calc_7a.csv", "out/verdict.txt",
            "out/reproduce.txt", "figs/cargradient_chart1_tests.svg", "figs/cargradient_chart2_years.svg",

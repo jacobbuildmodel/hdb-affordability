@@ -12,7 +12,8 @@ Different from 10 and 11 on purpose:
   shares are rebuilt here from raw/ and the pre-seal inputs;
 - fixed effects are swept out by a hand-written alternating-projections loop
   in numpy (np.bincount group means), not pyfixest;
-- 2SLS, the clustered variance and the first-stage F are written out again.
+- 2SLS, the two-way clustered variance (block and quarter, as scored) and
+  the first-stage F are written out again.
 
 Tolerance: estimates and standard errors agree to 1e-6 relative (absolute
 1e-12 near zero); outcomes, gate flags and sample sizes agree exactly.
@@ -174,7 +175,7 @@ def single(data, quarters, post12):
     M = sweep(raw, groups)
     M = M[:, keep(M, raw, 3)]
     W = M[:, 3:]
-    b, se = iv(M[:, 0], np.column_stack([M[:, 1], W]), np.column_stack([M[:, 2], W]), cl)
+    b, se = iv(M[:, 0], np.column_stack([M[:, 1], W]), np.column_stack([M[:, 2], W]), cl, *cl2)
     fb, fse = iv(M[:, 1], np.column_stack([M[:, 2], W]), np.column_stack([M[:, 2], W]), cl, *cl2)
     return {"est": b[0], "se": se[0], "lo": b[0] - L.Z95 * se[0], "hi": b[0] + L.Z95 * se[0],
             "F": (fb[0] / fse[0]) ** 2, "n": len(s)}
@@ -197,7 +198,7 @@ def t3(data):
     M = sweep(raw, groups)
     M = M[:, keep(M, raw, 5)]
     W = M[:, 5:]
-    b, se = iv(M[:, 0], np.column_stack([M[:, 1], M[:, 2], W]), np.column_stack([M[:, 3], M[:, 4], W]), cl)
+    b, se = iv(M[:, 0], np.column_stack([M[:, 1], M[:, 2], W]), np.column_stack([M[:, 3], M[:, 4], W]), cl, *cl2)
     return {"before_est": b[0], "before_se": se[0], "before_hi": b[0] + L.Z95 * se[0],
             "diff_est": b[1], "diff_se": se[1], "diff_lo": b[1] - L.Z95 * se[1],
             "diff_hi": b[1] + L.Z95 * se[1], "n": len(s),

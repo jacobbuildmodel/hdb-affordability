@@ -1,0 +1,13 @@
+PASS line: two-way rejection between 2% and 9% for each test (main spec): PASS
+main        T1: 1000 simulations, sales 349122; 95% interval excluded zero in 4.9% two-way, 3.9% block-only
+main        T2: 1000 simulations, sales 257854; 95% interval excluded zero in 5.4% two-way, 4.4% block-only
+main        T3: 1000 simulations, sales 315931; 95% interval excluded zero in 6.2% two-way, 4.6% block-only
+stress_iid  T1: 500 simulations, sales 349122; 95% interval excluded zero in 6.6% two-way, 73.0% block-only
+stress_iid  T2: 500 simulations, sales 257854; 95% interval excluded zero in 7.4% two-way, 73.4% block-only
+stress_iid  T3: 500 simulations, sales 315931; 95% interval excluded zero in 8.4% two-way, 66.4% block-only
+stress_ar1  T1: 500 simulations, sales 349122; 95% interval excluded zero in 51.6% two-way, 87.0% block-only
+stress_ar1  T2: 500 simulations, sales 257854; 95% interval excluded zero in 56.0% two-way, 89.2% block-only
+stress_ar1  T3: 500 simulations, sales 315931; 95% interval excluded zero in 50.0% two-way, 86.0% block-only
+Exact fixed-effects projection of the invented prices vs the scored code's MAP demeaning, largest gap relative to the outcome's spread: T1 5.6e-08; T2 5.6e-07; T3 4.6e-07
+First-stage F (two-way), the same in every simulation (it does not depend on prices): T1_F 86.7; T2_F 74.8; T3_F_before 142.5; T3_F_after 30.0
+F gate fires (F < 10): T1_F no; T2_F no; T3_F_before no; T3_F_after no

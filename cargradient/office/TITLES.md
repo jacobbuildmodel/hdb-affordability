@@ -29,21 +29,58 @@ characters)
 
 None was chosen. The round 3 opening paragraph is replaced below.
 
-## Opening paragraph (bet in the first screen: H3, H5)
+## Opening paragraph: FINAL (checker's ruling on the Editor's review, 6 October 2026)
 
-Everyone knows a COE is a car-owner's problem. Million-dollar HDB flats make
-one set of headlines and $100,000 COEs another, and the two rarely meet.
-Picture two families who will never own a car, one buying an HDB flat a
-short train ride from Raffles Place, the other a flat at the end of the
-line. Huang, Li and Ross (2018) studied private condos, not HDB flats, from
-2002 to 2015. They found that when COEs cost more, homes near the city
-centre gained more than homes further out. Their explanation is that when
-owning a car costs more, more households go without one and pay to live
-close in. My bet, sealed before I open the HDB data: the same tilt shows up
-in HDB flats over their years, 2002 to 2015, and in the years since, 2016
-to 2026. And since growth in the car quota was cut to zero in February
-2018, that tilt has got weaker, not stronger. At most, this would explain
-part of what a flat near town costs, not million-dollar flats as a whole.
+As ruled:
+
+> Everyone knows a COE is a car-owner's problem. Million-dollar HDB resale
+> flats went from 46 in 2017 to 259 in 2021, and made up about 6% of resale
+> flats by 2025. Huang, Li and Ross (2018) found that in private condos from
+> 2002 to 2015, dearer COEs went with bigger gains near the city centre than
+> further out. Their explanation: dearer cars mean more households go
+> carless and pay to live close in. My bet, sealed before I open the HDB
+> data: the same tilt shows up in HDB flats, 2002 to 2015 and 2016 to 2026,
+> and has weakened, not strengthened, since growth in the car quota was cut
+> to zero in February 2018. At most, this would explain part of what a flat
+> near town costs, not million-dollar flats as a whole.
+
+**Checked against the record:**
+- raw/hansard/20220704_written-answer-10703.json: "The number of HDB resale
+  flats that have been sold for $1 million or more increased by 4.6 times
+  from 46 flats in 2017 to 259 flats in 2021".
+- raw/hansard/20260407_oral-answer-4103.json: "In 2025, about 6% of resale
+  flats transacted above $1 million."
+
+**What the record says:**
+- 46 and 259 are counts of resale flats SOLD at $1 million or more in each
+  year, not flats in existence. The record says "in 2017" and "in 2021"; it
+  does not say calendar year or financial year.
+- "About 6%" is a share of the resale flats TRANSACTED IN 2025, above $1
+  million. It is not a running total "by 2025".
+- The threshold differs by one dollar ("$1 million or more" against "above
+  $1 million"). "Million-dollar" covers both, so no change is made for it.
+
+**Changes made, only the words needed to match the record:**
+1. "Million-dollar HDB resale flats went from 46" became "Million-dollar HDB
+   resale transactions went from 46". The figures count sales, not homes.
+2. "made up about 6% of resale flats by 2025" became "made up about 6% of
+   resale transactions in 2025". The record is a share of 2025's sales, not
+   a running total.
+
+**As used (office/OPEN_QUESTION_DRAFT.md):**
+
+Everyone knows a COE is a car-owner's problem. Million-dollar HDB resale
+transactions went from 46 in 2017 to 259 in 2021, and made up about 6% of
+resale transactions in 2025. Huang, Li and Ross (2018) found that in private
+condos from 2002 to 2015, dearer COEs went with bigger gains near the city
+centre than further out. Their explanation: dearer cars mean more households
+go carless and pay to live close in. My bet, sealed before I open the HDB
+data: the same tilt shows up in HDB flats, 2002 to 2015 and 2016 to 2026,
+and has weakened, not strengthened, since growth in the car quota was cut to
+zero in February 2018. At most, this would explain part of what a flat near
+town costs, not million-dollar flats as a whole.
+
+The round 4 opening paragraph is superseded by this one.
 
 **The bets** (confidences are Jacob's, set at the seal):
 
@@ -66,6 +103,15 @@ part of what a flat near town costs, not million-dollar flats as a whole.
    change was."
 
 ## Checks against the rules
+
+The final paragraph and the open page draft were checked on 6 October 2026:
+- the banned-word grep is clean, apart from "choose" inside Jacob's verbatim
+  Why, which a scoped Vale Site.Directives off/on comment wraps;
+- Vale, run with the site's rules as CI runs them, gives 0 errors and one
+  warning: "caused", also inside Jacob's quote, which stays verbatim;
+- no "we", "us" or "our".
+
+The list below is the round 4 check, kept for the record.
 
 - **H1-H7.**
   - H1: the scene is a family buying an HDB flat.
