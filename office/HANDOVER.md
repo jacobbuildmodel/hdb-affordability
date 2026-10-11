@@ -1,8 +1,7 @@
 # HANDOVER -- hdb-affordability (researcher role)
 
-Written 11 October 2026 for a new chat with no history. Read this, then the
-files it points to. The root HANDOVER.md is the old September brief for the
-website chat and is stale.
+Written 11 October 2026 for a new chat with no history. The root
+HANDOVER.md is the stale September brief for the website chat.
 
 ## 1. What this repo holds
 
@@ -27,19 +26,30 @@ in cargradient/THESIS.md; the office notes are in cargradient/office/.
 
 - cargradient-wip (HEAD bf30a7b): the open piece. No PR; never merged by a
   chat. Next steps, in order:
-  1. Jacob rules on the drift guard (out/coverage_guard.txt, from
-     `06_coverage_check.py --guard`, 11 Oct). No tested design fixed a
-     persistent drift (S0 50-56% false links) without breaking the null
-     (Driscoll-Kraay 10.7-21.6%) or the instrument (trend controls: T2 F
-     0.8 and 0.0). The proposal was to keep S0 and seal the limit into the
-     verdict wording. Then update THESIS section 6 and
-     office/DESIGN_SKETCH.md; if a guard design is adopted, change 11_tests.py
-     AND 15_reproduce.py the same way and rerun the fixture suite.
-  2. The seal prompt: Jacob's three confidences (and T1/T2 Why lines) go into
-     THESIS "Confidence at seal" lines, verbatim. Then
-     `python3 cargradient/14_manifest.py --seal` writes SEAL_MANIFEST.md, then
-     `touch cargradient/SEALED`, one seal commit. Only in that prompt.
-  3. After the seal: `bash cargradient/run_all.sh` runs the real data.
+  1. Drift guard (THESIS section 6 stress case). Round 1, bf30a7b,
+     out/coverage_guard.txt: no design fixed a persistent drift without
+     breaking the null or T2's instrument (T2 F 0.8 and 0.0 with trend
+     controls: its quota variation is mostly trend). Round 2,
+     out/coverage_guard2.*: time-block clusters, a two-step quarterly
+     gradient (levels, first differences), drift dose-response. Jacob rules;
+     then THESIS section 6 and DESIGN_SKETCH, and any adopted design goes
+     into 11_tests.py AND 15_reproduce.py with the fixture suite rerun.
+  2. Seal (site office/CHECKPOINTS.md, Checkpoint S; the SGD and PWM pieces
+     did it this way):
+     a. One commit: Jacob's three confidences (and T1/T2 Why lines) in the
+        THESIS "Confidence at seal" lines, verbatim.
+     b. The next commit, on its own, is the seal: SEAL_MANIFEST.md ONLY,
+        written by `python3 cargradient/14_manifest.py --seal`. Record the
+        hash. Never run `--seal` again after this.
+     c. The same day: the open question page PR goes to the site
+        (office/OPEN_QUESTION_DRAFT.md, seal link filled in); Jacob merges
+        it; the checker confirms it is live; Jacob registers the thesis on
+        OSF that day.
+     d. Only then, in its own commit: `touch cargradient/SEALED` (the data
+        key). The loader refuses raw/ until the key exists.
+  3. After the data key: `bash cargradient/run_all.sh` runs the real data.
+     The branch reaches main by a MERGE commit (never squash or rebase), so
+     the seal and key commits stay ancestors of main.
 - #2 readme-revision-note-wording (open since September): stale README
   wording fix. Leave it for Jacob; do not merge.
 - handover-2026-10: this file.
@@ -85,8 +95,8 @@ the site checkout's content/ to lint it; restore any site file you touched
 `python scripts/aitell.py <files> --strict --published-only` and
 `python scripts/check_open_pages.py --base <sha>`.
 
-Python: pandas 3.0.6, numpy 2.4.6, scipy 1.17.1, pyfixest 0.60.0
-(cargradient/requirements.txt); a venv is the easy route.
+Python: cargradient/requirements.txt (pandas 3.0.6, numpy 2.4.6, scipy
+1.17.1, pyfixest 0.60.0), in a venv.
 
 ## 5. Gotchas and fixes
 
@@ -94,36 +104,30 @@ Python: pandas 3.0.6, numpy 2.4.6, scipy 1.17.1, pyfixest 0.60.0
   `setsid nohup ... > log 2>&1 < /dev/null &` and log progress. The placebo
   uses an exact fixed-effects projector (Projector in 06), seconds per run,
   instead of re-demeaning with MAP (minutes per run).
-- `A && B & echo` backgrounds the whole chain; put `&` on its own command.
-- `pgrep -f name` in a wait loop matches the loop itself; match on the
-  interpreter path instead.
-- MAP demeaning failed to converge on large-scale columns: columns are
-  scaled to unit sd first and a finite check runs (11_tests.demeaned).
-- A block-clustered first-stage F could never fire (instrument varies only
-  by quarter): the F gate is two-way.
-- numpy bools wrote as "0"/"1": cast gate flags with bool().
-- Manifest check compared reformatted strings: compare fmt() on both sides.
-- per10k sign: (5 - 20) x beta x 10000.
+- `A && B & echo` backgrounds the whole chain; `pgrep -f name` in a wait
+  loop matches the loop itself (match the interpreter path).
+- MAP demeaning: columns scaled to unit sd plus a finite check. The F gate
+  is two-way (block-clustered, it could never fire).
+- Cast gate flags with bool(); compare fmt() on both sides of the manifest
+  check; per10k is (5 - 20) x beta x 10000.
 - The paper PDF must never be committed (copyright; it was removed from
   history once). raw_files() skips .pdf.
 - Hosts: news sites are blocked (name it and stop). TfL needs bot
   verification: ask Jacob to upload the page. Chromium distrusted some
   certs: save HTML with curl instead. /usr/bin/time is missing: use $SECONDS.
-- Keep `.gitattributes` (`* -text`) or checksums fail on Windows checkouts.
-- panel.csv.gz is written with gzip mtime 0 so it is byte-stable.
+- Keep `.gitattributes` (`* -text`); panel.csv.gz uses gzip mtime 0.
 
 ## 6. Credentials (names only)
 
-- ONEMAP_EMAIL, ONEMAP_PASSWORD (environment). The OneMap token is fetched
-  from these, held in memory, never printed or committed. The token last
-  fetched EXPIRED on 8 Oct 2026; 01_geocode.py fetches a new one. Geocoding
-  is finished, so only a re-geocode needs them. If either is missing, stop
-  and say so.
+- ONEMAP_EMAIL, ONEMAP_PASSWORD (environment): the OneMap token is fetched
+  from them, held in memory, never printed. The last token EXPIRED 8 Oct
+  2026. Geocoding is finished; only a re-geocode needs them. Missing: stop.
 - GitHub: through the session's GitHub app; nothing to set by hand.
 
 ## 7. Do NOT
 
-- Create cargradient/SEALED or SEAL_MANIFEST.md outside the seal prompt.
+- Create SEAL_MANIFEST.md outside the seal commit, or cargradient/SEALED
+  before the open page is live. Never re-run `14_manifest.py --seal`.
 - Read any resale price before SEALED exists (10_load.py refuses anyway;
   00_coverage and 06 read the files with the price column excluded).
 - Fit anything on real prices before the seal.
@@ -132,3 +136,17 @@ Python: pandas 3.0.6, numpy 2.4.6, scipy 1.17.1, pyfixest 0.60.0
   SEAL_MANIFEST/CHECKSUMS INPUTS list. Changes go in an addendum.
 - Merge any PR, or push to main.
 - Edit Jacob's verbatim quotes.
+
+## 8. Starter prompt for a new chat in this role
+
+    You are the researcher for github.com/jacobbuildmodel/hdb-affordability.
+    Read office/HANDOVER.md first, then cargradient/THESIS.md and
+    cargradient/office/RULE0.md. Hand-backs: office/REPLY_FORMAT.md in
+    jacobbuildmodel.github.io. Work only on cargradient-wip; never merge;
+    commit as Jacob (HANDOVER section 3). Read no resale price and fit
+    nothing on real data until cargradient/SEALED exists. The seal follows
+    HANDOVER section 2 step 2 exactly: confidences commit, then a commit
+    with SEAL_MANIFEST.md only, then the open page live and OSF the same
+    day, then the SEALED key in its own commit; never re-run --seal.
+    Confidences are Jacob's; never write or suggest one. Current state:
+    HANDOVER section 2. First run the fixture suite and check.sh and report.
