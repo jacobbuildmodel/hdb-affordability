@@ -322,23 +322,28 @@ def boot_share(d, years, dcoe, n, seed):
 
 # ---------------------------------------------------------------- verdict
 def verdict(o):
-    a2 = {"SURVIVE": "Not only a coincidence: in HDB flats, the gap between near and far widened more "
-                     "when COEs rose, since 2016",
-          "FAIL_NO_LINK": "No sign of a link in HDB flats since 2016",
+    """THESIS section 8: Part A is T2's sentence, then T1's as its own
+    sentence (never joined to T2's), then Part B (T3). Two or three
+    sentences in all."""
+    a2 = {"SURVIVE": "The pattern was there: in HDB flats since 2016, the gap between near and far widened "
+                     "more when COEs rose.",
+          "FAIL_NO_LINK": "No sign of a link in HDB flats since 2016.",
           "FAIL_OPPOSITE": "If anything the opposite: since 2016, flats further out gained on flats near "
-                           "town when COEs rose",
-          "NOT_SCORED": "The record cannot say whether there is a link in HDB flats since 2016"}[o["T2"]]
-    a1 = {"SURVIVE": "and the same was true in 2002 to 2015",
-          "FAIL_NO_LINK": "and there was no sign of it in 2002 to 2015",
-          "FAIL_OPPOSITE": "and the opposite in 2002 to 2015",
-          "NOT_SCORED": "and the record cannot say for 2002 to 2015"}[o["T1"]]
+                           "town when COEs rose.",
+          "NOT_SCORED": "The record cannot say whether there is a link in HDB flats since 2016."}[o["T2"]]
+    also = " also" if o["T2"] == "SURVIVE" else ""
+    a1 = {"SURVIVE": f"In 2002 to 2015, the paper's years, the gap{also} widened more when COEs rose.",
+          "FAIL_NO_LINK": "In 2002 to 2015, the paper's years, there was no sign of a link.",
+          "FAIL_OPPOSITE": "In 2002 to 2015, the paper's years, flats further out gained on flats near town "
+                           "when COEs rose.",
+          "NOT_SCORED": "For 2002 to 2015, the paper's years, the record cannot say."}[o["T1"]]
     b = {"SURVIVE": "The link weakened after growth in the car quota was cut to zero in 2018 (the record "
                     "cannot say whether rail, working from home or something else weakened it).",
          "FAIL_NO_CHANGE": "No clear change after the 2018 cut.",
          "FAIL_STRONGER": "The link got stronger after the 2018 cut.",
          "NOT_SCORED_NO_TILT": "There was no link before 2018 to weaken.",
          "NOT_SCORED": "The record cannot say whether the 2018 cut changed it."}[o["T3"]]
-    return f"{a2}, {a1}. {b}"
+    return f"{a2} {a1} {b}"
 
 
 def main():

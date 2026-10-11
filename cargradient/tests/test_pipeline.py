@@ -128,7 +128,8 @@ class A_AllSurvive(Scenario):
 
     def test_verdict(self):
         v = open(os.path.join(self.root, "out", "verdict.txt")).read()
-        self.assertTrue(v.startswith("Not only a coincidence"))
+        self.assertTrue(v.startswith("The pattern was there: in HDB flats since 2016"))
+        self.assertIn("In 2002 to 2015, the paper's years, the gap also widened more when COEs rose.", v)
 
 
 class B_NoLinkOppositeNoTilt(Scenario):
@@ -202,6 +203,31 @@ class I_WeakSpanFlag(Scenario):
         text = open(os.path.join(self.root, "RESULTS.md")).read()
         line = next(ln for ln in text.splitlines() if ln.startswith("| I2_before_redistribution | T2 |"))
         self.assertIn("| not informative (first-stage F < 10) |", line)
+
+
+class VerdictWording(unittest.TestCase):
+    """THESIS section 8: every T2 x T1 pair (16) prints T2's sentence, then
+    T1's as its own sentence: no "the same", no clause joined to T2's."""
+
+    def test_all_pairs(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("t11", os.path.join(CG, "11_tests.py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        sign = ("SURVIVE", "FAIL_NO_LINK", "FAIL_OPPOSITE", "NOT_SCORED")
+        for t2 in sign:
+            for t1 in sign:
+                for t3 in ("SURVIVE", "FAIL_NO_CHANGE", "FAIL_STRONGER", "NOT_SCORED_NO_TILT", "NOT_SCORED"):
+                    v = m.verdict({"T1": t1, "T2": t2, "T3": t3})
+                    self.assertNotIn("the same", v)
+                    self.assertNotIn(", and ", v)
+                    self.assertNotIn("Not only a coincidence", v)
+                    i = max(v.find(" In 2002 to 2015, the paper's years,"),
+                            v.find(" For 2002 to 2015, the paper's years,"))
+                    self.assertGreater(i, 0, (t2, t1))
+                    first, rest = v[:i], v[i:]
+                    self.assertTrue(first.endswith(".") and "2016" in first and "2002" not in first, (t2, t1))
+                    self.assertEqual(" also " in rest.split(".")[0], t2 == "SURVIVE" and t1 == "SURVIVE")
 
 
 class Guard(unittest.TestCase):

@@ -405,7 +405,7 @@ The scripts:
 - `tests/make_fixtures.py`, `tests/test_pipeline.py`;
 - `run_all.sh`, `requirements.txt`.
 
-**Fixture suite.** 72 tests on invented data, 11 October 2026, all
+**Fixture suite.** 73 tests on invented data, 11 October 2026, all
 passing. They force every branch:
 - T1 and T2: SURVIVE, FAIL_NO_LINK, FAIL_OPPOSITE, and NOT_SCORED by each
   gate;
@@ -414,6 +414,8 @@ passing. They force every branch:
 - 7A: readable and not readable;
 - the Brier score;
 - the sealed limit sentence, printed beside the verdict in every scenario;
+- the verdict wording for all 16 T2 x T1 pairs (with every T3 outcome): T1
+  is its own sentence, never "the same", never joined to T2's;
 - a sensitivity whose first-stage F is below 10 reading "not informative
   (first-stage F < 10)", and only then (scenario I: a span where the
   premium ignores the quota, so I2 loses its first stage while the scored
@@ -616,12 +618,16 @@ Its 95 per cent interval is `-15 x dCOE` times the interval of `beta_T2`
 ## 8. The verdict rule (fixed at seal)
 
 The verdict answers the title, "Million-dollar flats came with $100,000
-COEs. Coincidence?", in plain words. It is one sentence, built from Part A
-then Part B. The title is about recent years, so T2 leads and T1 follows.
+COEs. Coincidence?", in plain words. It is two or three sentences: T2's,
+then T1's as its own sentence (never joined to T2's, so no combination can
+read wrongly), then T3's (Part B). The title is about recent years, so T2
+leads (Jacob, 11 October 2026).
 
 **Part A, the link (T2, then T1).** For T2 (2016 to 2026), exactly one of:
-- **SURVIVE:** "Not only a coincidence: in HDB flats, the gap between near
-  and far widened more when COEs rose, since 2016."
+- **SURVIVE:** "The pattern was there: in HDB flats since 2016, the gap
+  between near and far widened more when COEs rose." (Softened from "Not
+  only a coincidence": with the sealed drift limit beside it, the test
+  cannot show more; QUESTION_RULES rule 8.)
 - **Interval includes zero (FAIL):** "No sign of a link in HDB flats since
   2016."
 - **`beta` > 0, interval excluding zero (FAIL):** "If anything the
@@ -630,12 +636,15 @@ then Part B. The title is about recent years, so T2 leads and T1 follows.
 - **A gate fails (not scored):** "The record cannot say whether there is a
   link in HDB flats since 2016."
 
-Then T1 (2002 to 2015, the paper's years), in the same words for its
-years:
-- "... and the same was true in 2002 to 2015";
-- "... and there was no sign of it in 2002 to 2015";
-- "... and the opposite in 2002 to 2015";
-- "... and the record cannot say for 2002 to 2015".
+Then T1 (2002 to 2015, the paper's years), as a separate sentence:
+- **SURVIVE:** "In 2002 to 2015, the paper's years, the gap also widened
+  more when COEs rose." If T2 did not SURVIVE, "also" is dropped.
+- **Interval includes zero:** "In 2002 to 2015, the paper's years, there
+  was no sign of a link."
+- **`beta` > 0, interval excluding zero:** "In 2002 to 2015, the paper's
+  years, flats further out gained on flats near town when COEs rose."
+- **A gate fails:** "For 2002 to 2015, the paper's years, the record cannot
+  say."
 
 **Part B, after the 2018 cut (T3).** Exactly one of:
 - **SURVIVE:** "The link weakened after growth in the car quota was cut to
@@ -722,6 +731,8 @@ limit that the record cannot say why.
 Everything else is closed (11 October 2026):
 - the scored design (two-way clustering; the drift guard rounds kept it);
 - the sealed drift limit and its printed wording (section 6);
+- the verdict wording: T1 as its own sentence, T2's SURVIVE softened
+  (section 8);
 - sensitivities K and I2, and the not-informative rule (section 7);
 - the cut-and-fill threat and the slow-moving quota (section 3);
 - the estimator and library; town for planning area;
