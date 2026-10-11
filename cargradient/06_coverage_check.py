@@ -5,6 +5,9 @@
 
   PYTHONPATH=cargradient python3 cargradient/06_coverage_check.py \
       [--sims N] [--sims-t3 N] [--stress-sims N] [--batch N]
+  PYTHONPATH=cargradient python3 cargradient/06_coverage_check.py --guard [--guard-sims N]
+      (the drift-guard comparison; see "guard mode" below; writes
+      out/coverage_guard.csv and coverage_guard.txt)
 
 Uses the REAL design and INVENTED outcomes:
 - real: which block traded in which quarter, with its flat type, storey
@@ -235,13 +238,249 @@ def simulate(fx, rng, spec, s):
     return Y
 
 
+# ------------------------------------------------------------ guard mode
+# --guard compares candidate designs against a drift in the distance slope
+# (THESIS section 6, stress cases). The fixed effects are the same in every
+# design, so each invented outcome is projected once and reused; the designs
+# differ only in their controls and their variance estimator:
+#   S0  the scored model, two-way clustered (block, quarter)
+#   G1  S0 + DD x linear quarter trend (T3: one trend per window)
+#   G2  S0's model, Driscoll-Kraay standard errors, lags 3 and 8
+#   G3  G1 with Driscoll-Kraay, lag 3
+#   G4  S0 + town x year linear trends (sensitivity H; T3: per window)
+# Driscoll-Kraay: quarter sums of the scores, Bartlett weights 1 - l/(L+1) on
+# calendar-quarter lags (an excluded quarter is a zero), the same
+# small-sample factor as clustering with quarters as the groups.
+# Power: y = invented + beta * regressor. 2SLS on a design that contains the
+# regressor returns exactly b0 + beta with unchanged residuals, so power at
+# beta is read off the null draws (checked on the first batch by refitting).
+
+VARIANCES = {"S0": ("base", "two"), "G1": ("trend", "two"), "G2_L3": ("base", "dk3"),
+             "G2_L8": ("base", "dk8"), "G3": ("trend", "dk3"), "G4": ("town", "two")}
+
+
+def qindex(quarters):
+    return np.array([int(q[:4]) * 4 + int(q[5]) - 1 for q in quarters])
+
+
+def add_controls(d, kind, t3):
+    """Extra control columns for a design ('base', 'trend', 'town')."""
+    if kind == "base":
+        return []
+    if kind == "trend":
+        t = qindex(d["quarter"].values)
+        d["ddt"] = d["dd_use"].values * (t - t.min()) / 4.0
+        cols = ["ddt"]
+    else:
+        cols = T.town_trends(d)
+    if t3:
+        for c in list(cols):
+            d[c + "_a"] = d[c] * d["after"]
+            cols.append(c + "_a")
+    return cols
+
+
+class Variance:
+    """Sorted groups for two-way clustering and calendar positions for
+    Driscoll-Kraay, built once per frame."""
+
+    def __init__(self, d):
+        self.two = [Fixed.sorter(g) for g in T.cluster_codes(d, True)]
+        qi = qindex(d["quarter"].values)
+        self.qsort = Fixed.sorter(qi)
+        uq = np.unique(qi)
+        self.qpos = uq - uq.min()
+        self.span = uq.max() - uq.min() + 1
+
+    @staticmethod
+    def crv(S, srt, B, N, K):
+        order, cuts = srt
+        sums = np.add.reduceat(S[order], cuts, axis=0)
+        G = len(sums)
+        return G / (G - 1) * (N - 1) / (N - K) * B @ (sums.T @ sums) @ B
+
+    def V(self, Xh, u, B, kind):
+        S = Xh * u[:, None]
+        N, K = Xh.shape
+        if kind == "two":
+            return (self.crv(S, self.two[0], B, N, K) + self.crv(S, self.two[1], B, N, K)
+                    - self.crv(S, self.two[2], B, N, K))
+        lag = int(kind[2:])
+        order, cuts = self.qsort
+        h = np.zeros((self.span, K))
+        h[self.qpos] = np.add.reduceat(S[order], cuts, axis=0)
+        M = h.T @ h
+        for l in range(1, lag + 1):
+            G = h[l:].T @ h[:-l]
+            M += (1 - l / (lag + 1)) * (G + G.T)
+        Tn = len(self.qpos)
+        return Tn / (Tn - 1) * (N - 1) / (N - K) * B @ M @ B
+
+
+class GuardDesign:
+    """One test's design under one set of controls: Xhat, B, and the
+    first-stage pieces, all on the exactly projected columns."""
+
+    def __init__(self, d, P, var, xcols, zcols, wcols, coef):
+        cols = xcols + zcols + wcols
+        raw = d[cols].to_numpy(dtype=float)
+        M = P.apply(raw)
+        kx, kz = len(xcols), len(zcols)
+        M = M[:, T.keep(M, raw, kx + kz)]
+        W = M[:, kx + kz:]
+        self.X = np.column_stack([M[:, :kx], W])
+        Z = np.column_stack([M[:, kx:kx + kz], W])
+        self.Xh = Z @ np.linalg.solve(Z.T @ Z, Z.T @ self.X)
+        self.B = np.linalg.inv(self.Xh.T @ self.Xh)
+        self.coef, self.var = coef, var
+        self.reg = M[:, coef]                         # the projected regressor of interest
+        self.Z = Z
+
+    def fit(self, Y, kinds):
+        b = self.B @ (self.Xh.T @ Y)
+        k = self.coef
+        se = {v: np.empty(Y.shape[1]) for v in kinds}
+        for j in range(Y.shape[1]):
+            u = Y[:, j] - self.X @ b[:, j]
+            for v in kinds:
+                se[v][j] = np.sqrt(max(self.var.V(self.Xh, u, self.B, v)[k, k], 0.0))
+        return b[k], se
+
+    def first_stage_F(self, kind):
+        """cd on the instrument(s) and controls (single-endogenous designs)."""
+        X = self.Z
+        B = np.linalg.inv(X.T @ X)
+        pi = B @ (X.T @ self.X[:, 0])
+        u = self.X[:, 0] - X @ pi
+        V = self.var.V(X, u, B, kind)
+        return pi[0] ** 2 / V[0, 0]
+
+
+def guard_build(df):
+    """Per test: frame, projector, variance helper, designs by control kind,
+    and the first-stage F per design (T3: in each window separately)."""
+    out = {}
+    for t, w, exog in (("T1", "T1", ["floor_area", "post12dd"]), ("T2", "T2", ["floor_area"])):
+        d = T.prepare(df, L.window(w))
+        P, var = Projector(d, T.FE), Variance(d)
+        des = {k: GuardDesign(d, P, var, ["cd"], ["qd"], exog + add_controls(d, k, False), 0)
+               for k in ("base", "trend", "town")}
+        F = {name: {"window": des[ck].first_stage_F(vk)} for name, (ck, vk) in VARIANCES.items()}
+        out[t] = dict(d=d, P=P, des=des, F=F)
+    d = T.prepare(df, L.window("T3_before") + L.window("T3_after"))
+    d["after"] = (d["quarter"] >= L.T3_AFTER[0]).astype(int)
+    for c in ("block_id", "flat_type", "storey_range", "flat_model"):
+        d[c + "_a"] = d[c] + "#" + d["after"].astype(str)
+    d["cd_a"], d["qd_a"], d["fa_a"] = d["cd"] * d["after"], d["qd"] * d["after"], d["floor_area"] * d["after"]
+    fe3 = ["block_id_a", "lease_quarter", "flat_type_a", "storey_range_a", "flat_model_a"]
+    P, var = Projector(d, fe3), Variance(d)
+    des = {k: GuardDesign(d, P, var, ["cd", "cd_a"], ["qd", "qd_a"],
+                          ["floor_area", "fa_a"] + add_controls(d, k, True), 1)
+           for k in ("base", "trend", "town")}
+    F = {name: {} for name in VARIANCES}
+    for wname in ("before", "after"):
+        dw = T.prepare(df, L.window("T3_" + wname))
+        Pw, vw = Projector(dw, T.FE), Variance(dw)
+        for ck in ("base", "trend", "town"):
+            g = GuardDesign(dw, Pw, vw, ["cd"], ["qd"], ["floor_area"] + add_controls(dw, ck, False), 0)
+            for name, (c2, vk) in VARIANCES.items():
+                if c2 == ck:
+                    F[name][wname] = g.first_stage_F(vk)
+    out["T3"] = dict(d=d, P=P, des=des, F=F)
+    return out
+
+
+def guard_run(a, t0):
+    tests = guard_build(design_frame(a.root))
+    print(f"guard designs built ({time.time() - t0:.0f} s)", flush=True)
+    rng = np.random.default_rng(L.BOOT_SEED)
+    rows, draws = [], {}
+    kinds = {}
+    for name, (ck, vk) in VARIANCES.items():
+        kinds.setdefault(ck, []).append(vk)
+    for spec in ("main", "stress_iid", "stress_ar1"):
+        for t, g in tests.items():
+            fxlike = type("F", (), {"d": g["d"], "n": len(g["d"])})
+            b = {ck: [] for ck in kinds}
+            se = {name: [] for name in VARIANCES}
+            for start in range(0, a.guard_sims, a.batch):
+                s = min(a.batch, a.guard_sims - start)
+                Yraw = simulate(fxlike, rng, spec, s)
+                Y = g["P"].apply(Yraw)
+                for ck, vks in kinds.items():
+                    bk, sek = g["des"][ck].fit(Y, vks)
+                    b[ck].append(bk)
+                    for name, (c2, vk) in VARIANCES.items():
+                        if c2 == ck:
+                            se[name].append(sek[vk])
+                if spec == "main" and start == 0:          # the power identity, checked by refitting
+                    beta = 1e-3
+                    reg = g["d"]["cd_a" if t == "T3" else "cd"].values
+                    Y2 = g["P"].apply(Yraw[:, :2] + beta * reg[:, None])
+                    for ck in kinds:
+                        bb, _ = g["des"][ck].fit(Y2, [])
+                        b0, _ = g["des"][ck].fit(Y[:, :2], [])
+                        assert np.allclose(bb - b0, beta, rtol=1e-6, atol=1e-9), (t, ck, bb - b0)
+                print(f"  {spec} {t}: {start + s}/{a.guard_sims} ({time.time() - t0:.0f} s)", flush=True)
+            b = {ck: np.concatenate(v) for ck, v in b.items()}
+            se = {name: np.concatenate(v) for name, v in se.items()}
+            draws[(spec, t)] = (b, se)
+            for name, (ck, vk) in VARIANCES.items():
+                rows.append([spec, t, name, a.guard_sims, float(np.mean(np.abs(b[ck]) > L.Z95 * se[name]))])
+            print(f"{spec} {t}: " + ", ".join(f"{r[2]} {r[4]:.3f}" for r in rows[-len(VARIANCES):])
+                  + f" ({time.time() - t0:.0f} s)", flush=True)
+    # power: the slope (paper's sign, negative) at which S0 rejects in 80% of null-design runs
+    power = {}
+    for t in tests:
+        b, se = draws[("main", t)]
+        rate = lambda beta, ck, name: float(np.mean(np.abs(b[ck] + beta) > L.Z95 * se[name]))
+        lo, hi = 0.0, 10 * float(np.median(se["S0"]))
+        for _ in range(80):
+            mid = (lo + hi) / 2
+            lo, hi = (lo, mid) if rate(-mid, "base", "S0") >= 0.80 else (mid, hi)
+        beta = -hi
+        power[t] = beta
+        for name, (ck, vk) in VARIANCES.items():
+            rows.append(["power", t, name, a.guard_sims, rate(beta, ck, name)])
+    est = {}
+    for t, g in tests.items():
+        for name in VARIANCES:
+            F = g["F"][name]
+            est[(t, name)] = all(v >= L.F_MIN for v in F.values())
+    L.write_csv(os.path.join(a.root, "out", "coverage_guard.csv"),
+                ["scenario", "test", "design", "sims", "reject"], rows)
+    R = {(r[0], r[1], r[2]): r[4] for r in rows}
+    lines = ["Guard comparison: share of runs whose 95% interval excludes zero (" + f"{a.guard_sims:,} runs per cell).",
+             "null = no slope shock; iid = independent quarterly slope shock, sd 15 per km; "
+             "ar1 = persistent slope drift, AR(1) 0.8, sd 15 per km; power = at the slope where S0 rejects 80% "
+             "of null-design runs.",
+             "Power slopes (per km per S$ of premium): " + "; ".join(f"{t} {v:.3e}" for t, v in power.items())]
+    for t in tests:
+        lines.append(f"{t}:")
+        for name in VARIANCES:
+            F = tests[t]["F"][name]
+            Fs = ", ".join(f"{k} {v:.1f}" for k, v in F.items())
+            lines.append(f"  {name:<6} null {100 * R[('main', t, name)]:5.1f}%  iid {100 * R[('stress_iid', t, name)]:5.1f}%"
+                         f"  ar1 {100 * R[('stress_ar1', t, name)]:5.1f}%  power {100 * R[('power', t, name)]:5.1f}%"
+                         f"  first-stage F {Fs}  F gate passes: {'yes' if est[(t, name)] else 'no'}")
+    lines.append("T3 estimable (cd x AFTER identified, F >= 10 in both windows): "
+                 + "; ".join(f"{n} {'yes' if est[('T3', n)] else 'no'}" for n in VARIANCES))
+    L.write_text(os.path.join(a.root, "out", "coverage_guard.txt"), "\n".join(lines) + "\n")
+    print("\n".join(lines))
+
+
 def main():
     a = L.args("cargradient pre-seal placebo coverage check.",
                lambda p: (p.add_argument("--sims", type=int, default=200),
                           p.add_argument("--sims-t3", type=int, default=100),
                           p.add_argument("--stress-sims", type=int, default=100),
-                          p.add_argument("--batch", type=int, default=25)))
+                          p.add_argument("--batch", type=int, default=25),
+                          p.add_argument("--guard", action="store_true"),
+                          p.add_argument("--guard-sims", type=int, default=1000)))
     t0 = time.time()
+    if a.guard:
+        guard_run(a, t0)
+        return
     df = design_frame(a.root)
     tests = build(df)
     print(f"design built in {time.time() - t0:.0f} s", flush=True)

@@ -1,0 +1,25 @@
+Guard comparison: share of runs whose 95% interval excludes zero (1,000 runs per cell).
+null = no slope shock; iid = independent quarterly slope shock, sd 15 per km; ar1 = persistent slope drift, AR(1) 0.8, sd 15 per km; power = at the slope where S0 rejects 80% of null-design runs.
+Power slopes (per km per S$ of premium): T1 -1.049e-04; T2 -6.868e-05; T3 -1.945e-04
+T1:
+  S0     null   6.7%  iid   7.8%  ar1  51.7%  power  80.0%  first-stage F window 86.7  F gate passes: yes
+  G1     null   5.8%  iid   7.6%  ar1  52.6%  power  79.6%  first-stage F window 118.3  F gate passes: yes
+  G2_L3  null  10.8%  iid   9.5%  ar1  34.8%  power  85.0%  first-stage F window 35.2  F gate passes: yes
+  G2_L8  null  16.3%  iid  14.8%  ar1  35.1%  power  88.1%  first-stage F window 36.0  F gate passes: yes
+  G3     null  11.4%  iid  11.6%  ar1  38.3%  power  85.2%  first-stage F window 51.8  F gate passes: yes
+  G4     null   6.5%  iid   7.8%  ar1  52.5%  power  80.0%  first-stage F window 113.6  F gate passes: yes
+T2:
+  S0     null   6.7%  iid   6.7%  ar1  55.9%  power  80.0%  first-stage F window 74.8  F gate passes: yes
+  G1     null   0.0%  iid   0.0%  ar1   0.0%  power   0.0%  first-stage F window 0.8  F gate passes: no
+  G2_L3  null  10.7%  iid  10.7%  ar1  40.4%  power  85.2%  first-stage F window 25.5  F gate passes: yes
+  G2_L8  null  17.8%  iid  16.1%  ar1  40.2%  power  89.3%  first-stage F window 21.0  F gate passes: yes
+  G3     null   0.0%  iid   0.0%  ar1   0.0%  power   0.0%  first-stage F window 0.3  F gate passes: no
+  G4     null   0.0%  iid   0.0%  ar1   0.0%  power   0.0%  first-stage F window 0.0  F gate passes: no
+T3:
+  S0     null   5.2%  iid   8.7%  ar1  50.2%  power  80.0%  first-stage F before 142.5, after 30.0  F gate passes: yes
+  G1     null   4.2%  iid  10.1%  ar1  37.9%  power  12.1%  first-stage F before 14.6, after 9.8  F gate passes: no
+  G2_L3  null  12.9%  iid  15.9%  ar1  40.5%  power  88.4%  first-stage F before 243.0, after 10.2  F gate passes: yes
+  G2_L8  null  21.6%  iid  26.2%  ar1  45.1%  power  93.5%  first-stage F before 357.5, after 7.5  F gate passes: no
+  G3     null  11.9%  iid  17.0%  ar1  30.3%  power  24.7%  first-stage F before 19.1, after 3.9  F gate passes: no
+  G4     null   4.6%  iid   9.7%  ar1  39.9%  power  16.2%  first-stage F before 29.5, after 12.2  F gate passes: yes
+T3 estimable (cd x AFTER identified, F >= 10 in both windows): S0 yes; G1 no; G2_L3 yes; G2_L8 no; G3 no; G4 yes
