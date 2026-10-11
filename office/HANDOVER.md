@@ -52,8 +52,7 @@ in cargradient/THESIS.md; the office notes are in cargradient/office/.
      the seal and key commits stay ancestors of main.
 - #2 readme-revision-note-wording (open since September): stale README
   wording fix. Leave it for Jacob; do not merge.
-- handover-2026-10: this file.
-- Everything else on origin is merged history.
+- handover-2026-10 is this file; every other origin branch is merged history.
 - Site repo: never touch site PRs #17 or #22.
 
 ## 3. Rules, and where they live
@@ -128,14 +127,12 @@ Python: cargradient/requirements.txt (pandas 3.0.6, numpy 2.4.6, scipy
 
 - Create SEAL_MANIFEST.md outside the seal commit, or cargradient/SEALED
   before the open page is live. Never re-run `14_manifest.py --seal`.
-- Read any resale price before SEALED exists (10_load.py refuses anyway;
-  00_coverage and 06 read the files with the price column excluded).
-- Fit anything on real prices before the seal.
+- Read a resale price or fit on real data before SEALED exists (10_load.py
+  refuses; 00_coverage and 06 never read the price column).
 - Write or suggest a confidence. Confidences are Jacob's, at the seal.
 - Edit a sealed THESIS.md (root, financing/) or any file in a
   SEAL_MANIFEST/CHECKSUMS INPUTS list. Changes go in an addendum.
-- Merge any PR, or push to main.
-- Edit Jacob's verbatim quotes.
+- Merge any PR, push to main, or edit Jacob's verbatim quotes.
 
 ## 8. Starter prompt for a new chat in this role
 
