@@ -31,7 +31,8 @@ SCRIPTS = ["cglib.py", "00_coverage.py", "01_geocode.py", "02_distance.py", "03_
 PRESEAL_OUT = ["out/addresses.csv", "out/address_rowcounts.csv", "out/blocks_geocoded.csv",
                "out/block_distance.csv", "out/station_points.csv", "out/street_points.csv",
                "out/unmatched.csv", "out/coe_ranges.txt", "out/coe_crossings.txt", "out/coverage.txt",
-               "out/coverage_check.csv", "out/coverage_check.txt"]
+               "out/coverage_check.csv", "out/coverage_check.txt", "out/coverage_guard.csv",
+               "out/coverage_guard.txt", "out/coverage_guard2.csv", "out/coverage_guard2.txt"]
 OUTPUTS = ["out/coe_quarterly.csv", "out/geocode_coverage.csv", "out/panel.csv.gz", "out/tests.csv",
            "out/sensitivities.csv", "out/year_slopes.csv", "out/calc_7a.csv", "out/verdict.txt",
            "out/reproduce.txt", "figs/cargradient_chart1_tests.svg", "figs/cargradient_chart2_years.svg",

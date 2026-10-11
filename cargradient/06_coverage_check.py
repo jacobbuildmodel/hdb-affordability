@@ -8,6 +8,9 @@
   PYTHONPATH=cargradient python3 cargradient/06_coverage_check.py --guard [--guard-sims N]
       (the drift-guard comparison; see "guard mode" below; writes
       out/coverage_guard.csv and coverage_guard.txt)
+  PYTHONPATH=cargradient python3 cargradient/06_coverage_check.py --guard2 --test T1   (and T2, T3)
+  PYTHONPATH=cargradient python3 cargradient/06_coverage_check.py --guard2-merge
+      (round 2, "guard2 mode" below; writes out/coverage_guard2.csv and .txt)
 
 Uses the REAL design and INVENTED outcomes:
 - real: which block traded in which quarter, with its flat type, storey
@@ -469,6 +472,328 @@ def guard_run(a, t0):
     print("\n".join(lines))
 
 
+# ----------------------------------------------------------- guard2 mode
+# --guard2 (round 2, 11 October 2026): against a persistent drift in the
+# distance slope, compare
+#   S0     the scored model, two-way clustered (block, quarter), normal cv
+#   A      S0's model, two-way clustered by block AND 8-quarter time block
+#          (blocks counted from each window's first quarter), cv from
+#          t(G-1), G = number of time blocks. If the two-way variance is
+#          not positive, the larger one-way variance is used.
+#   B_lev  two-step: (1) the distance gradient g_q of every quarter, from
+#          the scored fixed effects and controls with DD x quarter dummies
+#          (one base quarter per window, g = 0 there); (2) g_q on the COE
+#          premium instrumented by the quota, quarter level, with a
+#          constant (T1: + POST12; T3: + AFTER and premium x AFTER,
+#          instrumented by quota x AFTER), Newey-West Bartlett lag 4,
+#          fixed-b critical value (Kiefer-Vogelsang polynomial, b = 5/T;
+#          checked against a simulation of the fixed-b limit)
+#   B_fd   the same in first differences of consecutive quarters within a
+#          window (a constant is kept: a linear drift in levels)
+# Scenarios: null; iid slope shock sd 15 per km; AR(0.8) drift, innovation
+# sd 9 (stationary sd 15, round 1); and the dose-response, AR(0.8) with
+# innovation sd 5, 10, 15. Power is read at the slope where S0 rejects 80%
+# of null-design runs (the identity used in --guard holds for every design:
+# the regressor's coefficient shifts by exactly the slope; checked by refit).
+# Each test runs in its own process (--test), seed [20261006, test number];
+# --guard2-merge writes out/coverage_guard2.csv and .txt.
+
+from scipy import stats as _st
+
+G2_SPECS = [("null", None), ("iid15", None), ("ar1_i9", 9.0), ("ar1_i5", 5.0), ("ar1_i10", 10.0), ("ar1_i15", 15.0)]
+G2_DESIGNS = ["S0", "A", "B_lev", "B_fd"]
+NW_LAG = 4
+
+
+def fixed_b_cv(T, lag=NW_LAG):
+    b = (lag + 1) / T
+    return L.Z95 + 2.9694 * b + 0.4160 * b ** 2 - 0.5324 * b ** 3
+
+
+def simulate2(d, rng, spec, s):
+    _, bi = np.unique(d["block_id"].values, return_inverse=True)
+    _, qi = np.unique(d["quarter"].values, return_inverse=True)
+    nb, nq = bi.max() + 1, qi.max() + 1
+    Y = rng.normal(0, 400, (nb, s))[bi] + rng.normal(0, 300, (nq, s))[qi] + rng.normal(0, 800, (len(d), s))
+    if spec == "null":
+        return Y
+    if spec == "iid15":
+        g = rng.normal(0, 15, (nq, s))
+    else:
+        inn = dict(G2_SPECS)[spec]
+        e = rng.normal(0, inn, (nq, s))
+        g = np.empty((nq, s))
+        g[0] = e[0] / np.sqrt(1 - 0.64)
+        for i in range(1, nq):
+            g[i] = 0.8 * g[i - 1] + e[i]
+    return Y + g[qi] * d["dd_use"].values[:, None]
+
+
+def time_blocks(d, windows):
+    """8-quarter blocks counted from each window's first quarter."""
+    qi = qindex(d["quarter"].values)
+    tb = np.full(len(d), -1)
+    for w, qs in enumerate(windows):
+        q0 = qindex([qs[0]])[0]
+        inw = np.isin(d["quarter"].values, qs)
+        tb[inw] = w * 1000 + (qi[inw] - q0) // 8
+    assert (tb >= 0).all()
+    return tb
+
+
+class Variance2(Variance):
+    def __init__(self, d, tb):
+        super().__init__(d)
+        b = T.gcode(d, "block_id")
+        bt = pd.factorize(pd.Series(b).astype(str) + "#" + pd.Series(tb).astype(str))[0]
+        self.tbs = [Fixed.sorter(b), Fixed.sorter(pd.factorize(tb)[0]), Fixed.sorter(bt)]
+        self.G_tb = len(np.unique(tb))
+
+    def V(self, Xh, u, B, kind):
+        if kind != "tb":
+            return super().V(Xh, u, B, kind)
+        S = Xh * u[:, None]
+        N, K = Xh.shape
+        Vb, Vt, Vbt = (self.crv(S, s, B, N, K) for s in self.tbs)
+        V = Vb + Vt - Vbt
+        bad = np.diag(V) <= 0
+        if bad.any():
+            alt = np.maximum(np.diag(Vb), np.diag(Vt))
+            V = V.copy()
+            V[np.diag_indices_from(V)] = np.where(bad, alt, np.diag(V))
+        return V
+
+
+def nw(Xh, u, B, lag=NW_LAG):
+    s = Xh * u[:, None]
+    M = s.T @ s
+    for l in range(1, lag + 1):
+        G = s[l:].T @ s[:-l]
+        M += (1 - l / (lag + 1)) * (G + G.T)
+    return B @ M @ B
+
+
+class TwoStep:
+    """Step 1 is linear in y: g = A y, A computed once. Step 2 is a
+    quarter-level 2SLS whose design does not depend on y."""
+
+    def __init__(self, d, P, windows, t3):
+        q = d["quarter"].values
+        allq = [qq for w in windows for qq in w if qq in set(q)]
+        base = [next(qq for qq in w if qq in set(q)) for w in windows]
+        free = [qq for qq in allq if qq not in base]
+        dd = d["dd_use"].values
+        cols = [dd * (q == qq) for qq in free]
+        W = ["floor_area"] + (["fa_a"] if t3 else [])
+        raw = np.column_stack(cols + [d[c].values.astype(float) for c in W])
+        M = P.apply(raw)
+        self.A = np.linalg.solve(M.T @ M, M.T)[:len(free)]
+        self.allq, self.free = allq, free
+        qt = d.groupby("quarter")[["coep", "coeq"]].first().loc[allq]
+        self.coep, self.coeq = qt["coep"].values, qt["coeq"].values
+        self.win = np.concatenate([[w] * sum(1 for qq in ws if qq in set(q)) for w, ws in enumerate(windows)])
+        self.post12 = (np.array(allq) >= L.POST12_FIRST).astype(float)
+        self.t3 = t3
+        self.post = (not t3) and self.post12.min() == 0 and self.post12.max() == 1
+        self.lev = self.design(False)
+        self.fd = self.design(True)
+
+    def frame(self, fd):
+        """(rows to keep, X, Z, coefficient index) for step 2."""
+        c, z, aft = self.coep, self.coeq, (self.win == 1).astype(float)
+        one = np.ones(len(c))
+        if self.t3:
+            X = np.column_stack([one, aft, c, c * aft])
+            Z = np.column_stack([one, aft, z, z * aft])
+            k = 3
+        else:
+            X = np.column_stack([one, c] + ([self.post12] if self.post else []))
+            Z = np.column_stack([one, z] + ([self.post12] if self.post else []))
+            k = 1
+        if not fd:
+            return None, X, Z, k
+        same = self.win[1:] == self.win[:-1]
+        D = lambda A: (A[1:] - A[:-1])[same]
+        Xd, Zd = D(X), D(Z)
+        Xd[:, 0] = 1.0
+        Zd[:, 0] = 1.0
+        if self.t3:
+            Xd[:, 1] = Zd[:, 1] = aft[1:][same]
+        return same, Xd, Zd, k
+
+    def design(self, fd):
+        same, X, Z, k = self.frame(fd)
+        Xh = Z @ np.linalg.solve(Z.T @ Z, Z.T @ X)
+        B = np.linalg.inv(Xh.T @ Xh)
+        return dict(same=same, X=X, Z=Z, Xh=Xh, B=B, k=k, cv=fixed_b_cv(len(X)))
+
+    def gradients(self, Y):
+        G = np.zeros((len(self.allq), Y.shape[1]))
+        idx = [self.allq.index(qq) for qq in self.free]
+        G[idx] = self.A @ Y
+        return G
+
+    def fit(self, Y, fd):
+        g = self.gradients(Y)
+        D = self.fd if fd else self.lev
+        if fd:
+            g = (g[1:] - g[:-1])[D["same"]]
+        b = D["B"] @ (D["Xh"].T @ g)
+        se = np.empty(g.shape[1])
+        for j in range(g.shape[1]):
+            u = g[:, j] - D["X"] @ b[:, j]
+            se[j] = np.sqrt(max(nw(D["Xh"], u, D["B"])[D["k"], D["k"]], 0.0))
+        return b[D["k"]], se, D["cv"]
+
+    def first_stage_F(self, fd):
+        """Premium (or its change) on quota (or its change), each window
+        separately, NW lag 4: list of F."""
+        out = []
+        for w in np.unique(self.win):
+            m = self.win == w
+            c, z = self.coep[m], self.coeq[m]
+            if fd:
+                c, z = np.diff(c), np.diff(z)
+            X = np.column_stack([np.ones(len(c)), z])
+            if self.post and not fd:
+                X = np.column_stack([X, self.post12[m]])
+            if self.post and fd:
+                X = np.column_stack([X, np.diff(self.post12[m])])
+            B = np.linalg.inv(X.T @ X)
+            pi = B @ (X.T @ c)
+            V = nw(X, c - X @ pi, B)
+            out.append(pi[1] ** 2 / V[1, 1])
+        return out
+
+
+def guard2_build(df, t):
+    if t in ("T1", "T2"):
+        d = T.prepare(df, L.window(t))
+        exog = ["floor_area"] + (["post12dd"] if t == "T1" else [])
+        windows = [L.window(t)]
+        P = Projector(d, T.FE)
+        var = Variance2(d, time_blocks(d, windows))
+        s0 = GuardDesign(d, P, var, ["cd"], ["qd"], exog, 0)
+        two = TwoStep(d, P, windows, False)
+        F = {"S0": [s0.first_stage_F("two")], "A": [s0.first_stage_F("tb")],
+             "B_lev": two.first_stage_F(False), "B_fd": two.first_stage_F(True)}
+        G = {"A": [var.G_tb]}
+        return dict(d=d, P=P, s0=s0, two=two, F=F, G=G, reg="cd")
+    windows = [L.window("T3_before"), L.window("T3_after")]
+    d = T.prepare(df, windows[0] + windows[1])
+    d["after"] = (d["quarter"] >= L.T3_AFTER[0]).astype(int)
+    for c in ("block_id", "flat_type", "storey_range", "flat_model"):
+        d[c + "_a"] = d[c] + "#" + d["after"].astype(str)
+    d["cd_a"], d["qd_a"], d["fa_a"] = d["cd"] * d["after"], d["qd"] * d["after"], d["floor_area"] * d["after"]
+    fe3 = ["block_id_a", "lease_quarter", "flat_type_a", "storey_range_a", "flat_model_a"]
+    P = Projector(d, fe3)
+    var = Variance2(d, time_blocks(d, windows))
+    s0 = GuardDesign(d, P, var, ["cd", "cd_a"], ["qd", "qd_a"], ["floor_area", "fa_a"], 1)
+    two = TwoStep(d, P, windows, True)
+    F = {"S0": [], "A": []}
+    G = {"A": []}
+    for w in windows:
+        dw = T.prepare(df, w)
+        vw = Variance2(dw, time_blocks(dw, [w]))
+        g = GuardDesign(dw, Projector(dw, T.FE), vw, ["cd"], ["qd"], ["floor_area"], 0)
+        F["S0"].append(g.first_stage_F("two"))
+        F["A"].append(g.first_stage_F("tb"))
+        G["A"].append(vw.G_tb)
+    F["B_lev"], F["B_fd"] = two.first_stage_F(False), two.first_stage_F(True)
+    G["A_pooled"] = [var.G_tb]
+    return dict(d=d, P=P, s0=s0, two=two, F=F, G=G, reg="cd_a")
+
+
+def guard2_run(a, t0):
+    t = a.test
+    g = guard2_build(design_frame(a.root), t)
+    d, s0, two = g["d"], g["s0"], g["two"]
+    cvA = float(_st.t.ppf(0.975, (g["G"]["A_pooled"][0] if t == "T3" else g["G"]["A"][0]) - 1))
+    print(f"{t}: built ({time.time() - t0:.0f} s); A: G {g['G']}, cv {cvA:.3f}; "
+          f"B cv levels {two.lev['cv']:.3f}, fd {two.fd['cv']:.3f}", flush=True)
+    rng = np.random.default_rng([L.BOOT_SEED, ["T1", "T2", "T3"].index(t)])
+    res = {}
+    for spec, _ in G2_SPECS:
+        acc = {k: [] for k in ("b0", "se_two", "se_tb", "bl", "sel", "bf", "sef")}
+        for start in range(0, a.guard_sims, a.batch):
+            s = min(a.batch, a.guard_sims - start)
+            Yraw = simulate2(d, rng, spec, s)
+            Y = g["P"].apply(Yraw)
+            b, se = s0.fit(Y, ["two", "tb"])
+            bl, sel, _ = two.fit(Y, False)
+            bf, sef, _ = two.fit(Y, True)
+            for k, v in (("b0", b), ("se_two", se["two"]), ("se_tb", se["tb"]), ("bl", bl), ("sel", sel),
+                         ("bf", bf), ("sef", sef)):
+                acc[k].append(v)
+            if spec == "null" and start == 0:
+                beta = 1e-3
+                Y2 = g["P"].apply(Yraw[:, :2] + beta * d[g["reg"]].values[:, None])
+                for f in (lambda Z: s0.fit(Z, [])[0], lambda Z: two.fit(Z, False)[0], lambda Z: two.fit(Z, True)[0]):
+                    assert np.allclose(f(Y2) - f(Y[:, :2]), beta, rtol=1e-6, atol=1e-9), t
+            print(f"  {spec} {t}: {start + s}/{a.guard_sims} ({time.time() - t0:.0f} s)", flush=True)
+        acc = {k: np.concatenate(v) for k, v in acc.items()}
+        res[spec] = {"S0": (acc["b0"], acc["se_two"], L.Z95), "A": (acc["b0"], acc["se_tb"], cvA),
+                     "B_lev": (acc["bl"], acc["sel"], two.lev["cv"]), "B_fd": (acc["bf"], acc["sef"], two.fd["cv"])}
+        print(f"{spec} {t}: " + ", ".join(f"{k} {np.mean(np.abs(b) > c * se):.3f}" for k, (b, se, c) in res[spec].items())
+              + f" ({time.time() - t0:.0f} s)", flush=True)
+    rate = lambda beta, k: float(np.mean(np.abs(res["null"][k][0] + beta) > res["null"][k][2] * res["null"][k][1]))
+    lo, hi = 0.0, 10 * float(np.median(res["null"]["S0"][1]))
+    for _ in range(80):
+        mid = (lo + hi) / 2
+        lo, hi = (lo, mid) if rate(-mid, "S0") >= 0.80 else (mid, hi)
+    beta = -hi
+    qt = d.groupby("quarter")["coep"].first()
+    rows = []
+    for k in G2_DESIGNS:
+        for spec, _ in G2_SPECS:
+            b, se, c = res[spec][k]
+            rows.append([t, k, spec, a.guard_sims, float(np.mean(np.abs(b) > c * se))])
+        rows.append([t, k, "power", a.guard_sims, rate(beta, k)])
+        rows.append([t, k, "F_min", "", min(g["F"][k])])
+        for i, f in enumerate(g["F"][k]):
+            rows.append([t, k, f"F_{i}", "", f])
+    rows.append([t, "all", "power_slope", "", beta])
+    rows.append([t, "all", "coep_sd", "", float(qt.std())])
+    for k, v in g["G"].items():
+        for i, x in enumerate(v):
+            rows.append([t, k, f"G_{i}", "", x])
+    L.write_csv(os.path.join(a.root, "out", f"coverage_guard2_{t}.part.csv"),
+                ["test", "design", "item", "sims", "value"], rows)
+    print(f"{t} done ({time.time() - t0:.0f} s)", flush=True)
+
+
+def guard2_merge(a):
+    rows = []
+    for t in ("T1", "T2", "T3"):
+        rows += L.read_csv(os.path.join(a.root, "out", f"coverage_guard2_{t}.part.csv"))
+    L.write_csv(os.path.join(a.root, "out", "coverage_guard2.csv"), ["test", "design", "item", "sims", "value"],
+                [[r["test"], r["design"], r["item"], r["sims"], r["value"]] for r in rows])
+    V = {(r["test"], r["design"], r["item"]): float(r["value"]) for r in rows}
+    sims = next(r["sims"] for r in rows if r["sims"])
+    lines = [f"Guard round 2: share of runs whose 95% interval excludes zero ({int(sims):,} runs per cell).",
+             "iid15 = independent quarterly slope shock, sd 15 per km; ar1_iN = AR(0.8) drift in the distance "
+             "slope with innovation sd N per km (ar1_i9 is round 1's case, stationary sd 15).",
+             "F: first-stage F under the design's own variance (S0, A: each window; B: quarter level, each window; "
+             "B_fd: on the quota's change). Gate: F >= 10 in every window."]
+    for t in ("T1", "T2", "T3"):
+        beta, sd = V[(t, "all", "power_slope")], V[(t, "all", "coep_sd")]
+        lines.append(f"{t}: power slope {beta:.3e} per km per S$ of premium; times the premium's quarterly sd "
+                     f"(S${sd:,.0f}) = {abs(beta) * sd:.2f} S$ per sqm per km")
+        for k in G2_DESIGNS:
+            Fs = [V[x] for x in sorted(V) if x[0] == t and x[1] == k and x[2].startswith("F_") and x[2] != "F_min"]
+            Gs = [int(V[x]) for x in sorted(V) if x[0] == t and x[1].startswith(k) and x[2].startswith("G_")]
+            gate = all(f >= L.F_MIN for f in Fs)
+            lines.append(f"  {k:<5} null {100 * V[(t, k, 'null')]:5.1f}%  iid {100 * V[(t, k, 'iid15')]:5.1f}%  "
+                         f"ar1 i9 {100 * V[(t, k, 'ar1_i9')]:5.1f}%  [i5 {100 * V[(t, k, 'ar1_i5')]:4.1f} "
+                         f"i10 {100 * V[(t, k, 'ar1_i10')]:4.1f} i15 {100 * V[(t, k, 'ar1_i15')]:4.1f}]  "
+                         f"power {100 * V[(t, k, 'power')]:5.1f}%  F {'/'.join(f'{f:.1f}' for f in Fs)} "
+                         f"gate {'passes' if gate else 'FIRES'}" + (f"  G {Gs}" if Gs else ""))
+    L.write_text(os.path.join(a.root, "out", "coverage_guard2.txt"), "\n".join(lines) + "\n")
+    for t in ("T1", "T2", "T3"):
+        os.remove(os.path.join(a.root, "out", f"coverage_guard2_{t}.part.csv"))
+    print("\n".join(lines))
+
+
 def main():
     a = L.args("cargradient pre-seal placebo coverage check.",
                lambda p: (p.add_argument("--sims", type=int, default=200),
@@ -476,10 +801,19 @@ def main():
                           p.add_argument("--stress-sims", type=int, default=100),
                           p.add_argument("--batch", type=int, default=25),
                           p.add_argument("--guard", action="store_true"),
-                          p.add_argument("--guard-sims", type=int, default=1000)))
+                          p.add_argument("--guard-sims", type=int, default=1000),
+                          p.add_argument("--guard2", action="store_true"),
+                          p.add_argument("--guard2-merge", action="store_true"),
+                          p.add_argument("--test", choices=["T1", "T2", "T3"])))
     t0 = time.time()
     if a.guard:
         guard_run(a, t0)
+        return
+    if a.guard2:
+        guard2_run(a, t0)
+        return
+    if a.guard2_merge:
+        guard2_merge(a)
         return
     df = design_frame(a.root)
     tests = build(df)
