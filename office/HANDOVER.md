@@ -25,10 +25,14 @@ in cargradient/THESIS.md; the office notes are in cargradient/office/.
 
 ## 2. Branches and PRs, next step on each
 
-- cargradient-wip (HEAD 9342dae + the guard commit, if pushed): the open piece.
-  No PR; never merged by a chat. Next steps, in order:
+- cargradient-wip (HEAD bf30a7b): the open piece. No PR; never merged by a
+  chat. Next steps, in order:
   1. Jacob rules on the drift guard (out/coverage_guard.txt, from
-     `06_coverage_check.py --guard`). Then update THESIS section 6 and
+     `06_coverage_check.py --guard`, 11 Oct). No tested design fixed a
+     persistent drift (S0 50-56% false links) without breaking the null
+     (Driscoll-Kraay 10.7-21.6%) or the instrument (trend controls: T2 F
+     0.8 and 0.0). The proposal was to keep S0 and seal the limit into the
+     verdict wording. Then update THESIS section 6 and
      office/DESIGN_SKETCH.md; if a guard design is adopted, change 11_tests.py
      AND 15_reproduce.py the same way and rerun the fixture suite.
   2. The seal prompt: Jacob's three confidences (and T1/T2 Why lines) go into
