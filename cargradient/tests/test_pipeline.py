@@ -13,6 +13,8 @@ every test. Together the scenarios force every branch of THESIS section 6:
           premise: no tilt before 2018), NOT_SCORED (F gate; geocoding gate)
   7A:     share readable, and not readable
   Brier and expected held from confidences, when set.
+  The sealed limit sentence beside the verdict, always; a sensitivity with a
+  first-stage F below 10 reading "not informative (first-stage F < 10)".
 
 THESIS has no INCONCLUSIVE outcome: an interval that includes zero is a FAIL
 (FAIL_NO_LINK, FAIL_NO_CHANGE), by the bets as written.
@@ -76,8 +78,27 @@ class Scenario(unittest.TestCase):
             self.assertEqual(self.T[f"{t}_outcome"], oc, t)
 
     def test_reproduced(self):
-        self.assertTrue(open(os.path.join(self.root, "out", "reproduce.txt")).read().startswith(
-            "compared 27 numbers and outcomes; differences 0"))
+        first = open(os.path.join(self.root, "out", "reproduce.txt")).readline()
+        self.assertRegex(first, r"^compared \d+ numbers and outcomes; differences 0$")
+
+    def test_limit_printed(self):
+        sys.path.insert(0, CG)
+        import cglib as L
+        self.assertIn(L.LIMIT, open(os.path.join(self.root, "out", "verdict.txt")).read())
+        self.assertIn(L.LIMIT, open(os.path.join(self.root, "RESULTS.md")).read())
+
+    def test_sensitivity_flags(self):
+        """Every sensitivity with F < 10 reads not informative, and only those."""
+        rows = list(csv.DictReader(open(os.path.join(self.root, "out", "sensitivities.csv"))))
+        names = {(r["name"], r["test"]) for r in rows}
+        for want in (("K_time_blocks", "T1"), ("K_time_blocks", "T2"), ("K_time_blocks", "T3"),
+                     ("I2_before_redistribution", "T2"), ("I2_before_redistribution", "T3"),
+                     ("H_town_trends", "T2")):
+            self.assertIn(want, names)
+        for r in rows:
+            F = float(r["F"]) if r["F"] not in ("", "nan") else float("nan")
+            weak = F == F and F < 10
+            self.assertEqual(r["outcome_if_scored"] == "not informative (first-stage F < 10)", weak, r["name"])
 
     def test_results_failures_first(self):
         text = open(os.path.join(self.root, "RESULTS.md")).read()
@@ -160,6 +181,27 @@ class H_NoAfterTiltNotReadable(Scenario):
     params = dict(beta_after=0.0)
     expect = {"T3": "SURVIVE"}
     readable = False
+
+
+class I_WeakSpanFlag(Scenario):
+    """From 2018 to 2023Q1 the premium sits flat whatever the quota does. The
+    scored T2 window (2016Q1 to 2026Q3) keeps a first stage above 10; its
+    sensitivity I2 (T2 to 2023Q1) falls below 10 and must read "not
+    informative (first-stage F < 10)", in sensitivities.csv and RESULTS.md."""
+    params = dict(weak_months=("2018-01", "2023-03"))
+    expect = {"T1": "SURVIVE"}
+
+    def test_flag_prints(self):
+        self.assertGreaterEqual(float(self.T["T2_F"]), 10.0)
+        self.assertEqual(self.T["T2_F_ok"], "True")
+        rows = {(r["name"], r["test"]): r for r in csv.DictReader(open(os.path.join(self.root, "out",
+                                                                                     "sensitivities.csv")))}
+        r = rows[("I2_before_redistribution", "T2")]
+        self.assertLess(float(r["F"]), 10.0)
+        self.assertEqual(r["outcome_if_scored"], "not informative (first-stage F < 10)")
+        text = open(os.path.join(self.root, "RESULTS.md")).read()
+        line = next(ln for ln in text.splitlines() if ln.startswith("| I2_before_redistribution | T2 |"))
+        self.assertIn("| not informative (first-stage F < 10) |", line)
 
 
 class Guard(unittest.TestCase):

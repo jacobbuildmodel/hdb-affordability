@@ -25,6 +25,14 @@ and T2 the same estimate is also fitted with pyfixest.feols (one endogenous
 regressor) and must agree to 1e-6; T3 has two endogenous regressors, which
 pyfixest.feols does not take.
 
+Sensitivity K (THESIS section 7) clusters two ways by block and by
+8-quarter time block (counted from each window's first quarter), with
+critical values from t(G-1), G = number of time blocks; if the two-way
+variance of a coefficient is not positive, the larger one-way variance is
+used. Its first-stage F uses the same clustering. Any sensitivity whose
+first-stage F is below 10 (in either window, for T3) reads
+"not informative (first-stage F < 10)".
+
 Writes ROOT/out/: tests.csv (key, value), sensitivities.csv, year_slopes.csv,
 calc_7a.csv, verdict.txt.
 """
@@ -35,6 +43,7 @@ import os
 import numpy as np
 import pandas as pd
 import pyfixest as pf
+from scipy.stats import t as t_dist
 from pyfixest.estimation import demean as pf_demean
 
 import cglib as L
@@ -94,9 +103,11 @@ def clustered(Xh, u, B, groups):
     return c * B @ (sums.T @ sums) @ B
 
 
-def tsls(y, X, Z, clusters):
+def tsls(y, X, Z, clusters, fallback=False):
     """2SLS (or OLS when Z is X). clusters: list of integer-code arrays; one
-    for one-way, [block, quarter, block-quarter] for two-way."""
+    for one-way, [block, quarter, block-quarter] for two-way. fallback: where
+    the two-way variance is not positive, use the larger one-way variance
+    (sensitivity K)."""
     Xh = Z @ np.linalg.solve(Z.T @ Z, Z.T @ X)
     B = np.linalg.inv(Xh.T @ Xh)
     beta = B @ (Xh.T @ y)
@@ -104,7 +115,11 @@ def tsls(y, X, Z, clusters):
     if len(clusters) == 1:
         V = clustered(Xh, u, B, clusters[0])
     else:
-        V = clustered(Xh, u, B, clusters[0]) + clustered(Xh, u, B, clusters[1]) - clustered(Xh, u, B, clusters[2])
+        V0, V1 = clustered(Xh, u, B, clusters[0]), clustered(Xh, u, B, clusters[1])
+        V = V0 + V1 - clustered(Xh, u, B, clusters[2])
+        if fallback:
+            dg = np.diag(V)
+            return beta, np.sqrt(np.where(dg > 0, dg, np.maximum(np.diag(V0), np.diag(V1))))
     return beta, np.sqrt(np.maximum(np.diag(V), 0.0))
 
 
@@ -119,6 +134,24 @@ def cluster_codes(df, twoway):
     q = gcode(df, "quarter")
     bq = pd.factorize(df["block_id"] + "#" + df["quarter"])[0]
     return [b, q, bq]
+
+
+def time_block_codes(df, windows):
+    """Sensitivity K: [block, time block, block x time block] codes and G.
+    Time blocks are 8 quarters, counted from the first quarter of each
+    window in `windows` (lists of quarter labels)."""
+    tb = np.full(len(df), -1)
+    q = df["quarter"].values
+    qi = np.array([int(x[:4]) * 4 + int(x[5]) for x in q])
+    for w, qs in enumerate(windows):
+        q0 = int(qs[0][:4]) * 4 + int(qs[0][5])
+        m = np.isin(q, qs)
+        tb[m] = w * 1000 + (qi[m] - q0) // L.TIME_BLOCK
+    if (tb < 0).any():
+        raise RuntimeError("a sale outside the time-block windows")
+    b = gcode(df, "block_id")
+    return [b, pd.factorize(tb)[0], pd.factorize(pd.Series(b).astype(str) + "#" + pd.Series(tb).astype(str))[0]], \
+        len(np.unique(tb))
 
 
 # ---------------------------------------------------------------- the panel
@@ -156,8 +189,9 @@ def town_trends(d):
     return cols
 
 
-def fit_single(d, exog, iv=True, twoway=True):
-    """One endogenous regressor cd (instrument qd) or OLS on cd."""
+def fit_single(d, exog, iv=True, twoway=True, tb=None):
+    """One endogenous regressor cd (instrument qd) or OLS on cd. tb: the
+    window (a list of quarters) for sensitivity K's time-block clustering."""
     cols = ["yv", "cd", "qd"] + exog
     M = demeaned(d, cols, FE)
     M = M[:, keep(M, d[cols].to_numpy(dtype=float), 3)]
@@ -165,14 +199,26 @@ def fit_single(d, exog, iv=True, twoway=True):
     W = M[:, 3:]
     X = np.column_stack([cd, W])
     Z = np.column_stack([qd, W]) if iv else X
-    beta, se = tsls(y, X, Z, cluster_codes(d, twoway))
-    # first stage: cd on qd and the exogenous controls. The instrument varies
-    # only by quarter, so its F is clustered two ways (block and quarter);
-    # clustered by block alone it overstates strength (DESIGN_SKETCH, round 5).
-    fb, fse = tsls(cd, np.column_stack([qd, W]), np.column_stack([qd, W]), cluster_codes(d, True))
-    return {"est": beta[0], "se": se[0], "lo": beta[0] - L.Z95 * se[0], "hi": beta[0] + L.Z95 * se[0],
-            "F": (fb[0] / fse[0]) ** 2, "n": len(d), "blocks": d["block_id"].nunique(),
-            "quarters": d["quarter"].nunique()}
+    if tb is not None:
+        cl, G = time_block_codes(d, [tb])
+        crit = float(t_dist.ppf(0.975, G - 1))
+        beta, se = tsls(y, X, Z, cl, fallback=True)
+        fcl = cl
+    else:
+        G, crit = None, L.Z95
+        beta, se = tsls(y, X, Z, cluster_codes(d, twoway))
+        # first stage: cd on qd and the exogenous controls. The instrument
+        # varies only by quarter, so its F is clustered two ways (block and
+        # quarter); by block alone it overstates strength (DESIGN_SKETCH,
+        # round 5).
+        fcl = cluster_codes(d, True)
+    fb, fse = tsls(cd, np.column_stack([qd, W]), np.column_stack([qd, W]), fcl, fallback=tb is not None)
+    out = {"est": beta[0], "se": se[0], "lo": beta[0] - crit * se[0], "hi": beta[0] + crit * se[0],
+           "F": (fb[0] / fse[0]) ** 2 if iv else np.nan, "n": len(d), "blocks": d["block_id"].nunique(),
+           "quarters": d["quarter"].nunique()}
+    if tb is not None:
+        out["G"] = G
+    return out
 
 
 def crosscheck_pyfixest(d, exog, res):
@@ -186,7 +232,9 @@ def crosscheck_pyfixest(d, exog, res):
     return b
 
 
-def fit_t3(df, before, after, dd="dd", twoway=True, wfh=False):
+def fit_t3(df, before, after, dd="dd", twoway=True, wfh=False, tb=False):
+    """tb: sensitivity K's time-block clustering (time blocks counted within
+    each window)."""
     after_q = [q for q in after if not (wfh and L.WFH[0] <= q <= L.WFH[1])]
     d = prepare(df, list(before) + after_q, dd=dd)
     d["after"] = (d["quarter"] >= L.T3_AFTER[0]).astype(int)
@@ -203,18 +251,27 @@ def fit_t3(df, before, after, dd="dd", twoway=True, wfh=False):
     W = M[:, 5:]
     X = np.column_stack([M[:, 1], M[:, 2], W])
     Z = np.column_stack([M[:, 3], M[:, 4], W])
-    beta, se = tsls(y, X, Z, cluster_codes(d, twoway))
-    out = {"before_est": beta[0], "before_se": se[0], "before_lo": beta[0] - L.Z95 * se[0],
-           "before_hi": beta[0] + L.Z95 * se[0], "diff_est": beta[1], "diff_se": se[1],
-           "diff_lo": beta[1] - L.Z95 * se[1], "diff_hi": beta[1] + L.Z95 * se[1],
+    if tb:
+        cl, G = time_block_codes(d, [list(before), after_q])
+        crit = float(t_dist.ppf(0.975, G - 1))
+        beta, se = tsls(y, X, Z, cl, fallback=True)
+    else:
+        G, crit = None, L.Z95
+        beta, se = tsls(y, X, Z, cluster_codes(d, twoway))
+    out = {"before_est": beta[0], "before_se": se[0], "before_lo": beta[0] - crit * se[0],
+           "before_hi": beta[0] + crit * se[0], "diff_est": beta[1], "diff_se": se[1],
+           "diff_lo": beta[1] - crit * se[1], "diff_hi": beta[1] + crit * se[1],
            "after_est": beta[0] + beta[1], "n": len(d), "blocks": d["block_id"].nunique()}
+    if tb:
+        out["G"] = G
     # first-stage F in each window separately (THESIS: below 10 in either)
-    for w, qs in (("before", before), ("after", after_q)):
-        dw = prepare(df, list(qs), dd=dd)
+    for w, qs in (("before", list(before)), ("after", after_q)):
+        dw = prepare(df, qs, dd=dd)
         cw = ["cd", "qd", "floor_area"]
         Mw = demeaned(dw, cw, FE)
         Mw = Mw[:, keep(Mw, dw[cw].to_numpy(dtype=float), 2)]
-        fb, fse = tsls(Mw[:, 0], Mw[:, 1:], Mw[:, 1:], cluster_codes(dw, True))
+        fcl = time_block_codes(dw, [qs])[0] if tb else cluster_codes(dw, True)
+        fb, fse = tsls(Mw[:, 0], Mw[:, 1:], Mw[:, 1:], fcl, fallback=tb)
         out[f"F_{w}"] = (fb[0] / fse[0]) ** 2
     return out
 
@@ -315,33 +372,45 @@ def main():
     T.update({"T3_geo_share_before": cov["T3_before"], "T3_geo_share_after": cov["T3_after"],
               "T3_geo_ok": geo_ok, "T3_F_ok": f_ok, "T3_outcome": oc3})
 
-    # Sensitivities (section 7), reported, not scored.
+    # Sensitivities (section 7), reported, not scored. Any whose first-stage
+    # F is below 10 (either window, for T3) reads NOT_INFORMATIVE.
     def add(name, test, r, note=""):
+        F = min(r["F_before"], r["F_after"]) if "F_before" in r else r["F"]
+        weak = bool(F == F and F < L.F_MIN)
+        if "G" in r:
+            note = (note + "; " if note else "") + f"G = {r['G']} time blocks, t({r['G'] - 1}) critical value"
         if "diff_est" in r:
-            oc = L.outcome_t3(r["diff_est"], r["diff_lo"], r["diff_hi"], r["before_hi"], True)
-            sens.append((name, test, r["diff_est"], r["diff_se"], r["diff_lo"], r["diff_hi"], r["n"], oc, note))
+            oc = L.NOT_INFORMATIVE if weak else L.outcome_t3(r["diff_est"], r["diff_lo"], r["diff_hi"],
+                                                             r["before_hi"], True)
+            sens.append((name, test, r["diff_est"], r["diff_se"], r["diff_lo"], r["diff_hi"], r["n"], F, oc, note))
         else:
-            oc = L.outcome_sign_test(r["est"], r["lo"], r["hi"], True)
-            sens.append((name, test, r["est"], r["se"], r["lo"], r["hi"], r["n"], oc, note))
+            oc = L.NOT_INFORMATIVE if weak else L.outcome_sign_test(r["est"], r["lo"], r["hi"], True)
+            sens.append((name, test, r["est"], r["se"], r["lo"], r["hi"], r["n"], F, oc, note))
 
     add("A_split_approval", "T1", fit_single(prepare(df, L.qrange(*L.SPLIT_A)), ["floor_area"]))
     add("A_split_registration", "T1", fit_single(prepare(df, L.qrange(*L.SPLIT_B)), ["floor_area"]))
     for t, w, exog in (("T1", "T1", ["floor_area", "post12dd"]), ("T2", "T2", ["floor_area"])):
         add("B_cityhall", t, fit_single(prepare(df, L.window(w), dd="dd_cityhall"), exog))
         add("C_log_price", t, fit_single(prepare(df, L.window(w), log=True), exog))
-        add("D_ols", t, fit_single(prepare(df, L.window(w)), exog, iv=False))
+        add("D_ols", t, fit_single(prepare(df, L.window(w)), exog, iv=False), "no first stage")
         add("E_block_only", t, fit_single(prepare(df, L.window(w)), exog, twoway=False))
         d = prepare(df, L.window(w))
         add("H_town_trends", t, fit_single(d, exog + town_trends(d)))
         add("I_far_from_mrt", t, fit_single(prepare(df, L.window(w), mrt_far=True), exog),
             "today's MRT exit layer, not 2015's stations")
+        add("K_time_blocks", t, fit_single(prepare(df, L.window(w)), exog, tb=L.window(w)))
     add("J_street_points", "T1", fit_single(prepare(df, L.window("T1"), street=True), ["floor_area", "post12dd"]))
     t2w = [q for q in L.window("T2") if not (L.WFH[0] <= q <= L.WFH[1])]
     add("F_without_2020_2022", "T2", fit_single(prepare(df, t2w), ["floor_area"]))
+    t2i = [q for q in L.window("T2") if q <= L.I2_LAST]
+    add("I2_before_redistribution", "T2", fit_single(prepare(df, t2i), ["floor_area"]))
     add("B_cityhall", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), dd="dd_cityhall"))
     add("E_block_only", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), twoway=False))
     add("F_without_2020_2022", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), wfh=True))
     add("G_before_2016Q1_2017Q3", "T3", fit_t3(df, L.qrange(*L.T3_BEFORE_SENS), L.window("T3_after")))
+    add("I2_before_redistribution", "T3", fit_t3(df, L.window("T3_before"),
+                                                 [q for q in L.window("T3_after") if q <= L.I2_LAST]))
+    add("K_time_blocks", "T3", fit_t3(df, L.window("T3_before"), L.window("T3_after"), tb=True))
 
     # 7A
     d2 = prepare(df, L.window("T2"))
@@ -377,8 +446,8 @@ def main():
         T["expected_held"] = sum(conf[t] for t in scored)
     L.write_csv(os.path.join(out, "tests.csv"), ["key", "value"], sorted(T.items()))
     L.write_csv(os.path.join(out, "sensitivities.csv"),
-                ["name", "test", "est", "se", "lo", "hi", "n", "outcome_if_scored", "note"], sens)
-    L.write_text(os.path.join(out, "verdict.txt"), v + "\n")
+                ["name", "test", "est", "se", "lo", "hi", "n", "F", "outcome_if_scored", "note"], sens)
+    L.write_text(os.path.join(out, "verdict.txt"), v + "\n\n" + L.LIMIT + "\n")
     print("outcomes:", o)
     print("verdict:", v)
 

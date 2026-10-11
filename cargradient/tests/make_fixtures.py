@@ -47,7 +47,7 @@ SERIES = {20: "Cars Up To 1600cc And 97kW, Quota, 1st Bidding",
 # beta by period; "pre" is 2002Q2-2012Q1, "before" 2012Q2-2017Q4, "after" 2018Q1 on.
 BASE = dict(beta_pre=-0.004, beta_before=-0.004, beta_after=-0.0015, strong_pre=True,
             strong_before=True, strong_after=True, unmatched_t2_share=0.0, blocks=240,
-            sales_per_block_quarter=1, noise=60.0, seed=7, actual_gap_shift=None)
+            sales_per_block_quarter=1, noise=60.0, seed=7, actual_gap_shift=None, weak_months=None)
 
 
 def period(y, m):
@@ -89,10 +89,12 @@ def make(root, **kw):
             continue
         per = period(y, m)
         strong = s[{"pre": "strong_pre", "before": "strong_before", "after": "strong_after"}[per]]
+        flat = bool(s["weak_months"]) and s["weak_months"][0] <= f"{y}-{m:02d}" <= s["weak_months"][1]
         for b in (1, 2):
             qa, qb = rnd.randint(500, 2500), rnd.randint(400, 2200)
             sa, sb = qa - rnd.randint(0, 20), qb - rnd.randint(0, 20)
-            base = 120000 - 25 * (qa + qb) if strong else rnd.uniform(15000, 110000)
+            # weak_months: the premium sits near 60,000 whatever the quota does
+            base = 60000.0 if flat else 120000 - 25 * (qa + qb) if strong else rnd.uniform(15000, 110000)
             pa = max(2000.0, base + rnd.gauss(0, 3000))
             pb = max(2500.0, pa * 1.15 + rnd.gauss(0, 2000))
             key = f"{y} {MON[m - 1]}"

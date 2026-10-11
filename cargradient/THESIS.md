@@ -164,10 +164,28 @@ column (4) form, Table 3b, p. 30, adapted to HDB data):
 - The IV gives a causal reading only if the quota is unrelated to
   distance-specific shifts in demand. That is the paper's assumption (p. 13),
   and it is not tested here.
+- **A threat to that assumption since May 2023.** Since May 2023, LTA has
+  redistributed and injected 30,813 COEs across the COE categories, the
+  "cut-and-fill" smoothing of supply (MOT written reply, 4 November 2025;
+  raw/mot_20251104_cut_and_fill.html). From then on the quota is partly a
+  policy choice about timing, not only the count of cars taken off the
+  road. MOT's reply gives no reason tied to prices, and none is assumed
+  here. But a quota whose timing is chosen is a weaker instrument for the
+  paper's argument than one set by deregistrations alone. Sensitivity I2
+  (section 7) ends T2, and T3's after-window, at 2023Q1, before the
+  redistribution began.
+- **The quota's usable variation after 2016 is mostly slow-moving.** In the
+  pre-seal guard runs (section 6), quarter-to-quarter changes in the quota
+  did not predict quarter-to-quarter changes in the premium: first-stage F
+  0.6 for T2, and 1.3 and 2.3 in T3's two windows. With a linear trend in
+  the distance slope controlled, T2's first-stage F fell to 0.8. So T2 and
+  T3 rest on slow movements in the COE premium, which is where a slow drift
+  in how much buyers pay to live near town could pass for a COE effect.
 - A negative `beta` on HDB data says the tilt is there. It does not show the
   paper's mechanism (car-free households) in HDB buyers.
-- HDB buyers face eligibility rules, income ceilings and grants that private
-  buyers do not (the paper's p. 9). The piece reports, and does not explain
+- HDB buyers face eligibility rules that private buyers do not (the paper's
+  p. 9). Income ceilings apply to those taking a CPF housing grant or an
+  HDB loan, not to every resale buyer. The piece reports, and does not explain
   away, any difference from the paper.
 
 ## 4. Data (pointers; detail in office/FEASIBILITY.md)
@@ -375,17 +393,19 @@ As for the sgd and pwm pieces:
 
 The scripts:
 - `cglib.py`: windows, thresholds, the guard, the outcome rules;
-- `06_coverage_check.py`: the placebo coverage check (below), pre-seal;
+- `06_coverage_check.py`: the placebo coverage check and the drift-guard
+  rounds (below), pre-seal;
 - `10_load.py`: the panel;
 - `11_tests.py`: the tests, the gates, the sensitivities, 7A and the verdict;
 - `12_figures.py`: two charts, titles set by fixed rules from the outcomes;
 - `13_results.py`: RESULTS.md, failures first;
 - `14_manifest.py`: the checksums, the number check, and `--seal`;
-- `15_reproduce.py`: the second route;
+- `15_reproduce.py`: the second route, also for sensitivities K (T1, T2) and
+  I2 (T2);
 - `tests/make_fixtures.py`, `tests/test_pipeline.py`;
 - `run_all.sh`, `requirements.txt`.
 
-**Fixture suite.** 48 tests on invented data, 6 October 2026, all
+**Fixture suite.** 72 tests on invented data, 11 October 2026, all
 passing. They force every branch:
 - T1 and T2: SURVIVE, FAIL_NO_LINK, FAIL_OPPOSITE, and NOT_SCORED by each
   gate;
@@ -393,6 +413,11 @@ passing. They force every branch:
   NOT_SCORED by each gate;
 - 7A: readable and not readable;
 - the Brier score;
+- the sealed limit sentence, printed beside the verdict in every scenario;
+- a sensitivity whose first-stage F is below 10 reading "not informative
+  (first-stage F < 10)", and only then (scenario I: a span where the
+  premium ignores the quota, so I2 loses its first stage while the scored
+  T2 keeps one);
 - the guard: 10_load.py and 15_reproduce.py exit 3 on the real raw/ while
   `SEALED` is absent.
 
@@ -430,6 +455,35 @@ Share of runs whose 95% interval excludes zero (the test's nominal rate is
     slope that happens to move with a persistent COE premium. This limit
     bears on a SURVIVE, not on a FAIL_NO_LINK.
 
+**Drift guard (pre-seal, 11 October 2026).** Two rounds of
+`06_coverage_check.py` (`--guard`, `--guard2`; out/coverage_guard.txt and
+out/coverage_guard2.txt) tried designs against the persistent drift, 1,000
+invented-price runs per cell on the real design. None beat the scored
+design:
+- trend controls (DD x linear quarter trend, or town x year trends) took
+  away T2's first stage (F 0.8 and 0.0);
+- Driscoll-Kraay errors found a link 10.7% to 21.6% of the time with none
+  there, above the 9% line;
+- clusters by block and two-year time block (design A) passed the line for
+  T1 and T2 but not T3's after-window F gate (7.1), and still found a link
+  under drift 21% to 35% of the time;
+- a two-step design on quarterly gradients broke T3's null (11.3%) in
+  levels; in first differences it had no first stage in T2 and T3.
+- The false-link rate under drift barely moved with its size (AR innovation
+  sd 5, 10 or 15 per km: 46% to 57% for the scored design). It is set by
+  how persistent the drift is, not how big.
+
+**Jacob's ruling (11 October 2026).** The scored design stays as section 3
+has it. The limit is sealed in plain words, here and beside the verdict,
+printed by the code (cglib.LIMIT) whatever the outcome:
+
+> A SURVIVE cannot rule out a slow drift in how much buyers pay to live
+> near town that happened to move with the COE premium. In placebo runs
+> with such a drift, the scored test found a link about half the time when
+> none existed.
+
+Design A is sealed as sensitivity K (section 7), not scored.
+
 Before the seal, none of these reads a resale price:
 - `00_coverage.py` (labels and counts only);
 - `06_coverage_check.py` (the price column is excluded when the files are
@@ -444,8 +498,13 @@ None of these reads a resale price.
 ## 7. Sensitivities (sealed, reported, not scored)
 
 Each is fitted as in section 3, unless stated. It is reported with the
-outcome it would have by the section 6 rule, ignoring the gates. None is
-scored.
+outcome it would have by the section 6 rule, ignoring the geocoding gate.
+None is scored.
+
+**Not informative.** A sensitivity whose first-stage F is below 10 (in
+either window, for T3) is printed by the code as "not informative
+(first-stage F < 10)" in place of an outcome (Jacob, 11 October 2026). Its
+F is computed with its own clustering. D (OLS) has no first stage.
 
 - **A. The split run (Jacob's option (c)).** T1 on 2002Q2 to 2011Q4
   (approval date only) and on 2012Q2 to 2015Q4 (registration date only),
@@ -464,6 +523,8 @@ scored.
   over low still 4.60.
 - **G. T3's first-drafted before-window**, 2016Q1 to 2017Q3 (7 quarters).
 - **H. Town x year linear trends**, the paper's column (5): T1 and T2.
+  - T2 is kept, report-only. In the guard runs its first-stage F was 0.0
+    with town trends in, so it will most likely print "not informative".
   - Each HDB town in the resale files (26), less one, times (sale year -
     2000).
   - The files carry the HDB town, not the URA planning area the paper used;
@@ -478,6 +539,22 @@ scored.
   - Each unmatched pair takes its street's point: the first OneMap Search
     result whose road name equals the expanded street (05_street_points.py).
   - 49 of the 55 streets have one. Pairs on the other 6 streets stay out.
+- **I2. Before the COE redistribution** (section 3, "a threat since May
+  2023"): T2 ending 2023Q1 (less 2020Q2), and T3 with its after-window
+  ending 2023Q1. Each with its own first-stage F, under the not-informative
+  rule; for T3, reported only if both windows' F reach 10.
+- **K. Block and two-year time-block clusters** (design A of the guard
+  runs, section 6): T1, T2 and T3, fitted as scored.
+  - Clustered two ways, by block and by time block: 8 quarters counted from
+    each window's first quarter (T1 7 blocks, T2 6; T3 3 before and 5
+    after, 8 in all). If the two-way variance is not positive, the larger
+    one-way variance is used.
+  - Interval: beta +/- t(G-1) x se, G the number of time blocks. Its
+    first-stage F uses the same clustering.
+  - Reported beside T1, T2 and T3 in RESULTS.md, with the outcome it would
+    have by the section 6 rule. For T3 it is reported only if its
+    after-window F reaches 10 (in the guard runs it was 7.1); otherwise
+    "not informative (first-stage F < 10)".
 
 ## 7A. Reported calculation: the money answer to "Coincidence?" (sealed, not scored)
 
@@ -580,6 +657,11 @@ years:
   up with the COE rise."
 - **The limit, always:** at most part of the near-town premium, not
   million-dollar flats as a whole.
+- **The sealed drift limit, always** (section 6, printed by the code): "A
+  SURVIVE cannot rule out a slow drift in how much buyers pay to live near
+  town that happened to move with the COE premium. In placebo runs with
+  such a drift, the scored test found a link about half the time when none
+  existed."
 
 **The scorecard.** Three tests: T1, T2 and T3. A test not scored drops out
 of both the count and the Brier score. Each confidence is the chance the
@@ -633,14 +715,16 @@ limit that the record cannot say why.
 
 ## 10. Open before the seal
 
-1. **Jacob's three confidences**, for T1, T2 and T3, set at the seal in the
-   "Confidence at seal" lines. T3's Why is in already. T1's and T2's Why
-   lines come with them.
+1. **Jacob's three confidences**, for T1, T2 and T3, in the "Confidence at
+   seal" lines.
+2. **Jacob's Why lines for T1 and T2.** T3's Why is already his, verbatim.
 
-Everything else is closed (6 October 2026):
-- the clustering (two-way, scored);
-- the estimator and library;
-- town for planning area;
+Everything else is closed (11 October 2026):
+- the scored design (two-way clustering; the drift guard rounds kept it);
+- the sealed drift limit and its printed wording (section 6);
+- sensitivities K and I2, and the not-informative rule (section 7);
+- the cut-and-fill threat and the slow-moving quota (section 3);
+- the estimator and library; town for planning area;
 - the placebo coverage check (section 6);
 - the opening (office/TITLES.md) and the open page draft
   (office/OPEN_QUESTION_DRAFT.md);

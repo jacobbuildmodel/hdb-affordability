@@ -71,6 +71,35 @@ UNSEALED.
    - **The opening paragraph stays as it is.** The Editor's edits come with
      the seal prompt.
 
+## Drift guard and cut-and-fill (11 October 2026): Jacob's rulings
+
+The placebo's stress case showed that a slow drift in the distance premium
+that moves with a persistent COE premium makes the scored test find a link
+about half the time when none exists. Two guard rounds (06_coverage_check.py
+`--guard`, `--guard2`; out/coverage_guard*.txt) found no design that fixes
+it without breaking the null rate, the first stage or T3:
+- trend controls and town trends took T2's first stage to F 0.8 and 0.0;
+- Driscoll-Kraay errors ran 10.7% to 21.6% under the null;
+- block x two-year time-block clusters failed T3's after-window F (7.1);
+- a two-step quarterly-gradient design broke T3's null in levels, and had
+  no first stage in first differences in T2 and T3 (F 0.6; 1.3 and 2.3).
+
+Rulings:
+1. The scored design stays (two-way, block and quarter).
+2. The limit is sealed in plain words in THESIS section 6, and printed by
+   the code beside the verdict (cglib.LIMIT), whatever the outcome.
+3. THESIS states that the quota's usable variation after 2016 is mostly
+   slow-moving, so T2 and T3 rest on slow movements in the COE premium.
+4. Sensitivity K: block and two-year time-block clusters, t(G-1), not
+   scored, reported beside T1, T2 and T3 (T3 only if its after-window F
+   reaches 10).
+5. Any sensitivity with first-stage F below 10 prints "not informative
+   (first-stage F < 10)"; H keeps T2 on that rule.
+6. Cut-and-fill (MOT, 4 Nov 2025: 30,813 COEs redistributed and injected
+   since May 2023) is a stated threat to the instrument. Sensitivity I2
+   ends T2, and T3's after-window, at 2023Q1. MOT gives no reason tied to
+   prices, and none is assumed.
+
 ## Pre-seal round (6 October 2026): Jacob's approvals
 
 Jacob approved all three round-5 choices:

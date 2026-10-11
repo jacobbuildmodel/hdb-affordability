@@ -128,3 +128,13 @@ OneMap Search, street-level points (05_street_points.py), 6 October 2026, 12:11 
   name. Output out/street_points.csv. Contains information from OneMap
   (Singapore Land Authority), accessed 6 October 2026, under the Singapore
   Open Data Licence version 1.0.
+
+mot_20251104_cut_and_fill.html -- retrieved 11 October 2026, 14:18 UTC
+  URL: https://www.mot.gov.sg/news-resources/newsroom/data-on--cut-and-fill--approach-to-reassign-coe-quotas-and-further-medium-term-plans-to-equalise-supply/
+  MOT, written reply to a parliamentary question, 4 November 2025 (Acting
+  Minister for Transport). "Since May 2023, the Land Transport Authority (LTA)
+  redistributed and injected a total of 30,813 COEs across the COE categories.
+  We will continue to monitor the COE supply to ensure it is stable."
+  The reply gives no reason tied to prices. Used for the THESIS threat and
+  sensitivity I2 (T2 and T3's after-window ending 2023Q1).
+  BYTES 356201  MD5 2669232341d08993ac9375aa0de87248

@@ -15,6 +15,14 @@ Different from 10 and 11 on purpose:
 - 2SLS, the two-way clustered variance (block and quarter, as scored) and
   the first-stage F are written out again.
 
+It also re-derives sensitivity K (block and two-year time-block clusters,
+t(G-1) critical values) for T1 and T2 and sensitivity I2 (T2 to 2023Q1),
+checked against ROOT/out/sensitivities.csv, including the "not informative"
+flag; the t quantile is computed here by numerical integration, not scipy.
+A sensitivity that reads "not informative" is compared on its flag and its
+F (to 1e-6 absolute or relative) only: with a first stage near zero its
+estimate is not meaningful and is too ill-conditioned to match to 1e-6.
+
 Tolerance: estimates and standard errors agree to 1e-6 relative (absolute
 1e-12 near zero); outcomes, gate flags and sample sizes agree exactly.
 Refuses the real cargradient/raw/ before the seal (cglib.guard).
@@ -128,18 +136,51 @@ def cov(S, A, cl, N, K):
     return (G / (G - 1)) * ((N - 1) / (N - K)) * A @ meat @ A
 
 
-def iv(y, X, Z, cl, cl_q=None, cl_bq=None):
-    """2SLS with one-way (cl) or, given cl_q and cl_bq, two-way clustering."""
+def iv(y, X, Z, cl, cl_q=None, cl_bq=None, fallback=False):
+    """2SLS with one-way (cl) or, given cl_q and cl_bq, two-way clustering.
+    fallback: a non-positive two-way variance takes the larger one-way one."""
     PZX = Z @ np.linalg.lstsq(Z, X, rcond=None)[0]
     A = np.linalg.inv(PZX.T @ PZX)
     b = A @ PZX.T @ y
     e = y - X @ b
     S = PZX * e[:, None]
     N, K = X.shape
-    V = cov(S, A, cl, N, K)
+    V1 = cov(S, A, cl, N, K)
+    V = V1
     if cl_q is not None:
-        V = V + cov(S, A, cl_q, N, K) - cov(S, A, cl_bq, N, K)
+        V2 = cov(S, A, cl_q, N, K)
+        V = V1 + V2 - cov(S, A, cl_bq, N, K)
+        if fallback:
+            d = np.diag(V)
+            return b, np.sqrt(np.where(d > 0, d, np.maximum(np.diag(V1), np.diag(V2))))
     return b, np.sqrt(np.maximum(np.diag(V), 0.0))
+
+
+def t975(df):
+    """97.5th percentile of Student's t with df degrees of freedom: Simpson
+    integration of the density, then bisection."""
+    c = math.exp(math.lgamma((df + 1) / 2) - math.lgamma(df / 2)) / math.sqrt(df * math.pi)
+
+    def cdf(x):
+        g = np.linspace(0.0, x, 200001)
+        f = c * (1 + g * g / df) ** (-(df + 1) / 2)
+        h = g[1] - g[0]
+        return 0.5 + h / 3 * (f[0] + f[-1] + 4 * f[1:-1:2].sum() + 2 * f[2:-1:2].sum())
+
+    lo, hi = 0.0, 100.0
+    for _ in range(100):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if cdf(mid) < 0.975 else (lo, mid)
+    return (lo + hi) / 2
+
+
+def time_blocks(s, quarters):
+    """Sensitivity K: block, 8-quarter time block (from the window's first
+    quarter), and their intersection; and G."""
+    qn = lambda q: int(q[:4]) * 4 + int(q[5])
+    q0 = qn(quarters[0])
+    tb = ["%d" % ((qn(r["q"]) - q0) // L.TIME_BLOCK) for r in s]
+    return ids([r["blk"] for r in s]), ids(tb), ids([r["blk"] + "#" + t for r, t in zip(s, tb)]), len(set(tb))
 
 
 def sample(data, quarters):
@@ -165,7 +206,7 @@ def design(s, extra_after=False, post12=False):
     return y, cd, qd, area, after, dd, groups, (cl, cl2)
 
 
-def single(data, quarters, post12):
+def single(data, quarters, post12, tb=False):
     s = sample(data, quarters)
     y, cd, qd, area, after, dd, groups, (cl, cl2) = design(s)
     cols = [y, cd, qd, area]
@@ -175,9 +216,14 @@ def single(data, quarters, post12):
     M = sweep(raw, groups)
     M = M[:, keep(M, raw, 3)]
     W = M[:, 3:]
-    b, se = iv(M[:, 0], np.column_stack([M[:, 1], W]), np.column_stack([M[:, 2], W]), cl, *cl2)
-    fb, fse = iv(M[:, 1], np.column_stack([M[:, 2], W]), np.column_stack([M[:, 2], W]), cl, *cl2)
-    return {"est": b[0], "se": se[0], "lo": b[0] - L.Z95 * se[0], "hi": b[0] + L.Z95 * se[0],
+    if tb:
+        cb, ct, cbt, G = time_blocks(s, quarters)
+        cls, crit, fb_ = (cb, ct, cbt), t975(G - 1), True
+    else:
+        cls, crit, fb_, G = (cl,) + tuple(cl2), L.Z95, False, None
+    b, se = iv(M[:, 0], np.column_stack([M[:, 1], W]), np.column_stack([M[:, 2], W]), *cls, fallback=fb_)
+    fb, fse = iv(M[:, 1], np.column_stack([M[:, 2], W]), np.column_stack([M[:, 2], W]), *cls, fallback=fb_)
+    return {"est": b[0], "se": se[0], "lo": b[0] - crit * se[0], "hi": b[0] + crit * se[0],
             "F": (fb[0] / fse[0]) ** 2, "n": len(s)}
 
 
@@ -240,10 +286,24 @@ def main():
     mine["T3_outcome"] = L.outcome_t3(r["diff_est"], r["diff_lo"], r["diff_hi"], r["before_hi"], ok)
 
     theirs = {row["key"]: row["value"] for row in L.read_csv(os.path.join(root, "out", "tests.csv"))}
+    sens = {(r["name"], r["test"]): r for r in L.read_csv(os.path.join(root, "out", "sensitivities.csv"))}
+    t2i = [q for q in L.window("T2") if q <= L.I2_LAST]
+    for name, t, qs, post, tb in (("K_time_blocks", "T1", L.window("T1"), True, True),
+                                  ("K_time_blocks", "T2", L.window("T2"), False, True),
+                                  ("I2_before_redistribution", "T2", t2i, False, False)):
+        r = single(data, qs, post, tb)
+        oc = L.NOT_INFORMATIVE if r["F"] < L.F_MIN else L.outcome_sign_test(r["est"], r["lo"], r["hi"], True)
+        key = f"sens:{name}:{t}:"
+        row = sens.get((name, t), {})
+        for k in (("F", "n") if oc == L.NOT_INFORMATIVE else ("est", "se", "lo", "hi", "F", "n")):
+            mine[key + k] = r[k]
+            theirs[key + k] = row.get(k, "missing")
+        mine[key + "outcome"] = oc
+        theirs[key + "outcome"] = row.get("outcome_if_scored", "missing")
     bad = []
     for k, v in sorted(mine.items()):
-        if k not in theirs:
-            bad.append(f"{k}: missing from tests.csv")
+        if k not in theirs or theirs[k] == "missing":
+            bad.append(f"{k}: missing from tests.csv or sensitivities.csv")
             continue
         t = theirs[k]
         if isinstance(v, str):
@@ -254,7 +314,8 @@ def main():
                 bad.append(f"{k}: {v} vs {t}")
         else:
             tv = float(t)
-            if abs(v - tv) > max(1e-12, 1e-6 * max(abs(v), abs(tv))):
+            floor = 1e-6 if k.endswith(":F") else 1e-12
+            if abs(v - tv) > max(floor, 1e-6 * max(abs(v), abs(tv))):
                 bad.append(f"{k}: {v!r} vs {t}")
     lines = [f"compared {len(mine)} numbers and outcomes; differences {len(bad)}"] + bad
     L.write_text(os.path.join(root, "out", "reproduce.txt"), "\n".join(lines) + "\n")

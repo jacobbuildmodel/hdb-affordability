@@ -46,6 +46,8 @@ T3_DROP = ("2020Q2",)
 WFH = ("2020Q1", "2022Q4")              # sensitivity F
 SPLIT_A = ("2002Q2", "2011Q4")          # sensitivity A, approval basis
 SPLIT_B = ("2012Q2", "2015Q4")          # sensitivity A, registration basis
+I2_LAST = "2023Q1"                      # sensitivity I2: before LTA's COE redistribution (May 2023)
+TIME_BLOCK = 8                          # sensitivity K: quarters per time block
 CALC_YEARS = (2020, 2023)               # section 7A
 CALC_NEAR_KM, CALC_FAR_KM = 5.0, 20.0
 
@@ -57,6 +59,13 @@ LEASE_YEARS, LEASE_BAND = 99, 5
 MRT_FAR_KM = 1.0        # sensitivity I
 BOOT_N, BOOT_SEED = 999, 20261006
 SCORED = ("T1", "T2", "T3")
+NOT_INFORMATIVE = "not informative (first-stage F < 10)"
+
+# THESIS section 6, sealed (Jacob, 11 October 2026): printed beside the
+# verdict by 11_tests.py (verdict.txt) and 13_results.py, whatever the outcomes.
+LIMIT = ("A SURVIVE cannot rule out a slow drift in how much buyers pay to live near town that "
+         "happened to move with the COE premium. In placebo runs with such a drift, the scored "
+         "test found a link about half the time when none existed.")
 
 
 def args(description, extra=None):
