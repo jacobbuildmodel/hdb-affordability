@@ -1,12 +1,10 @@
 # THESIS -- cargradient piece
 
-**UNSEALED DRAFT, 5 October 2026; reframed 6 October 2026** (title chosen
-by a real reader; Rule 0 item 5; a reported calculation; the verdict in
-plain words). Nothing here is fixed until the commit
-"cargradient: SEAL". Until then this file changes by ordinary edits on
-cargradient-wip, recorded in the commit history. After the seal it is never
-edited; changes go in THESIS_ADDENDUM.md, dated, and are reported, not
-applied to the scoring.
+**SEALED, 12 October 2026, by the commit "cargradient: SEAL"**, whose
+SEAL_MANIFEST.md records this file's md5. Drafted 5 to 11 October 2026 on
+cargradient-wip (the commit history holds every change). This file is never
+edited after the seal; changes go in THESIS_ADDENDUM.md, dated, and are
+reported, not applied to the scoring.
 
 Written before any HDB resale price was opened. The resale files were read
 for labels, coverage and addresses only (office/FEASIBILITY.md). COE values
@@ -23,9 +21,9 @@ part of this file. The title, chosen by a real reader on 5 October 2026, is
 "Million-dollar flats came with $100,000 COEs. Coincidence?" (office/TITLES.md).
 The verdict rule (section 8) answers it in plain words.
 
-**Confidences are Jacob's**, set at the seal. None appears in this draft.
-Each test carries "Confidence at seal: [Jacob, at seal]". T3's direction and
-Jacob's Why are his (round 3), verbatim.
+**Confidences are Jacob's**, set by him alone at the seal, 12 October 2026,
+with his Why lines, verbatim: T1 70%, T2 40%, T3 15%. T3's direction and
+Why are his (round 3). What he read while setting them is in section 11.
 
 **A conceptual replication.** Huang, Li and Ross (2018) estimated this on
 private non-landed homes (URA REALIS, paid), 2002Q2 to 2015Q4. These tests
@@ -317,7 +315,8 @@ seal.
   mechanism. The year-quarter effects take out the level of the market, not
   a tilt in it. So a SURVIVE is weaker evidence for the car channel than a
   FAIL is against it.
-- **Confidence at seal: [Jacob, at seal].**
+- **Why (Jacob, verbatim):** "Same city, same years and same COE swings as a paper that found the effect strongly in condos, and the central HDB premium widened over most of those years."
+- **Confidence at seal: 70%.**
 
 ### T2. The same, 2016 to 2026
 
@@ -327,7 +326,8 @@ seal.
 - **Weak evidence, stated now.** As T1. Also, this window holds both the
   2018 change and the pandemic years. T2 reads the average tilt over all of
   it; T3 asks whether it changed.
-- **Confidence at seal: [Jacob, at seal].**
+- **Why (Jacob, verbatim):** "COEs tripled in 2021-23, but outer towns kept pace with central ones, and the only clear tilt toward far-out flats came just as COEs started rising."
+- **Confidence at seal: 40%.**
 
 ### T3. Weaker after February 2018 (Jacob's direction)
 
@@ -378,7 +378,7 @@ seal.
     "from the current 0.25% per annum"). The before-window as a whole
     spans 1.5% or 1%, then 0.5%, then 0.25% (section 5). The Why line
     stays as written.
-- **Confidence at seal: [Jacob, at seal].**
+- **Confidence at seal: 15%.**
 
 ### Computation, fixed with the analysis scripts (before the seal)
 
@@ -675,7 +675,7 @@ Then T1 (2002 to 2015, the paper's years), as a separate sentence:
 **The scorecard.** Three tests: T1, T2 and T3. A test not scored drops out
 of both the count and the Brier score. Each confidence is the chance the
 test holds if it is scored. Jacob's expected count is the sum of his three
-confidences, set at the seal. Section 7A is not scored.
+confidences: 0.70 + 0.40 + 0.15 = 1.25 tests holding, of 3. Section 7A is not scored.
 
 ## 8A. What it changes (planned for both directions)
 
@@ -722,13 +722,13 @@ limit that the record cannot say why.
   - Million-dollar flats as such. At most, this explains part of the
     near-town premium. Nothing here says where million-dollar flats are.
 
-## 10. Open before the seal
+## 10. Set at the seal (12 October 2026)
 
-1. **Jacob's three confidences**, for T1, T2 and T3, in the "Confidence at
-   seal" lines.
-2. **Jacob's Why lines for T1 and T2.** T3's Why is already his, verbatim.
+Nothing is open. Jacob set, alone and verbatim:
+- the three confidences: T1 70%, T2 40%, T3 15% (expected 1.25 of 3);
+- the Why lines for T1 and T2 (T3's is his from round 3, unchanged).
 
-Everything else is closed (11 October 2026):
+Closed before the seal (11 October 2026):
 - the scored design (two-way clustering; the drift guard rounds kept it);
 - the sealed drift limit and its printed wording (section 6);
 - the verdict wording: T1 as its own sentence, T2's SURVIVE softened
@@ -742,4 +742,22 @@ Everything else is closed (11 October 2026):
 - the unit, the station point, the fallback, the hook figures, the
   growth-rate steps, the data, the guard and the fixture suite.
 
-The seal date and the answer date are written in the seal commit.
+## 11. Exposure before the seal (disclosure)
+
+What Jacob read about HDB prices by area, and around them, while setting
+his confidences, as he listed it, verbatim:
+
+- 99.co: HDB prices in Geylang, Bedok, Tampines and Pasir Ris since 2003
+- Towards Data Science: HDB prices by distance
+- 99.co: non-mature vs mature estates, 2020
+- 99.co: HDB resale market, 2024
+- EdgeProp: million-dollar flats, 2023
+- EdgeProp: 3Q2024 resale prices
+- EdgeProp: Huttons on flat age vs location
+- SmartCalculator: COE price history
+- BusinessWorld/Reuters: zero vehicle growth (2017-18)
+- The Huang, Li and Ross working paper (Tulane copy)
+
+This bears on his confidences, not on the tests: the tests, windows, gates
+and verdict rule were fixed before he set them, and the researcher has
+opened no HDB resale price. His T1 and T2 Why lines draw on this reading.

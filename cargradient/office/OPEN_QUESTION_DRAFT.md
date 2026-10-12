@@ -1,8 +1,8 @@
 # Million-dollar flats came with $100,000 COEs. Coincidence?
 
-Open question. Predictions sealed on [seal date].
+Open question. Predictions sealed on 12 October 2026.
 
-<!-- Page text for the seal. Confidences and the "Why" line are Jacob's,
+<!-- Page text for the seal. Confidences and the "Why" lines are Jacob's,
 verbatim; the researcher's proposals stay in THESIS.md. The opening
 paragraph is the checker's ruling on the Editor's review (6 October 2026),
 with two words changed to match the Parliament record (office/TITLES.md). -->
@@ -58,15 +58,23 @@ private condos.
 
 **First bet. Their years.** From 2002 to 2015, when COEs cost more, HDB
 flats near Raffles Place gained relative to flats further out.
-Confidence: [Jacob, at seal].
+Confidence: 70%.
+
+Why: "Same city, same years and same COE swings as a paper that found the
+effect strongly in condos, and the central HDB premium widened over most of
+those years."
 
 **Second bet. Since then.** The same was true from 2016 to 2026.
-Confidence: [Jacob, at seal].
+Confidence: 40%.
+
+Why: "COEs tripled in 2021-23, but outer towns kept pace with central ones,
+and the only clear tilt toward far-out flats came just as COEs started
+rising."
 
 **Third bet. After the 2018 cut.** Since growth in the car quota was cut to
 zero in February 2018, that tilt has been weaker than in the years of
 step-by-step cuts before it.
-Confidence: [Jacob, at seal].
+Confidence: 15%.
 
 <!-- vale Site.Directives = NO -->
 Why: "I'd lean weaker, but not by much. The "stronger" story needs a big
@@ -123,10 +131,10 @@ chance allows.
 ## Proof
 
 The [sealed predictions]([seal commit link]) are THESIS.md in commit
-[seal commit], [seal date].
+[seal commit], 12 October 2026.
 
-Answer due [answer date], published here whichever way it lands.
+Answer due December 2026, published here whichever way it lands.
 
-Last answered: [link, at seal]
+Last answered: [Was the HDB loan really cheaper than a bank's?](/economics/2026-10-03/)
 
 Previous open question: [Tokyo got cheaper. Did Singapore get richer?](/open/2026-10-03-singapore-dollar/)
