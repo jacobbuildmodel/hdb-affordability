@@ -111,16 +111,27 @@ def check(root):
     return bad
 
 
-def seal():
+def seal_lines():
+    """The SEAL_MANIFEST.md lines: each file once. (Until 12 October 2026 the
+    duplicate check compared a path with whole "md5  path" lines, so
+    raw/RETRIEVED.txt, also found by raw_files(), was listed twice in
+    cargradient's SEAL_MANIFEST.md, same md5; THESIS_ADDENDUM.md item 1.)"""
     lines = ["# SEAL_MANIFEST -- cargradient", "",
              "md5 of every file fixed at the seal. Written by 14_manifest.py --seal in the seal commit.", "",
              "```"]
+    seen = set()
     for rel in ["THESIS.md", "raw/RETRIEVED.txt"] + raw_files(L.CG) + PRESEAL_OUT + SCRIPTS:
         p = os.path.join(L.CG, rel)
-        if os.path.exists(p) and rel not in lines:
+        if os.path.exists(p) and rel not in seen:
+            seen.add(rel)
             lines.append(f"{md5(p)}  {rel}")
-    lines += ["```", ""]
-    L.write_text(os.path.join(L.CG, "SEAL_MANIFEST.md"), "\n".join(lines))
+    return lines + ["```", ""]
+
+
+def seal():
+    if os.path.exists(os.path.join(L.CG, "SEAL_MANIFEST.md")):
+        raise SystemExit("SEAL_MANIFEST.md exists: the seal is written once and never again")
+    L.write_text(os.path.join(L.CG, "SEAL_MANIFEST.md"), "\n".join(seal_lines()))
     print("wrote SEAL_MANIFEST.md")
 
 

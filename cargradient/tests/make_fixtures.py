@@ -207,10 +207,12 @@ def make(root, **kw):
 
     thesis = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "THESIS.md")
     text = open(thesis, encoding="utf-8").read()
-    conf = s.get("confidences")
-    if conf:
-        for t, v in conf.items():
-            text = _set_conf(text, t, v)
+    # The fixture's confidences are the scenario's own, never the real
+    # THESIS's (sealed 12 October 2026 with Jacob's numbers): unset unless
+    # the scenario gives them.
+    conf = s.get("confidences") or {}
+    for t in ("T1", "T2", "T3"):
+        text = _set_conf(text, t, conf.get(t))
     open(os.path.join(root, "THESIS.md"), "w", encoding="utf-8").write(text)
     return s
 
@@ -218,5 +220,7 @@ def make(root, **kw):
 def _set_conf(text, test, pct):
     import re
     sec = re.search(rf"^### {test}\..*?(?=^### |^## |\Z)", text, re.S | re.M)
-    new = sec.group(0).replace("**Confidence at seal: [Jacob, at seal].**", f"**Confidence at seal: {pct}%**")
+    line = f"**Confidence at seal: {pct}%**" if pct is not None else "**Confidence at seal: [Jacob, at seal].**"
+    new, n = re.subn(r"\*\*Confidence at seal: [^*]*\*\*", line, sec.group(0))
+    assert n == 1, test
     return text.replace(sec.group(0), new)
