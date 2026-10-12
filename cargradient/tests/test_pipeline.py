@@ -231,6 +231,9 @@ class VerdictWording(unittest.TestCase):
 
 
 class Guard(unittest.TestCase):
+    @unittest.skipIf(os.path.exists(os.path.join(CG, "SEALED")),
+                     "verified before the seal (pre-seal runs and the checker saw 10_load.py refuse); "
+                     "not applicable once the data key exists")
     def test_refuses_real_raw_before_seal(self):
         self.assertFalse(os.path.exists(os.path.join(CG, "SEALED")), "SEALED exists: the guard test needs it absent")
         for s in ("10_load.py", "15_reproduce.py"):

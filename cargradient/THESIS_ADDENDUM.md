@@ -52,3 +52,27 @@ inherited 70/40/15, and scenario A's Brier check failed (0.391 against
   8ad594bab474468a63632acebffed5fe after this fix
   (`git diff 7ee9b91 -- cargradient/tests/make_fixtures.py`).
 - The suite passes again: 73 tests (one skipped, as before).
+
+## 3. The seal guard test after the data key; first-run checksums (12 October 2026)
+
+Found on the first run of run_all.sh after the data key (commit 800ac1f).
+The fixture suite failed on one test,
+Guard.test_refuses_real_raw_before_seal. That test asserts that
+cargradient/SEALED is absent and that 10_load.py and 15_reproduce.py
+refuse cargradient/raw/. It was written for the state before the key and
+fails by design once the key exists. No real-data step ran.
+- Ruling (Jacob): skip that one test when cargradient/SEALED exists, with
+  the skip message "verified before the seal (pre-seal runs and the checker
+  saw 10_load.py refuse); not applicable once the data key exists". Test
+  code only. The test body is unchanged; the scored path (10_load.py,
+  11_tests.py, 15_reproduce.py, cglib.py) is untouched.
+- tests/test_pipeline.py md5: 78f4067d46f42a7a889d61a0a5078884 at the
+  seal, 22b4f50b7e4bc5046c1dbe55ca12944f after this change
+  (`git diff 7ee9b91 -- cargradient/tests/test_pipeline.py`).
+- First-run checksums. run_all.sh ends with `14_manifest.py --check`, and
+  CHECKSUMS.md5 and number_manifest.csv are written only by hand
+  (run_all.sh's header). So on the first real run that last check fails
+  because both files are missing, after every real step has already run.
+  The accepted handling: run `python3 cargradient/14_manifest.py` to write
+  them, then `python3 cargradient/14_manifest.py --check`. No script
+  changes.
