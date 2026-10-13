@@ -81,7 +81,7 @@ fails by design once the key exists. No real-data step ran.
 
 Found on the first real run after item 3, and again on a rerun with
 nothing changed (12 October 12:59 UTC and 13 October 11:30 UTC; the same
-failure both times). Step 11 stopped in crosscheck_pyfixest (section 7's
+failure both times). Step 11 stopped in crosscheck_pyfixest (section 3's
 cross-check for T1 and T2). The scored fit for the test in hand had
 finished. pyfixest.feols, refitting the same model to compare, raised
 "Demeaning failed after 10000 iterations" (its default iteration limit).
