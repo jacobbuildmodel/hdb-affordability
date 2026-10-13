@@ -1,0 +1,15 @@
+key,value
+coebar_2020,36753.313
+coebar_2023,106218.71
+dcoe,69465.4
+dgap_implied,-79.463859
+dgap_implied_lo,-317.15808
+dgap_implied_hi,158.23036
+dgap_actual,67.464103
+dgap_actual_lo,-57.982132
+dgap_actual_hi,192.91034
+share_readable,False
+share,
+share_lo,
+share_hi,
+boot_n,999
