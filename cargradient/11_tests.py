@@ -225,7 +225,7 @@ def crosscheck_pyfixest(d, exog, res):
     rhs = " + ".join(exog) if exog else "1"
     fe = " + ".join(FE)
     f = pf.feols(f"yv ~ {rhs} | {fe} | cd ~ qd", d, vcov={"CRV1": "block_id"},
-                 ssc=pf.ssc(k_adj=True, k_fixef="none", G_adj=True), fixef_tol=TOL)
+                 ssc=pf.ssc(k_adj=True, k_fixef="none", G_adj=True), fixef_tol=TOL, fixef_maxiter=100000)
     b = float(f.coef()["cd"])
     if abs(b - res["est"]) > 1e-6 * max(1.0, abs(b)):
         raise SystemExit(f"pyfixest cross-check failed: {b} vs {res['est']}")

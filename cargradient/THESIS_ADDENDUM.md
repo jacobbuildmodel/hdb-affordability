@@ -76,3 +76,23 @@ fails by design once the key exists. No real-data step ran.
   The accepted handling: run `python3 cargradient/14_manifest.py` to write
   them, then `python3 cargradient/14_manifest.py --check`. No script
   changes.
+
+## 4. More iterations for the pyfixest cross-check (13 October 2026)
+
+Found on the first real run after item 3, and again on a rerun with
+nothing changed (12 October 12:59 UTC and 13 October 11:30 UTC; the same
+failure both times). Step 11 stopped in crosscheck_pyfixest (section 7's
+cross-check for T1 and T2). The scored fit for the test in hand had
+finished. pyfixest.feols, refitting the same model to compare, raised
+"Demeaning failed after 10000 iterations" (its default iteration limit).
+Nothing was written to out/tests.csv and no test number was seen.
+- Ruling (Jacob): in crosscheck_pyfixest only, add fixef_maxiter=100000 to
+  the feols call. The tolerance (1e-10) and the 1e-6 match rule are
+  unchanged. The scored fit (fit_single, tsls), the gates, the outcomes and
+  the verdict are untouched, and no scored number changes: the cross-check
+  only compares.
+- 11_tests.py md5: 4123b37ff7c555bd025df3f2ee96f84b at the seal,
+  acdf9862695e6722052930568717fc40 after this change
+  (`git diff 7ee9b91 -- cargradient/11_tests.py`).
+- If the cross-check still fails with this change, the run stops and is
+  reported. No other fix is tried without a ruling.
