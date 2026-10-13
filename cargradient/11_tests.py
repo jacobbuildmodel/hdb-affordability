@@ -222,11 +222,20 @@ def fit_single(d, exog, iv=True, twoway=True, tb=None):
 
 
 def crosscheck_pyfixest(d, exog, res):
+    """Fitted on a copy with yv, cd, qd and the exogenous columns scaled to
+    unit sd, as demeaned() scales them (THESIS_ADDENDUM item 5): fixef_tol is
+    absolute, and COE x distance is ~1e6. cd's coefficient is scaled back."""
     rhs = " + ".join(exog) if exog else "1"
     fe = " + ".join(FE)
-    f = pf.feols(f"yv ~ {rhs} | {fe} | cd ~ qd", d, vcov={"CRV1": "block_id"},
+    s = d.copy()
+    sd = {}
+    for c in ["yv", "cd", "qd"] + exog:
+        v = s[c].to_numpy(dtype=float).std()
+        sd[c] = 1.0 if v == 0 else v
+        s[c] = s[c] / sd[c]
+    f = pf.feols(f"yv ~ {rhs} | {fe} | cd ~ qd", s, vcov={"CRV1": "block_id"},
                  ssc=pf.ssc(k_adj=True, k_fixef="none", G_adj=True), fixef_tol=TOL, fixef_maxiter=100000)
-    b = float(f.coef()["cd"])
+    b = float(f.coef()["cd"]) * sd["yv"] / sd["cd"]
     if abs(b - res["est"]) > 1e-6 * max(1.0, abs(b)):
         raise SystemExit(f"pyfixest cross-check failed: {b} vs {res['est']}")
     return b

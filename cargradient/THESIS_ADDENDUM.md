@@ -96,3 +96,25 @@ Nothing was written to out/tests.csv and no test number was seen.
   (`git diff 7ee9b91 -- cargradient/11_tests.py`).
 - If the cross-check still fails with this change, the run stops and is
   reported. No other fix is tried without a ruling.
+
+## 5. The pyfixest cross-check on scaled columns (13 October 2026)
+
+Item 4's change did not cure the cross-check's failure to converge.
+- Cause: crosscheck_pyfixest passed unscaled columns (COE x distance,
+  about 1e6) to pyfixest.feols with fixef_tol=1e-10, an absolute tolerance
+  below float64 precision at that scale. demeaned() already scales every
+  column to unit standard deviation for exactly this reason (section 3);
+  the cross-check did not.
+- Ruling (b) (Jacob): in crosscheck_pyfixest only, fit the same feols call
+  on a copy of the data in which yv, cd, qd and every exogenous column are
+  divided by that column's standard deviation, computed as demeaned() does
+  (numpy std, ddof=0; an sd of 0 becomes 1). fixef_tol (1e-10) and
+  fixef_maxiter (100000) are unchanged. The compared coefficient is
+  coef['cd'] x sd(yv) / sd(cd).
+- Unchanged: the 1e-6 match rule, the tolerance, the scored fit (fit_single,
+  tsls), the gates, the outcomes and the verdict. No scored number changes:
+  the cross-check only compares.
+- 11_tests.py md5: acdf9862695e6722052930568717fc40 before this change
+  (after item 4), 5a23d12908ef778e053bab59ecd187ad after it
+  (`git diff 9d94ef3 -- cargradient/11_tests.py`).
+- The fixture suite passes with the change (73 tests run, 2 skipped).
