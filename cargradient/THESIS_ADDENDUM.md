@@ -118,3 +118,50 @@ Item 4's change did not cure the cross-check's failure to converge.
   (after item 4), 5a23d12908ef778e053bab59ecd187ad after it
   (`git diff 9d94ef3 -- cargradient/11_tests.py`).
 - The fixture suite passes with the change (73 tests run, 2 skipped).
+
+## 6. The OSF registration of record, and when the data were first run (14 October 2026)
+
+Times are from records the research session can see: git commit
+timestamps, the session's file timestamps and run log, the site repo's
+history, and the OSF API (api.osf.io, read 14 October 2026 00:57 UTC).
+SGT is UTC+8. Where no record gives a time, it says "not confirmed".
+
+- **The first attempt.** OSF registration osf.io/t7dup (item 1),
+  submitted 12 October 2026, failed to archive (OSF: errors copying files
+  from linked third-party services). The OSF API now answers for t7dup:
+  "The requested registration is no longer available." (HTTP 410). Its
+  submission time is not confirmed.
+- **The registration of record.** It was re-registered as
+  https://osf.io/rntsk ("million-dollar flats and COEs", Open-Ended
+  Registration) and accepted by OSF Registries: date_registered
+  2026-10-12T12:41:27 UTC, that is 12 October 2026, 8:41:27 PM SGT. DOI:
+  10.17605/OSF.IO/RNTSK. The API shows it public, not withdrawn and not
+  archiving.
+- **The seal and the open page came first.** The seal, commit 7ee9b91, is
+  timestamped 12 October 2026 11:42:09 UTC (7:42:09 PM SGT). The open
+  question page's PR (site PR 36) was merged at 11:51:47 UTC (7:51:47 PM
+  SGT, site commit b32f4e6); item 1 records the page live on 12 October.
+  The exact time it went live is not confirmed.
+- **The data key.** Commit 800ac1f is timestamped 12 October 2026
+  12:20:40 UTC (8:20:40 PM SGT), 20 min 47 s before the registration. Its
+  push time is not confirmed: GitHub's records were not reachable from
+  this session. A commit timestamp is the committer's clock, not GitHub's.
+- **Earlier real-data runs exist.** Item 4 records two runs that read the
+  resale prices and stopped in step 11's cross-check after a scored fit
+  had finished, at "12 October 12:59 UTC and 13 October 11:30 UTC". The
+  first is about 18 minutes after the registration (item 4 gives the
+  minute only). Item 4 does not say whether
+  12:59 UTC is when that run started or when it stopped, so whether the
+  first real-data run began after the registration is not confirmed. The
+  run before it (item 3) stopped in the fixture suite, and no real-data
+  step ran. Item 3's fix, commit a881cc1, is timestamped 12:49:51 UTC.
+  No record shows whether the 12:59 UTC run began after that commit.
+- **The Checkpoint 1 run** (results in commit 86aeea8). run_all.sh was
+  launched at 13 October 2026 14:20:37 UTC (10:20:37 PM SGT), the creation
+  time of its log, and ran the fixture suite first. Its first real-data
+  step, 10_load.py, wrote its first output (out/coe_quarterly.csv) at
+  14:24:59 UTC (10:24:59 PM SGT). So that step began between those two
+  times; its exact start was not logged.
+- The seal (commit 7ee9b91) and the public open question page are the
+  primary record that the predictions preceded the data. The OSF
+  registration is a second, independent timestamp.
