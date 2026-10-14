@@ -1,14 +1,16 @@
 ---
 # DRAFT for Checkpoint 2. The title is a proposal: Jacob decides titles.
-# Other proposals: "Since 2016, no sign COEs tilted HDB prices toward town"
-# (54 characters, the lead chart's title). The date is a proposal, not agreed:
+# Alternatives that hold in both dollar and percentage terms: "Since 2016,
+# flats near town did not gain when COEs rose" (55 characters) and "Dearer
+# COEs, no gain for flats near town since 2016" (51). The title below holds
+# in dollars only. The date is a proposal, not agreed:
 # 2026-10-31 and 2026-11-14 are taken in content/economics/.
 title: "Flats near town gained when COEs rose. Not since 2016."
 question: "Million-dollar flats came with $100,000 COEs. Coincidence?"
 date: 2026-11-28
 draft: true
 showToc: true
-summary: "Does a dearer COE make a flat near town worth more, even to a family with no car? Three predictions were sealed before the HDB resale prices were opened. From 2002 to 2015 flats near Raffles Place gained on flats further out when COEs rose; since 2016 there was no sign of it."
+summary: "Does a dearer COE make a flat near town worth more, even to a family with no car? Three predictions were sealed before the HDB resale prices were opened. From 2002 to 2015 flats near Raffles Place gained on flats further out when COEs rose, in dollars per square metre though not in percentage terms; since 2016 there was no sign of it."
 tags: ["economics"]
 repo: "https://github.com/jacobbuildmodel/hdb-affordability/tree/main/cargradient"
 dataset: "https://data.gov.sg/collections/189/view"
@@ -38,7 +40,8 @@ Most people would say no. A COE is a car-owner's problem. A family with no car
 pays nothing for it. But one study of private condos found that when COEs cost
 more, homes near the city centre gained on homes further out. I put the same
 question to HDB resale flats and wrote down my bets before I opened the price
-data. The tilt was there from 2002 to 2015. Since 2016 there was no sign of it.
+data. In dollars per square metre, the tilt was there from 2002 to 2015. Since
+2016 there was no sign of it.
 
 ## The argument: two separate prices, or one story
 
@@ -96,20 +99,23 @@ exact wording, the gates and the full Why lines are in the
 
 ## What the data said: a tilt to 2015, none since
 
-![Change in the price gap between a flat 5 km and one 20 km from Raffles Place for each COE rise, by period](/figs/cargradient_chart1_tests.svg)
+![Change in the price gap between a flat 5 km and one 20 km from Raffles Place for each $10,000 on the COE premium, by period](/figs/cargradient_chart1_tests.svg)
 
-*How to read it: a dot right of zero means flats near town gained on flats far
-out when COEs rose; the line is the 95 per cent interval. A line that crosses
-zero is no clear link. Muted rows were not scored.*
+Notes: a dot right of zero means flats near town gained on flats far out when
+COEs rose; lines are 95 per cent intervals; a line crossing zero is no clear
+link; muted rows were not scored. Values are per $10,000 of COE premium.
 
-The test compared every HDB resale with the COE premium in its quarter and its
-block's distance from Raffles Place, holding fixed each block, each flat type,
-each storey range and the lease left. It asked whether flats near town did
-better than flats further out in the quarters when COEs cost more. It is a test
-of whether the two moved together, not of what caused what.
+Sources: HDB resale prices (data.gov.sg); SingStat M651121;
+cargradient/12_figures.py.
 
-From 2002 to 2015 they did. Across 349,122 resales in 8,400 blocks over 54
-quarters, flats nearer Raffles Place gained on flats further out when the COE
+The test compared each HDB resale with a located block with the COE premium in
+its quarter and its block's distance from Raffles Place, holding fixed each
+block, flat type, storey range and flat model, the floor area, and the lease
+left. It asked whether flats near town did better than flats further out in
+the quarters when COEs cost more. It is a test of whether the two moved together, not of what caused what.
+
+From 2002 to 2015 they did, in dollars per square metre. Across 349,122
+resales in 8,400 blocks over 54 quarters, flats nearer Raffles Place gained on flats further out when the COE
 rose, and the 95 per cent interval sat wholly on that side of zero. My first
 bet held.
 
@@ -128,10 +134,9 @@ cent interval from -317 to 158. That interval runs from the near-town flat
 losing ground to it gaining ground.
 
 I had also planned to say what share of the actual change in that gap lined up
-with the COE. That share is not meaningful here. The actual gap moved by 67
-dollars per square metre from 2020 to 2023, but with an interval from -58 to
-193, so it did not clearly change at all, and the implied change pointed the
-other way. My own rule, written before the data, says to report the implied
+with the COE. That share is not meaningful here. The actual gap did not
+clearly change from 2020 to 2023 (its 95 per cent interval included zero), and
+the implied change pointed the other way. My own rule, written before the data, says to report the implied
 change alone in that case.
 
 The third bet was never tested. It needed a tilt toward town in 2012 to 2017
@@ -145,12 +150,14 @@ Brier score, which measures how far each confidence sat from what happened,
 was 0.125, where a forecaster who always says 50 per cent scores 0.25 and lower
 is better. Two predictions are far too few to judge anyone's calibration.
 
-## Where the finding flips: around 2012
+## Where the finding flips: 2012, and in percentages
 
 Split at 2012, when HDB's records switched from the date a sale was approved
 to the date it was registered, the years 2002 to 2011 showed the tilt toward
-town, and the years 2012 to 2015 showed the opposite. Checks on the years since
-2016 pointed both ways. Leaving out 2020 to 2022 showed a tilt toward town;
+town, and the years 2012 to 2015 showed the opposite. Measured in percentage
+terms (the log of price per square metre) instead of dollars, the 2002 to 2015
+tilt did not show: its interval included zero. Since 2016, in percentage terms,
+the link ran the other way. Checks on the years since 2016 pointed both ways. Leaving out 2020 to 2022 showed a tilt toward town;
 ending in early 2023, before the COE supply was redistributed, showed a tilt
 the other way. None of these checks was
 scored, and the full set is in RESULTS.md.
@@ -220,13 +227,22 @@ places left. 2002 to 2015: -9.663e-04 (95 per cent interval -1.370e-03 to
 -5.624e-04), first-stage F 86.7, a measure of how strongly the quota moved
 the COE (the sealed line was 10). 2016 to 2026:
 7.626e-05 (-1.519e-04 to 3.044e-04), F 74.8. 2012 to 2017, before the cut:
-1.181e-03 (9.486e-04 to 1.414e-03). Intervals are clustered by block and by
-quarter.
+1.181e-03 (9.486e-04 to 1.414e-03). Intervals allow for sales in the same
+block, and in the same quarter, moving together.
+
+**Checks, not scored (out/sensitivities.csv):** 2002 to 2011, -1.199e-03
+(-1.619e-03 to -7.801e-04); 2012 to 2015, 1.456e-03 (8.165e-04 to
+2.095e-03); since 2016 without 2020 to 2022, -2.324e-04 (-4.397e-04 to
+-2.507e-05); 2016 to early 2023, 2.858e-04 (9.465e-05 to 4.770e-04); in log
+prices, 2002 to 2015, -2.939e-09 (-9.776e-08 to 9.188e-08) and since 2016,
+1.685e-07 (1.333e-07 to 2.036e-07), in log units.
 
 **Method.** As in the paper, the car quota stands in for the COE: the test
 uses only the part of the COE's movement that went with changes in the quota
-(two-stage least squares, an instrumental-variables method), so that good
-times alone do not set the estimate. An independent
+(two-stage least squares, an instrumental-variables method), to keep good
+times alone from setting the estimate. That rests on an assumption the test
+does not check: that the quota did not move with near-town demand. An
+independent
 second script recomputed every scored number and matched it.
 {{< /aside >}}
 
@@ -236,7 +252,11 @@ second script recomputed every scored number and matched it.
   Board, retrieved 6 October 2026, under the Singapore Open Data Licence
   version 1.0.
 - COE premium, quota and successful bids: SingStat Table Builder M651121,
-  data source Land Transport Authority.
+  data source Land Transport Authority, retrieved 5 and 6 October 2026.
+- Vehicle growth rate cut to 0% from February 2018, and the quota set largely
+  by deregistrations: Parliament of Singapore, oral answer by the Senior
+  Minister of State for Transport for the Minister for Transport, 6 November
+  2017.
 - Million-dollar resale counts: Parliament of Singapore, written answer by the
   Minister for National Development, 4 July 2022.
 - MRT station exits: data.gov.sg, Land Transport Authority. Block locations:
