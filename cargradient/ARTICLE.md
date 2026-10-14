@@ -1,10 +1,10 @@
 ---
 # DRAFT for Checkpoint 2. The title is a proposal: Jacob decides titles.
-# Round 2 proposals, true in dollar and percentage terms, for the second
-# friend round: "$100,000 COEs, but no sign of a boost for flats near town"
-# (57 characters); "COEs hit $100,000. No sign it lifted flats near town"
-# (52); "COEs tripled. No sign flats near town gained extra" (51).
-# The title below holds in dollars only. The date is a proposal, not agreed:
+# Round 3 proposals (towns from article/town_distances.csv): "$100,000 COEs:
+# Toa Payoh did not clearly outpace Woodlands" (58 characters); "Toa Payoh
+# did not clearly outpace Woodlands as COEs soared" (58); "COEs nearly
+# tripled. Toa Payoh did not outpace Woodlands" (56). The title below is
+# the round 1 proposal and holds in dollars only. Jacob decides. The date is a proposal, not agreed:
 # 2026-10-31 and 2026-11-14 are taken in content/economics/.
 title: "Flats near town gained when COEs rose. Not since 2016."
 question: "Million-dollar flats came with $100,000 COEs. Coincidence?"
@@ -94,7 +94,7 @@ applies the method of Huang, Li and Ross (2018) to HDB resale flats.
    not by much."
 
 Together the percentages put the expected number holding at 1.25 of 3. The
-exact wording, the gates and the full Why lines are in the
+full wording is in the
 [sealed thesis](https://github.com/jacobbuildmodel/hdb-affordability/blob/7ee9b9169c36399a80400b0e2e9ef9bd6b5000af/cargradient/THESIS.md).
 
 ## What the data said: a tilt to 2015, no sign since
@@ -133,11 +133,11 @@ rose, and the other checks on these years split both ways.
 
 ## Where I was wrong: no sign of a link since 2016
 
-I gave the second bet 40%, and it failed. My sealed calculation shows its
-size. Between 2020 and 2023 the average COE premium rose from $36,753 to $106,219, a rise of $69,465. Using the estimate
+I gave the second bet 40%, and it failed. Between 2020 and 2023 the average COE premium rose from $36,753 to $106,219, a rise of $69,465. Using the estimate
 from 2016 onward, that rise implied a change of -79 dollars per square metre in
 the gap between a flat 5 km and one 20 km from Raffles Place, with a 95 per
-cent interval from -317 to 158.
+cent interval from -317 to 158. For scale, the median HDB block in Toa Payoh
+is 5.9 km from Raffles Place, and in Woodlands 18.4 km.
 
 The share of the actual change in that gap that lined up with the COE, which I
 had planned to report, is not meaningful: the actual gap did not clearly change
@@ -188,8 +188,8 @@ For a buyer weighing a flat near town against one further out, there was no
 sign that the gap between them moved with COEs in HDB flats since 2016. But
 the estimate since 2016 is too imprecise to rule out a modest link either way:
 the COE rise from 2020 to 2023 implied a change of -79 dollars per square
-metre in the gap between a flat 5 km and one 20 km from Raffles Place, with a
-95 per cent interval from -317 to 158. For anyone weighing vehicle-quota
+metre in the same 5 km to 20 km gap, with a 95 per cent interval from -317 to
+158. For anyone weighing vehicle-quota
 policy, this test does not show a side-effect on flat prices for households
 that never drive, and it is too imprecise to rule one out. For the pricing of
 new flats near town under the Prime Location model, this data gives no basis
@@ -271,6 +271,9 @@ second script recomputed every scored number and matched it.
   6 October 2026, under the Singapore Open Data Licence version 1.0.
 - COE supply redistribution: Ministry of Transport, written reply, 4 November
   2025.
+- Town distances (Toa Payoh, Woodlands): median block distance from Raffles
+  Place, cargradient/article/town_distances.py, from the geocoded blocks and
+  the resale files' town labels.
 - Transport for London, "Congestion Charge",
   [tfl.gov.uk/modes/driving/congestion-charge](https://tfl.gov.uk/modes/driving/congestion-charge),
   saved 5 October 2026.
