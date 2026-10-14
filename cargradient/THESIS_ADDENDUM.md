@@ -165,3 +165,19 @@ SGT is UTC+8. Where no record gives a time, it says "not confirmed".
 - The seal (commit 7ee9b91) and the public open question page are the
   primary record that the predictions preceded the data. The OSF
   registration is a second, independent timestamp.
+
+## 7. The Python version of the Checkpoint 1 run (14 October 2026)
+
+A disclosure only. Nothing was rerun and no file it names was changed.
+- requirements.txt (md5 a02da9c36cb363368934142918773067, unchanged since
+  the seal) pins pandas 3.0.6, numpy 2.4.6, scipy 1.17.1 and pyfixest
+  0.60.0, and records in a comment that the piece was built on Python
+  3.11.15.
+- The Checkpoint 1 run (commit 86aeea8) used Python 3.11.17 in a venv with
+  pandas 3.0.6, numpy 2.4.6, scipy 1.17.1 and pyfixest 0.60.0, as
+  run_all.sh printed them. Python 3.11.15 was not on the machine.
+- So the four pinned packages match exactly. The only drift is the Python
+  patch release, 3.11.15 to 3.11.17. The independent reproduction
+  (15_reproduce.py) matched all 48 compared numbers and outcomes on that
+  run, and the moderator reports that its held shadow run matched the
+  official one (card hdb-cp2-article).
