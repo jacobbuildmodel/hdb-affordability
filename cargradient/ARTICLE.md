@@ -1,10 +1,11 @@
 ---
 # DRAFT for Checkpoint 2. The title is a proposal: Jacob decides titles.
-# Round 3 proposals (towns from article/town_distances.csv): "$100,000 COEs:
-# Toa Payoh did not clearly outpace Woodlands" (58 characters); "Toa Payoh
-# did not clearly outpace Woodlands as COEs soared" (58); "COEs nearly
-# tripled. Toa Payoh did not outpace Woodlands" (56). The title below is
-# the round 1 proposal and holds in dollars only. Jacob decides. The date is a proposal, not agreed:
+# Round 4 proposals (article/town_prices.csv, 2016 to 2026): "Toa Payoh
+# outpaced Woodlands. Was it COEs? Not clearly" (54 characters); "Toa Payoh
+# outpaced Woodlands. Not clearly thanks to COEs" (56); "Toa Payoh flats
+# outran Woodlands. COEs did not clearly help" (59). The title below is the
+# round 1 proposal and holds in dollars only. Jacob decides.
+# The date is a proposal, not agreed:
 # 2026-10-31 and 2026-11-14 are taken in content/economics/.
 title: "Flats near town gained when COEs rose. Not since 2016."
 question: "Million-dollar flats came with $100,000 COEs. Coincidence?"
@@ -56,8 +57,7 @@ drive has no stake in the COE.
 Some households sit on the edge of owning a car. When the COE rises, some of
 them go without one, and a household without a car values a short train ride
 to work more than one with a car does. So part of what a home near town costs
-moves with the COE, whoever buys it. They found that tilt in private condos
-from 2002 to 2015.
+moves with the COE, whoever buys it.
 
 ## Pushed to the extreme: the last bus home
 
@@ -108,6 +108,13 @@ link; muted rows were not scored. Values are per $10,000 of COE premium.
 Sources: HDB resale prices (data.gov.sg); SingStat M651121;
 cargradient/12_figures.py.
 
+Start with two towns. In 2016 the median resale price per square metre was
+$4,846 in Toa Payoh, whose median block is 5.9 km from Raffles Place, and
+$3,676 in Woodlands, 18.4 km out. In 2026 so far it was $8,305 and $5,634, so
+Toa Payoh's lead more than doubled. The test asks whether COE moves explain any
+of that gap. Since 2016 it found no clear sign, and its estimate is too
+imprecise to rule out a modest link.
+
 The test compared each HDB resale with a located block with the COE premium in
 its quarter and its block's distance from Raffles Place, holding fixed each
 block, flat type, storey range and flat model, the floor area, and the lease
@@ -136,8 +143,8 @@ rose, and the other checks on these years split both ways.
 I gave the second bet 40%, and it failed. Between 2020 and 2023 the average COE premium rose from $36,753 to $106,219, a rise of $69,465. Using the estimate
 from 2016 onward, that rise implied a change of -79 dollars per square metre in
 the gap between a flat 5 km and one 20 km from Raffles Place, with a 95 per
-cent interval from -317 to 158. For scale, the median HDB block in Toa Payoh
-is 5.9 km from Raffles Place, and in Woodlands 18.4 km.
+cent interval from -317 to 158. Toa Payoh and Woodlands sit at about those
+distances.
 
 The share of the actual change in that gap that lined up with the COE, which I
 had planned to report, is not meaningful: the actual gap did not clearly change
@@ -149,10 +156,10 @@ The third bet was never scored. It needed a tilt toward town in 2012 to 2017
 to weaken. Instead, flats further out gained when COEs rose in those years,
 and the interval cleared zero, so my sealed rule takes it out of the count.
 
-So 1 of 2 scored bets held, against the 1.1 I expected for those two. The
-Brier score, which measures how far each confidence sat from what happened,
-was 0.125, where a forecaster who always says 50 per cent scores 0.25 and lower
-is better. Two predictions are far too few to judge anyone's calibration.
+So 1 of 2 scored bets held, against the 1.1 I expected. My Brier score, which
+measures how far each confidence sat from what happened, was 0.125; always
+saying 50 per cent scores 0.25, and lower is better. Two predictions are too
+few to judge calibration.
 
 ## Where the finding flips: 2012, and the checks
 
@@ -166,8 +173,7 @@ square metre), 2002 to 2015 showed no clear link, its interval including zero,
 and since 2016 flats further out gained. Since 2016 without 2020 to 2022,
 flats near town gained. From 2016 to early 2023, before the COE supply was
 redistributed, flats further out gained. Each of these last three intervals
-cleared zero. The numbers are in the method notes, and the full set is in
-RESULTS.md.
+cleared zero. The numbers are in the method notes.
 
 ## The obvious objection: isn't this just good times?
 
@@ -184,9 +190,8 @@ failed is against it.
 
 ## What it changes: no basis either way
 
-For a buyer weighing a flat near town against one further out, there was no
-sign that the gap between them moved with COEs in HDB flats since 2016. But
-the estimate since 2016 is too imprecise to rule out a modest link either way:
+For a buyer weighing a flat near town against one further out, the estimate
+since 2016 is too imprecise to rule out a modest link either way:
 the COE rise from 2020 to 2023 implied a change of -79 dollars per square
 metre in the same 5 km to 20 km gap, with a 95 per cent interval from -317 to
 158. For anyone weighing vehicle-quota
@@ -202,8 +207,7 @@ as a whole.
 
 Singapore rations who may own a car. London prices driving into its centre
 instead. Transport for London charges a daily fee of GBP 18 to drive within its
-Congestion Charge zone, from 7:00 to 18:00 on weekdays and 12:00 to 18:00 at weekends
-and on bank holidays. There the cost lands on the trip into town, not on
+Congestion Charge zone. There the cost lands on the trip into town, not on
 owning the car.
 
 ## What would change my mind
@@ -212,7 +216,6 @@ owning the car.
   near-town prices ruled out.
 - A record of who gave up a car and where they moved, which this data does not
   have.
-- The same test on private homes since 2016, the paper's own market.
 
 ## The verdict: no sign of a link since 2016
 
@@ -274,6 +277,8 @@ second script recomputed every scored number and matched it.
 - Town distances (Toa Payoh, Woodlands): median block distance from Raffles
   Place, cargradient/article/town_distances.py, from the geocoded blocks and
   the resale files' town labels.
+- Town prices (Toa Payoh, Woodlands): median resale price per square metre by
+  year, cargradient/article/town_prices.py, from the resale files.
 - Transport for London, "Congestion Charge",
   [tfl.gov.uk/modes/driving/congestion-charge](https://tfl.gov.uk/modes/driving/congestion-charge),
   saved 5 October 2026.
