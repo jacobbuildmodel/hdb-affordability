@@ -18,6 +18,14 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
+      # cargradient/ pins its own versions (pandas, numpy, scipy, pyfixest),
+      # which differ from the root pins, so it gets its own environment.
+      - name: cargradient environment
+        if: hashFiles('cargradient/requirements.txt') != ''
+        run: |
+          python -m venv "$RUNNER_TEMP/cgvenv"
+          "$RUNNER_TEMP/cgvenv/bin/pip" install -r cargradient/requirements.txt
+          echo "CG_PYTHON=$RUNNER_TEMP/cgvenv/bin/python" >> "$GITHUB_ENV"
       - name: fast checks
         run: ./check.sh
       - name: rebuild, byte-identical outputs, corruption guard

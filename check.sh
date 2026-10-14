@@ -111,9 +111,28 @@ fi
 if [ $FULL -eq 1 ]; then
   note "== A2/A3 rebuild from clean, outputs byte-identical"
   git diff --quiet || { fail "working tree dirty before rebuild"; }
-  rm -rf out figs */out */figs 2>/dev/null
+  # cargradient/ is not rebuilt here: its real-data run takes about 7 hours
+  # (cargradient/THESIS_ADDENDUM.md item 7), beyond CI's job limits, so its
+  # outputs stay in place and are checked in the next step instead.
+  for d in out figs */out */figs; do
+    case "$d" in cargradient/*) ;; *) rm -rf "$d" 2>/dev/null ;; esac
+  done
   if ./run_all.sh > /tmp/check_run.log 2>&1; then pass "run_all.sh exit 0"; else fail "run_all.sh failed, see /tmp/check_run.log"; fi
   if git diff --quiet; then pass "outputs byte-identical"; else fail "rebuild changed committed outputs"; git diff --stat | tail -5; fi
+
+  if [ -d cargradient ]; then
+    note "== A2/A3 cargradient: synthetic suite, then committed outputs against their checksums"
+    # Runs in cargradient's own pinned environment (cargradient/requirements.txt),
+    # which differs from the root pins: CG_PYTHON names its interpreter.
+    CGPY=${CG_PYTHON:-python3}
+    if "$CGPY" -W ignore -m unittest discover -s cargradient/tests -p "test_*.py" > /tmp/check_cg_tests.log 2>&1; then
+      pass "cargradient synthetic suite: $(grep -E '^(Ran|OK|FAILED)' /tmp/check_cg_tests.log | tr '\n' ' ')"
+    else fail "cargradient synthetic suite failed, see /tmp/check_cg_tests.log"; tail -5 /tmp/check_cg_tests.log; fi
+    if "$CGPY" cargradient/14_manifest.py --check > /tmp/check_cg_manifest.log 2>&1; then
+      pass "cargradient: $(tail -1 /tmp/check_cg_manifest.log)"
+    else fail "cargradient 14_manifest.py --check failed"; tail -10 /tmp/check_cg_manifest.log; fi
+    git diff --quiet && pass "cargradient checks left tracked files unchanged" || fail "cargradient checks changed tracked files"
+  fi
 
   note "== A5 a corrupted checksummed input must fail the rebuild"
   # Corrupt a file run_all.sh never regenerates, so the corruption is still
