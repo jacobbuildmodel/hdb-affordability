@@ -143,9 +143,9 @@ SGT is UTC+8. Where no record gives a time, it says "not confirmed".
   SGT, site commit b32f4e6); item 1 records the page live on 12 October.
   The exact time it went live is not confirmed.
 - **The data key.** Commit 800ac1f is timestamped 12 October 2026
-  12:20:40 UTC (8:20:40 PM SGT), 20 min 47 s before the registration. Its
-  push time is not confirmed: GitHub's records were not reachable from
-  this session. A commit timestamp is the committer's clock, not GitHub's.
+  12:20:40 UTC (8:20:40 PM SGT), 20 min 47 s before the registration.
+  GitHub's events API records its push at 12:20:43 UTC (8:20:43 PM SGT), as
+  read by the checker on 14 October 2026. A commit timestamp is the committer's clock, not GitHub's.
 - **Earlier real-data runs exist.** Item 4 records two runs that read the
   resale prices and stopped in step 11's cross-check after a scored fit
   had finished, at "12 October 12:59 UTC and 13 October 11:30 UTC". The
