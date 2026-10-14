@@ -1,9 +1,10 @@
 ---
 # DRAFT for Checkpoint 2. The title is a proposal: Jacob decides titles.
-# Alternatives that hold in both dollar and percentage terms: "Since 2016,
-# flats near town did not gain when COEs rose" (55 characters) and "Dearer
-# COEs, no gain for flats near town since 2016" (51). The title below holds
-# in dollars only. The date is a proposal, not agreed:
+# Round 2 proposals, true in dollar and percentage terms, for the second
+# friend round: "$100,000 COEs, but no sign of a boost for flats near town"
+# (57 characters); "COEs hit $100,000. No sign it lifted flats near town"
+# (52); "COEs tripled. No sign flats near town gained extra" (51).
+# The title below holds in dollars only. The date is a proposal, not agreed:
 # 2026-10-31 and 2026-11-14 are taken in content/economics/.
 title: "Flats near town gained when COEs rose. Not since 2016."
 question: "Million-dollar flats came with $100,000 COEs. Coincidence?"
@@ -26,13 +27,15 @@ testsTotal: 3
 
 > **Question:** million-dollar flats came with $100,000 COEs. Coincidence?\
 > **Verdict:** no sign of a link in HDB flats since 2016. In 2002 to 2015, the paper's years, the gap widened more when COEs rose. There was no link before 2018 to weaken.\
+> In percentage terms the 2002 to 2015 tilt did not show (a check, not scored).\
 > **Key number:** the COE rise from 2020 to 2023 implied a change of -79 dollars per square metre in the price gap between a flat 5 km and one 20 km from Raffles Place (95 per cent interval -317 to 158), from 257,854 resales since 2016.\
-> **My confidence going in:** 70%, 40% and 15% on three predictions, 1.25 expected to hold.\
+> **My confidence going in:** 70%, 40% and 15% on three predictions, 1.25 expected to hold (1.10 for the two that were scored).\
 > **Scored:** 1 of 2 held; the third was not scored.\
 > **What would change it:** a near-town tilt since 2016 that holds up with the drift in near-town prices ruled out.
 
-In the first bidding of June 2022, the COE for larger cars closed at or above
-$100,000 for the first time. The year before, 259 HDB resale flats had sold for
+In the first bidding of June 2022, the COE for larger cars (the Certificate of
+Entitlement every car in Singapore needs) closed at or above $100,000 for the
+first time. The year before, 259 HDB resale flats had sold for
 $1 million or more, up from 46 in 2017. Two headlines, argued about
 separately. Could they be one story?
 
@@ -47,8 +50,7 @@ data. In dollars per square metre, the tilt was there from 2002 to 2015. Since
 
 **Separate stories.** A COE is the price of the right to own a car. What a flat
 costs is about its size, its lease and where it is. A family that will never
-drive has no stake in the COE, so there is no reason the two would move
-together.
+drive has no stake in the COE.
 
 **One story.** Huang, Li and Ross (2018) argued the opposite for private homes.
 Some households sit on the edge of owning a car. When the COE rises, some of
@@ -61,18 +63,17 @@ from 2002 to 2015.
 
 These are thought experiments, not claims about the data.
 
-Picture cars costing almost nothing. Every family drives, a flat at the end of
-the line is a short drive from anywhere, and a change in the price of cars
-barely moves what a flat near town is worth. Now picture cars out of reach.
-Nobody drives, every family lives by the train timetable, and nearness to town
-is everything. Singapore sits between the two, where a dearer COE can tip a
-few households from one side to the other.
+Picture cars costing almost nothing: every family drives, and the price of
+cars barely moves what a flat near town is worth. Now picture cars out of
+reach: every family lives by the train timetable, and nearness to town is
+everything. Singapore sits between the two, where a COE rise can tip a few
+households from one side to the other.
 
 It works like the last bus home. When it stops running, the room nearest the
 office is worth more, to everyone who has no other way back. Call it the
 last-bus premium: the extra a home near town is worth when getting around
-without a car gets harder. The question here is whether that premium showed up
-in HDB prices, and moved with the COE.
+without a car gets harder. The question is whether it moved with the COE in
+HDB prices.
 
 ## My bets: a tilt in both periods, weaker after 2018
 
@@ -82,10 +83,9 @@ prices, and posted them on an
 applies the method of Huang, Li and Ross (2018) to HDB resale flats.
 
 1. **Their years** (70%). From 2002 to 2015, when COEs cost more, HDB flats
-   near Raffles Place gained relative to flats further out. Why, in my words
-   at the seal: "Same city, same years and same COE swings as a paper that
-   found the effect strongly in condos, and the central HDB premium widened
-   over most of those years."
+   near Raffles Place gained relative to flats further out. Why: "Same city,
+   same years and same COE swings as a paper that found the effect strongly
+   in condos, and the central HDB premium widened over most of those years."
 2. **Since then** (40%). The same was true from 2016 to 2026. Why: "COEs
    tripled in 2021-23, but outer towns kept pace with central ones, and the
    only clear tilt toward far-out flats came just as COEs started rising."
@@ -97,7 +97,7 @@ Together the percentages put the expected number holding at 1.25 of 3. The
 exact wording, the gates and the full Why lines are in the
 [sealed thesis](https://github.com/jacobbuildmodel/hdb-affordability/blob/7ee9b9169c36399a80400b0e2e9ef9bd6b5000af/cargradient/THESIS.md).
 
-## What the data said: a tilt to 2015, none since
+## What the data said: a tilt to 2015, no sign since
 
 ![Change in the price gap between a flat 5 km and one 20 km from Raffles Place for each $10,000 on the COE premium, by period](/figs/cargradient_chart1_tests.svg)
 
@@ -112,63 +112,68 @@ The test compared each HDB resale with a located block with the COE premium in
 its quarter and its block's distance from Raffles Place, holding fixed each
 block, flat type, storey range and flat model, the floor area, and the lease
 left. It asked whether flats near town did better than flats further out in
-the quarters when COEs cost more. It is a test of whether the two moved together, not of what caused what.
+the quarters when COEs cost more. COE prices also rise in good times, so the
+test uses changes in the car quota to pick out the COE moves that good times
+did not drive. If the quota did not move with demand for flats near town, the
+estimate is the COE's own effect. The test cannot check that assumption, so a
+result here is evidence, not proof.
 
 From 2002 to 2015 they did, in dollars per square metre. Across 349,122
-resales in 8,400 blocks over 54 quarters, flats nearer Raffles Place gained on flats further out when the COE
-rose, and the 95 per cent interval sat wholly on that side of zero. My first
-bet held.
+resales in 8,400 blocks over 54 quarters, flats nearer Raffles Place gained on
+flats further out when the COE rose, and the 95 per cent interval sat wholly
+on that side of zero. My first bet held. It held in dollars but not in percentage terms: measured by the log
+of price per square metre, the 2002 to 2015 tilt did not show (a check, not
+scored).
 
-From 2016 to 2026 they did not. Across 257,854 resales in 9,768 blocks over 42
+From 2016 to 2026 there was no clear sign of it. Across 257,854 resales in 9,768 blocks over 42
 quarters, the 95 per cent interval ran from a tilt toward town to a tilt away
-from it, and so included zero. My second bet failed.
+from it, and so included zero. My second bet failed. In percentage terms the
+link since 2016 ran the other way, with flats further out gaining when COEs
+rose, and the other checks on these years split both ways.
 
-## Where I was wrong: no link since 2016
+## Where I was wrong: no sign of a link since 2016
 
-I gave the second bet 40%, and it failed. The clearest way to see its size is
-the calculation I sealed for this. Between 2020 and 2023 the average COE
-premium rose from $36,753 to $106,219, a rise of $69,465. Using the estimate
+I gave the second bet 40%, and it failed. My sealed calculation shows its
+size. Between 2020 and 2023 the average COE premium rose from $36,753 to $106,219, a rise of $69,465. Using the estimate
 from 2016 onward, that rise implied a change of -79 dollars per square metre in
 the gap between a flat 5 km and one 20 km from Raffles Place, with a 95 per
-cent interval from -317 to 158. That interval runs from the near-town flat
-losing ground to it gaining ground.
+cent interval from -317 to 158.
 
-I had also planned to say what share of the actual change in that gap lined up
-with the COE. That share is not meaningful here. The actual gap did not
-clearly change from 2020 to 2023 (its 95 per cent interval included zero), and
-the implied change pointed the other way. My own rule, written before the data, says to report the implied
-change alone in that case.
+The share of the actual change in that gap that lined up with the COE, which I
+had planned to report, is not meaningful: the actual gap did not clearly change
+from 2020 to 2023 (its 95 per cent interval included zero), and the implied
+change pointed the other way. My sealed rule then reports the implied change
+alone.
 
-The third bet was never tested. It needed a tilt toward town in 2012 to 2017
-to weaken after 2018. There was none: in those years the estimate pointed the
-other way, with flats further out gaining when COEs rose, and its interval
-cleared zero. With no tilt before 2018, there was nothing to weaken, and my
-sealed rule takes it out of the count.
+The third bet was never scored. It needed a tilt toward town in 2012 to 2017
+to weaken. Instead, flats further out gained when COEs rose in those years,
+and the interval cleared zero, so my sealed rule takes it out of the count.
 
 So 1 of 2 scored bets held, against the 1.1 I expected for those two. The
 Brier score, which measures how far each confidence sat from what happened,
 was 0.125, where a forecaster who always says 50 per cent scores 0.25 and lower
 is better. Two predictions are far too few to judge anyone's calibration.
 
-## Where the finding flips: 2012, and in percentages
+## Where the finding flips: 2012, and the checks
 
 Split at 2012, when HDB's records switched from the date a sale was approved
-to the date it was registered, the years 2002 to 2011 showed the tilt toward
-town, and the years 2012 to 2015 showed the opposite. Measured in percentage
-terms (the log of price per square metre) instead of dollars, the 2002 to 2015
-tilt did not show: its interval included zero. Since 2016, in percentage terms,
-the link ran the other way. Checks on the years since 2016 pointed both ways. Leaving out 2020 to 2022 showed a tilt toward town;
-ending in early 2023, before the COE supply was redistributed, showed a tilt
-the other way. None of these checks was
-scored, and the full set is in RESULTS.md.
+to the date it was registered, the two halves pointed opposite ways. In 2002
+to 2011, flats near town gained when COEs rose, and the interval cleared zero.
+In 2012 to 2015, flats further out gained, and the interval also cleared zero.
+
+None of the other checks was scored. In percentage terms (the log of price per
+square metre), 2002 to 2015 showed no clear link, its interval including zero,
+and since 2016 flats further out gained. Since 2016 without 2020 to 2022,
+flats near town gained. From 2016 to early 2023, before the COE supply was
+redistributed, flats further out gained. Each of these last three intervals
+cleared zero. The numbers are in the method notes, and the full set is in
+RESULTS.md.
 
 ## The obvious objection: isn't this just good times?
 
-COE prices rise in good years. If good years also lift flats near town more
-than flats far out, for reasons that have nothing to do with cars, the 2002 to
-2015 result would show up anyway. The test leans on the car quota, set mostly
-from the number of cars taken off the road, as the thing that moves the COE.
-That helps, but it does not close the door. The sealed limit says so:
+If good years lift flats near town more than flats far out, for reasons that
+have nothing to do with cars, the 2002 to 2015 result could show up anyway.
+Leaning on the car quota helps, but it does not close the door. The sealed limit says so:
 
 > A SURVIVE cannot rule out a slow drift in how much buyers pay to live near
 > town that happened to move with the COE premium. In placebo runs with such a
@@ -177,24 +182,29 @@ That helps, but it does not close the door. The sealed limit says so:
 So the bet that held is weaker evidence for the car story than the bet that
 failed is against it.
 
-## What it changes: no case for counting the COE
+## What it changes: no basis either way
 
 For a buyer weighing a flat near town against one further out, there was no
-sign that the gap between them moved with COEs in HDB flats since 2016.
-Whatever moved the near-town premium in those years, this test found no sign
-that the COE was part of it. For anyone weighing vehicle-quota policy, there
-is no evidence here of a side-effect on flat prices for households that never
-drive. For the pricing of new flats near town under the Prime Location model,
-this data makes no case for counting COEs in the near-town premium.
+sign that the gap between them moved with COEs in HDB flats since 2016. But
+the estimate since 2016 is too imprecise to rule out a modest link either way:
+the COE rise from 2020 to 2023 implied a change of -79 dollars per square
+metre in the gap between a flat 5 km and one 20 km from Raffles Place, with a
+95 per cent interval from -317 to 158. For anyone weighing vehicle-quota
+policy, this test does not show a side-effect on flat prices for households
+that never drive, and it is too imprecise to rule one out. For the pricing of
+new flats near town under the Prime Location model, this data gives no basis
+for counting COEs in the near-town premium, and none for ruling them out.
+
+At most, this explains part of the near-town premium, not million-dollar flats
+as a whole.
 
 ## Elsewhere: London charges the trip, not the car
 
 Singapore rations who may own a car. London prices driving into its centre
-instead. Transport for London charges a daily fee of GBP 18 (GBP 21 if paid
-by midnight of the third day after travel) to drive within its Congestion
-Charge zone, from 7:00 to 18:00 on weekdays and 12:00 to 18:00 at weekends
-and on bank holidays. There the cost
-lands on the trip into town, not on owning the car.
+instead. Transport for London charges a daily fee of GBP 18 to drive within its
+Congestion Charge zone, from 7:00 to 18:00 on weekdays and 12:00 to 18:00 at weekends
+and on bank holidays. There the cost lands on the trip into town, not on
+owning the car.
 
 ## What would change my mind
 
@@ -208,9 +218,6 @@ lands on the trip into town, not on owning the car.
 
 No sign of a link in HDB flats since 2016. In 2002 to 2015, the paper's years,
 the gap widened more when COEs rose. There was no link before 2018 to weaken.
-
-At most, this explains part of the near-town premium, not million-dollar flats
-as a whole.
 
 {{< aside title="Method notes" >}}
 **The seal.** The three predictions, their pass lines and the confidences were
