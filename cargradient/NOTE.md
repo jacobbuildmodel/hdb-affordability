@@ -6,6 +6,11 @@ flats.*
 
 ## The finding
 
+Read the one held test with care. In placebo runs with invented prices and a
+slow drift in the distance premium, the scored test found a link 51.6%,
+56.0% and 50.0% of the time (T1, T2, T3) when none existed. A held
+prediction here is weak evidence; a failed one is not.
+
 HLR found that in private homes, 2002 to 2015, higher COE premiums went with
 prices falling faster with distance from the city centre. In HDB resale flats
 that tilt appeared in 2002 to 2011, ran the other way in 2012 to 2015, and
@@ -36,18 +41,19 @@ Sealed 12 October 2026, before any resale price was read:
   FAIL_NO_LINK.
 - **T3**: "After growth in the car quota was cut to zero in February 2018, a
   rise in the COE tilted HDB prices toward the centre less than during the
-  step-by-step cuts before it." Confidence at seal: 15%. Outcome:
-  NOT_SCORED_NO_TILT: the 2012 to 2017 estimate had the opposite sign,
-  1.181e-03 (9.486e-04 to 1.414e-03), leaving no tilt to weaken.
+  step-by-step cuts before it." Confidence at seal: 15%. Outcome: could not
+  be scored. The sealed rule needed a tilt toward the centre in 2012 to 2017
+  to test whether it weakened, and there was none: the 2012 to 2017 estimate
+  ran the other way, 1.181e-03 (9.486e-04 to 1.414e-03).
 
 Scored 2, held 1. Brier score 0.125 over the two scored tests; expected
 held 1.1 for those two (1.25 for all three, as sealed).
 
 ## Limits
 
-- **Drift.** In placebo runs with invented prices and a persistent drift in
-  the distance premium, the scored test found a link 51.6%, 56.0% and 50.0%
-  of the time (T1, T2, T3) when none existed: a SURVIVE is weak evidence.
+- **Drift.** See the opening paragraph: under a persistent drift in the
+  distance premium the test finds a link about half the time when none
+  exists, so a SURVIVE is weak evidence.
 - **Sign flips in the checks.** In log prices, 2002 to 2015 showed no clear
   link (-2.939e-09, interval -9.776e-08 to 9.188e-08) and 2016 to 2026 ran
   the other way (1.685e-07, 1.333e-07 to 2.036e-07). For 2016 to 2026,
