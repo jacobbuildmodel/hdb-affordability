@@ -1,13 +1,23 @@
 # cargradient
 
-Does a dearer COE tilt HDB resale prices toward the city centre? A conceptual
-replication, on public HDB resale data, of Huang, Li and Ross (2018), who
-studied private homes. Pre-seal: THESIS.md is an UNSEALED draft, and no
-resale price has been opened. Run `bash cargradient/run_all.sh`.
+Does a dearer COE tilt HDB resale prices toward the city centre? This study
+applies the method of Huang, Li and Ross (2018), who studied private homes, to
+HDB resale flats. THESIS.md was sealed on 12 October 2026 (commit 7ee9b91,
+registered at https://osf.io/rntsk) before any resale price was opened; the
+results are in RESULTS.md. Run `bash cargradient/run_all.sh`.
+
+**NOTE.md is the public form of this piece.** ARTICLE.md, the earlier
+long-form draft, is superseded and kept only as a record.
 
 | Path | What it is |
 |---|---|
-| THESIS.md | the tests, windows, gates and verdict rule (unsealed draft) |
+| NOTE.md | the public research note: finding, sealed bets, limits, method, links |
+| ARTICLE.md | superseded long-form draft (Checkpoint 2), kept as a record |
+| THESIS.md | the tests, windows, gates and verdict rule (sealed; never edited) |
+| THESIS_ADDENDUM.md | dated records and rulings after the seal; none changes a test or a score |
+| SEAL_MANIFEST.md | md5 of every file fixed at the seal |
+| RESULTS.md, out/, figs/ | the real-data results, written by 10-15 |
+| article/ | scripts for town distances and town prices used by ARTICLE.md (not sealed, not scored) |
 | office/ | paper notes, Rule 0, feasibility, design sketch, titles |
 | 00_coverage.py | labels and counts of the five resale files; the price column is never parsed -> out/coverage.txt |
 | 00_addresses.py | block, street and month from the five resale datasets (no price field) -> out/addresses.csv |
