@@ -1,0 +1,39 @@
+# Pieces in this repository, for jacobbuildmodel/research-checks
+# (.github/workflows/standards.yml). Every warn, skip, exclude and drift entry
+# carries its reason and is printed on every run. cargradient lives on branch
+# cargradient-wip and is not configured here.
+
+# The affordability piece, at the root.
+[pieces.affordability]
+dir = "."
+requirements = "requirements.txt"
+
+[pieces.affordability.seal]
+kind = "header"
+thesis = "strict"          # THESIS.md: "Not edited after sealing. Anything added later goes in THESIS_ADDENDUM.md"
+commit = "e5de9a6983a588a68a524decaf5832c79bac9c8b"
+why = "THESIS.md was sealed on 11 September 2026, before this repository existed; e5de9a6 is the first and only commit that writes it"
+recorded_md5 = "65916433ad3f776c007a472472fea10d"   # THESIS.md's line in CHECKSUMS.md5
+
+[pieces.affordability.fast]
+manifest = "python3 08_manifest.py --check"
+
+# check.sh covers the whole repository, financing/ included, so the port does too.
+[pieces.affordability.standards]
+length_exempt = ["2026-09-12.md"]   # as check.sh: published 19 Sep 2026, before STANDARDS v2
+parity = "./check.sh"
+
+# The financing piece.
+[pieces.financing]
+dir = "financing"
+requirements = "requirements.txt"
+
+[pieces.financing.seal]
+kind = "header"
+thesis = "append"          # THESIS.md: "changes only by appended, dated AMENDMENT blocks"
+commit = "ac1687d7e15daaff721080592ab09bc15c88dab3"
+why = "financing: SEAL THESIS.md, which added the SEALED header to the sealed content (financing/office/DECISIONS.md, 17 Sep 2026). The header names 0ed509e, which is on branch financing-wip only; main has its rebased copy 309e284, byte-identical (md5 7eaf10ff2ea96d4fd73503d849699411)"
+recorded_md5 = "af585c3a7a922818dfd632fdc9694e49"   # DECISIONS.md: md5 of the file with the SEALED header
+
+[pieces.financing.fast]
+manifest = "python3 financing/25_manifest.py --check"
