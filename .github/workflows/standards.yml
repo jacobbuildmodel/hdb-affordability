@@ -21,19 +21,19 @@ permissions:
 
 jobs:
   seal:
-    uses: jacobbuildmodel/research-checks/.github/workflows/seal.yml@d5fc40e3c5fd636eb07c17226b8c7d9cd66030c1
+    uses: jacobbuildmodel/research-checks/.github/workflows/seal.yml@ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
     with:
-      checks_sha: d5fc40e3c5fd636eb07c17226b8c7d9cd66030c1
+      checks_sha: ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
 
   fast:
-    uses: jacobbuildmodel/research-checks/.github/workflows/fast.yml@d5fc40e3c5fd636eb07c17226b8c7d9cd66030c1
+    uses: jacobbuildmodel/research-checks/.github/workflows/fast.yml@ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
     with:
-      checks_sha: d5fc40e3c5fd636eb07c17226b8c7d9cd66030c1
+      checks_sha: ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
 
   standards:
-    uses: jacobbuildmodel/research-checks/.github/workflows/standards.yml@d5fc40e3c5fd636eb07c17226b8c7d9cd66030c1
+    uses: jacobbuildmodel/research-checks/.github/workflows/standards.yml@ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
     with:
-      checks_sha: d5fc40e3c5fd636eb07c17226b8c7d9cd66030c1
+      checks_sha: ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
 
   checks:
     runs-on: ubuntu-26.04
