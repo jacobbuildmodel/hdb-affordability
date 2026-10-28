@@ -1,5 +1,16 @@
 # Runs the machine-checkable half of STANDARDS v2 on every push and pull request.
 # A failure here is visible before any human looks at the work.
+#
+# seal, fast and standards come from jacobbuildmodel/research-checks, pinned by
+# the same full sha in uses: and checks_sha (no AI, no secrets; pieces and
+# reasons in .github/research-checks.toml): seal integrity and the purpose gate,
+# 08_manifest.py --check and financing/25_manifest.py --check, and the fast
+# half of check.sh, ported, with a line-for-line diff against ./check.sh itself.
+#
+# Until the shared tiers have matched check.sh for long enough, the checks job
+# keeps running ./check.sh --full: the rebuild from clean with byte-identical
+# outputs (A2/A3) and the corruption guard (A5), which the shared tiers do not
+# replace. checker.yml and researcher.yml stay disabled (Jacob, 16 Oct 2026).
 name: standards
 on:
   push:
@@ -9,16 +20,31 @@ permissions:
   contents: read
 
 jobs:
+  seal:
+    uses: jacobbuildmodel/research-checks/.github/workflows/seal.yml@ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
+    with:
+      checks_sha: ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
+
+  fast:
+    uses: jacobbuildmodel/research-checks/.github/workflows/fast.yml@ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
+    with:
+      checks_sha: ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
+
+  standards:
+    uses: jacobbuildmodel/research-checks/.github/workflows/standards.yml@ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
+    with:
+      checks_sha: ace085dfd6fc8dce9962df39fefd5bdb8d3a3403
+
   checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.11"
       - run: pip install -r requirements.txt
-      - name: fast checks
-        run: ./check.sh
-      - name: rebuild, byte-identical outputs, corruption guard
+      - name: fast checks, rebuild, byte-identical outputs, corruption guard
         run: ./check.sh --full
