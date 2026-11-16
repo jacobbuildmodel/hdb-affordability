@@ -10,10 +10,13 @@ independently.
 Companion to the article at jacobbuildmodel.github.io/economics/. Everything in the
 prose is reproducible from this directory.
 
-**STATUS, 12 September 2026: complete.** `THESIS.md` was sealed before any data was
-downloaded. The pipeline rebuilds from `raw/` with one command, all 14 generated
-files come back byte-identical, and all 59 checksums verify. The article is
-`2026-09-12.md`, still `draft: true`.
+**STATUS, 16 November 2026: complete and published.** `THESIS.md` was sealed before any
+data was downloaded. The pipeline rebuilds from `raw/` with one command, and
+`run_all.sh` ends by checking every checksum. The article went live on 19 September 2026:
+[A four-room flat takes fewer years of income than in 2013](https://jacobbuildmodel.github.io/economics/2026-09-19/).
+The copy kept here, `2026-09-12.md`, is the draft as first written and still carries
+`draft: true`. The published text differs from it in one passage, on when median household
+income passed the Enhanced CPF Housing Grant ceiling; where they differ, quote the site.
 
 ## Run order
 
@@ -183,7 +186,7 @@ result is therefore reported as a bound rather than a point. See
 | `SOURCES.md` | Every source, marked primary or secondary, with retrieval dates. |
 | `number_manifest.csv` | Every figure in the prose, its source and its script. |
 | `RESULTS.md` | The pre-registered tests and how each came out. Written by `06_tests.py`. |
-| `2026-09-12.md` | The article. `draft: true`. |
+| `2026-09-12.md` | The article as first drafted, `draft: true`. The published article is on the site (see STATUS above). |
 | `ehg_bands.csv` | The 32 Enhanced CPF Housing Grant band rows, two regimes. |
 | `ltv_schedule.csv` | Loan-to-value, stress rate and concessionary rate, with quotes. |
 | `TODO_JACOB.md`, `TODO_JACOB_2.md` | What had to be fetched by hand, and the outcome. |
@@ -234,3 +237,15 @@ dataset page.
 Do not open the raw files in Excel and re-save them. That rewrites the bytes and
 every published checksum stops matching. `.gitattributes` contains exactly
 `* -text` so Git does not rewrite line endings on a Windows checkout.
+
+## Licence
+
+- **Code** (the `.py` and `.sh` scripts) is under the MIT licence: see `LICENSE`.
+- **Text and figures** (the article draft, write-ups and charts) are under
+  [Creative Commons Attribution 4.0](https://creativecommons.org/licenses/by/4.0/) (CC BY 4.0).
+  Credit "Jacob Ong, The New Void Deck".
+- **Data and third-party files** are covered by neither licence. Files in `raw/` that come
+  from data.gov.sg are under the
+  [Singapore Open Data Licence](https://data.gov.sg/open-data-licence) version 1.0. The other
+  raw files, including saved copies of government documents and web pages, keep their
+  sources' own terms. `raw/RETRIEVED.txt` records where each file came from.
