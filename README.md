@@ -10,13 +10,17 @@ independently.
 Companion to the article at jacobbuildmodel.github.io/economics/. Everything in the
 prose is reproducible from this directory.
 
+A second piece shares this repository:
+[HDB loan against bank loans, 3 October 2026](https://jacobbuildmodel.github.io/economics/2026-10-03/).
+Its folder is [`financing/`](financing/).
+
 **STATUS, 16 November 2026: complete and published.** `THESIS.md` was sealed before any
 data was downloaded. The pipeline rebuilds from `raw/` with one command, and
-`run_all.sh` ends by checking every checksum. The article went live on 19 September 2026:
-[A four-room flat takes fewer years of income than in 2013](https://jacobbuildmodel.github.io/economics/2026-09-19/).
+`run_all.sh` ends by checking every checksum. The article is published:
+[HDB resale affordability, 19 September 2026](https://jacobbuildmodel.github.io/economics/2026-09-19/).
 The copy kept here, `2026-09-12.md`, is the draft as first written and still carries
-`draft: true`. The published text differs from it in one passage, on when median household
-income passed the Enhanced CPF Housing Grant ceiling; where they differ, quote the site.
+`draft: true`. The published article has been revised since; where they differ, quote the
+site.
 
 ## Run order
 
