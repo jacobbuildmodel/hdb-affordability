@@ -7,7 +7,7 @@ Not whether prices rose. They did, everyone knows, and a piece establishing it
 would be worthless. Affordability is a ratio, and the three things in it moved
 independently.
 
-Companion to the article at jacobbuildmodel.github.io/economics/. Everything in the
+Companion to the article at jacobbuildmodel.github.io/economics/. Every number in the
 prose is reproducible from this directory.
 
 A second piece shares this repository:
