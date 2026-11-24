@@ -1,0 +1,21 @@
+# Citation metadata for this repository. GitHub reads this file for the
+# "Cite this repository" button.
+cff-version: 1.2.0
+message: "If you use this data or code, please cite it as below."
+type: software
+title: "HDB affordability"
+authors:
+  - family-names: Ong
+    given-names: Jacob
+repository-code: "https://github.com/jacobbuildmodel/hdb-affordability"
+license: MIT
+abstract: >-
+  Data and code behind the articles on The New Void Deck
+  (https://jacobbuildmodel.github.io) on the affordability of HDB resale flats and the HDB loan against a bank loan.
+  Each article's own page gives its citation.
+keywords:
+  - Singapore
+  - HDB
+  - housing affordability
+  - housing loans
+  - public policy
